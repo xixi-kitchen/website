@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
+import React, { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,32 +13,44 @@ const Navbar: React.FC = () => {
     <nav className="bg-white dark:bg-gray-800 shadow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          <div className="flex">
-            <Link href="/">
-              <a className="flex-shrink-0 flex items-center text-xl font-bold text-gray-900 dark:text-white">
-                MyPortfolio
-              </a>
+          <div className="flex justify-between w-full">
+            <Link
+              href="/"
+              className="flex-shrink-0 flex items-center text-xl font-bold text-gray-900 dark:text-white"
+            >
+              <Image
+              className="dark:invert"
+              src="/Generated 3D Image.svg"
+              alt="首页 logo"
+              width={40}
+              height={40}
+              />
+              HUGH·Aix
             </Link>
-            <div className="hidden md:ml-6 md:flex md:space-x-8">
-              <Link href="/">
-                <a className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  首页
-                </a>
+            <div className="hidden md:ml-6 md:flex md:space-x-8 md:items-center">
+              <Link
+                href="/"
+                className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >
+                首页
               </Link>
-              <Link href="/about">
-                <a className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  关于
-                </a>
+              <Link
+                href="/about"
+                className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >
+                关于
               </Link>
-              <Link href="/projects">
-                <a className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  项目
-                </a>
+              <Link
+                href="/projects"
+                className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >
+                项目
               </Link>
-              <Link href="/contact">
-                <a className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  联系
-                </a>
+              <Link
+                href="/contact"
+                className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >
+                联系
               </Link>
             </div>
           </div>
@@ -75,25 +88,29 @@ const Navbar: React.FC = () => {
       {isOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <Link href="/">
-              <a className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium">
-                首页
-              </a>
+            <Link
+              href="/"
+              className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
+            >
+              首页
             </Link>
-            <Link href="/about">
-              <a className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium">
-                关于
-              </a>
+            <Link
+              href="/about"
+              className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
+            >
+              关于
             </Link>
-            <Link href="/projects">
-              <a className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium">
-                项目
-              </a>
+            <Link
+              href="/projects"
+              className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
+            >
+              项目
             </Link>
-            <Link href="/contact">
-              <a className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium">
-                联系
-              </a>
+            <Link
+              href="/contact"
+              className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
+            >
+              联系
             </Link>
           </div>
         </div>
