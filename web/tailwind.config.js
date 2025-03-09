@@ -1,7 +1,29 @@
 // tailwind.config.js
 module.exports = {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {
+      colors: {
+        darkslategray: "#404040",
+        black: "#000",
+        deeppink: "#ff0088",
+        yellow: "#fff000",
+        white: "#fff",
+      },
+      fontFamily: {
+        "pingfang-sc": "'PingFang SC'",
+        nabla: "Nabla",
+        "misans-vf": "'MiSans VF'",
+      },
+      fontSize: {
+
+      },
+      screens: {
+
+      },
       keyframes: {
         glitch: {
           "0%": { "clip-path": "inset(20% 0 50% 0)" },
@@ -28,10 +50,13 @@ module.exports = {
         },
       },
       animation: {
-        "glitch-after": "glitch var(--after-duration) infinite linear alternate-reverse",
-        "glitch-before": "glitch var(--before-duration) infinite linear alternate-reverse",
+        "glitch-after":
+          "glitch var(--after-duration) infinite linear alternate-reverse",
+        "glitch-before":
+          "glitch var(--before-duration) infinite linear alternate-reverse",
       },
     },
   },
+
   plugins: [],
 };
