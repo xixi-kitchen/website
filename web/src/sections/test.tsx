@@ -15,7 +15,9 @@ const geistMono = Geist_Mono({
 
 export default function Test() {
   return (
-    <div className="grid  w-full h-1/2 items-center justify-items-start  p-8 pb-20 gap-4 sm:p-20 ">
+    <div className="w-full bg-amber-800 flex justify-center items-center">
+   
+    <div className="grid  w-full h-1/2 items-center justify-items-start  p-8 pb-20 gap-4 sm:p-20 max-w-screen-xl">
       <Image
         className="dark:invert"
         src="/next.svg"
@@ -82,6 +84,7 @@ export default function Test() {
           Read our docs
         </a>
       </div>
+    </div>
     </div>
   );
 }
