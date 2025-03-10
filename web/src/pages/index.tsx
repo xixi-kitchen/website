@@ -5,6 +5,9 @@ import Test from "@/sections/test";
 import Philosophy from "@/sections/philosophy";
 import ProjectsSection from "@/sections/ProjectsSection";
 import { NextPage } from "next";
+// import Information from "@/sections/Information"; 
+import Informs from "@/sections/informs";
+
 
 
 const geistSans = Geist({
@@ -27,6 +30,8 @@ export default function Home() {
         <Philosophy /> */}
         <Test />
         <ProjectsSection />
+        {/* <Information /> */}
+        <Informs />
       </main>
     </div>
   );
