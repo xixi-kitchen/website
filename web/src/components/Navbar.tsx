@@ -41,6 +41,12 @@ const Navbar: React.FC = () => {
                 关于
               </Link>
               <Link
+                href="/experience"
+                className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >
+                经历
+              </Link>
+              <Link
                 href="/projects"
                 className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
               >
@@ -99,6 +105,12 @@ const Navbar: React.FC = () => {
               className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
             >
               关于
+            </Link>
+            <Link
+              href="/experience"
+              className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
+            >
+              经历
             </Link>
             <Link
               href="/projects"

@@ -1,12 +1,15 @@
+import { NextPage } from "next";
 import Image from "next/image";
 import { Geist, Geist_Mono } from "next/font/google";
+
 import Hero from "@/sections/hero";
 import Test from "@/sections/test";
 import Philosophy from "@/sections/philosophy";
 import ProjectsSection from "@/sections/ProjectsSection";
-import { NextPage } from "next";
-// import Information from "@/sections/Information"; 
 import Informs from "@/sections/informs";
+import Knowledgebg from "@/sections/Knowledgebg";
+import Professionalbg from "@/sections/Professionalbg";
+import Honor from "@/sections/Honor";
 
 
 
@@ -20,19 +23,19 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function Home() {
+const Home: NextPage = () => {
   return (
     <div
-      className={`${geistSans.variable} ${geistMono.variable} grid  w-full items-center justify-items-center  font-[family-name:var(--font-geist-sans)] bg-emerald-100`}
+      className={`${geistSans.variable} ${geistMono.variable} grid w-full items-center justify-items-center font-[family-name:var(--font-geist-sans)] bg-emerald-100`}
     >
-      <main className="flex flex-col gap-8 row-start-2 items-center bg-emerald-600 w-full ">
-        {/* <Hero />
-        <Philosophy /> */}
+      <main className="flex flex-col gap-8 row-start-2 items-center bg-emerald-600 w-full">
         <Test />
-        <ProjectsSection />
-        {/* <Information /> */}
-        <Informs />
+        <Knowledgebg />
+        <Professionalbg />
+        <Honor />
       </main>
     </div>
   );
-}
+};
+
+export default Home;

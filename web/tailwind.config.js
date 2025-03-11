@@ -13,6 +13,9 @@ module.exports = {
         yellow: "#fff000",
         brightblue: "#5522ff",
         white: "#fff",
+        dimgray: "#696969",
+        lightgray: "#d3d3d3",
+        gray: "#0e0e0e",
       },
       fontFamily: {
         "pingfang-sc": "'PingFang SC'",
