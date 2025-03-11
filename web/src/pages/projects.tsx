@@ -3,11 +3,7 @@ import React, { useState } from "react";
 
 import { projects } from "../data/projects";
 
-import dynamic from "next/dynamic";
-const ProjectCard = dynamic(() => import("../components/ProjectCard"), {
-  ssr: false,
-});
-
+import ProjectCard from "../components/ProjectCard";
 
 const Projects: React.FC = () => {
   const [search, setSearch] = useState("");

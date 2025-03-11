@@ -29,18 +29,6 @@ const Navbar: React.FC = () => {
             </Link>
             <div className="hidden md:ml-6 md:flex md:space-x-8 md:items-center">
               <Link
-                href="/"
-                className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
-              >
-                首页
-              </Link>
-              <Link
-                href="/about"
-                className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
-              >
-                关于
-              </Link>
-              <Link
                 href="/experience"
                 className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
               >
@@ -57,6 +45,12 @@ const Navbar: React.FC = () => {
                 className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
               >
                 联系
+              </Link>
+              <Link
+                href="/about"
+                className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >
+                关于
               </Link>
             </div>
           </div>
@@ -95,18 +89,6 @@ const Navbar: React.FC = () => {
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <Link
-              href="/"
-              className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
-            >
-              首页
-            </Link>
-            <Link
-              href="/about"
-              className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
-            >
-              关于
-            </Link>
-            <Link
               href="/experience"
               className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
             >
@@ -123,6 +105,12 @@ const Navbar: React.FC = () => {
               className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
             >
               联系
+            </Link>
+            <Link
+              href="/about"
+              className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
+            >
+              关于
             </Link>
           </div>
         </div>
