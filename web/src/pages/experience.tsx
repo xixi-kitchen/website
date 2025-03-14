@@ -1,6 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 interface Experience {
   period: string;
@@ -10,6 +11,7 @@ interface Experience {
   achievements?: string[];
   skills?: string[];
   highlights?: string[];
+  id: string;
 }
 
 interface TimelineEvent {
@@ -60,6 +62,7 @@ const experiences: Experience[] = [
       "Nature OS：扩展功能，支持多触发源控制及智能设备集成，增强系统智能化水平。",
       "Nature Store：设计并发布多款新皮肤，提供个性化定制服务，增加用户粘性。",
     ],
+    id: "experience-1",
   },
   {
     period: "2022.5-2023.4",
@@ -89,6 +92,7 @@ const experiences: Experience[] = [
       "完成了对业务系统板块使用者的调研并以此为基础进行了对整个业务系统的流程重构，从用户的角度出发更加细致地完善了业务系统整体流程的链路全过程，最终产出为业务系统改版的低还原度原型；",
       "数据引流网站的结构搭建、低还原度原型、产品文档；与UI协同完成高还原度原型并交付开发使用；",
     ],
+    id: "experience-2",
   },
   {
     period: "2021.4-2022.4",
@@ -102,6 +106,7 @@ const experiences: Experience[] = [
     achievements: [
       "完成公司一半机型的新模型渲染及生产标准更新；参与制定公司新视觉系统设计；主导公司官网更新。",
     ],
+    id: "experience-3",
   },
 ];
 
@@ -139,147 +144,288 @@ const ExperiencePage: React.FC = () => {
         <meta name="description" content={pageMetadata.description} />
       </Head>
 
-      <div className="w-full bg-amber-50 min-h-screen">
-        <main className="max-w-screen-xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <div className="w-full bg-gradient-to-br from-amber-50 to-amber-100 min-h-screen relative overflow-hidden">
+        {/* 装饰性色块 */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-amber-200/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute top-1/4 right-0 w-96 h-96 bg-orange-200/30 rounded-full blur-3xl translate-x-1/2"></div>
+        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-yellow-200/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-300/30 rounded-full blur-3xl"></div>
+        
+        <main className="max-w-screen-xl mx-auto px-4 sm:px-6 py-8 sm:py-12 relative">
           <div className="flex flex-col items-center justify-center gap-8 sm:gap-11 text-black">
             {/* 页面标题部分 */}
-            <div className="w-full flex flex-col items-start gap-6 sm:gap-10">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="w-full flex flex-col items-start gap-6 sm:gap-10"
+            >
               <div className="w-full flex flex-row items-center justify-between">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-semibold leading-tight [text-shadow:4px_0_0_#000,_0_4px_0_#000,_-4px_0_0_#000,_0_-4px_0_#000]">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold leading-tight text-shadow-xl shadow-outline">
                   {pageTitle.main}
                 </h1>
-                <Image
-                  className="w-24 sm:w-32 md:w-40 lg:w-56 h-auto"
-                  width={224}
-                  height={254}
-                  alt=""
-                  src="Vector.svg"
-                  priority
-                />
+                <motion.div
+                  initial={{ scale: 0, rotate: -180, x: -1000 }}
+                  animate={{ scale: 1, rotate: 0, x: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 120, damping: 10 }}
+                >
+                  <Image
+                    className="w-24 sm:w-32 md:w-40 lg:w-56 h-auto"
+                    width={224}
+                    height={254}
+                    alt=""
+                    src="Vector.svg"
+                    priority
+                  />
+                </motion.div>
               </div>
               <h2 className="text-xl sm:text-2xl md:text-3xl text-gray leading-normal">
                 {pageTitle.sub}
               </h2>
-            </div>
+            </motion.div>
             
             {/* 经历内容部分 */}
             <div className="w-full flex flex-col items-start gap-16 sm:gap-20 md:gap-24 text-dimgray-100">
               <div className="w-full flex flex-col items-start gap-12 sm:gap-16">
                 {/* 工作经历部分 */}
                 {experiences.map((exp, index) => (
-                  <section key={index} className="w-full flex flex-col items-start gap-5">
-                    <div className={`text-base sm:text-lg md:text-xl font-medium leading-normal ${index > 0 ? 'text-dimgray-200' : ''}`}>
-                      {exp.period}
-                    </div>
-                    <div className="w-full flex flex-col items-start gap-3 sm:gap-4">
-                      <h3 className={`text-lg sm:text-xl md:text-2xl font-semibold leading-normal ${index > 0 ? 'text-dimgray-200' : 'text-black'}`}>
-                        {exp.company}
-                      </h3>
-                      <div className="text-base sm:text-lg md:text-xl font-light leading-normal">
-                        {exp.title}
+                  <motion.section
+                    key={index}
+                    id={exp.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.6, delay: index * 0.2 }}
+                    className="w-full flex flex-col items-start gap-5"
+                  >
+                    <div className="w-full bg-white/50 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-amber-200 hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                      {/* 卡片装饰色块 */}
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-amber-200/20 rounded-full blur-2xl"></div>
+                      <div className="absolute bottom-0 left-0 w-32 h-32 bg-orange-200/20 rounded-full blur-2xl"></div>
+                      
+                      {/* 时间标签 */}
+                      <div className="flex items-center gap-2 mb-4">
+                        <div className={`text-base sm:text-lg md:text-xl font-medium leading-normal ${index > 0 ? 'text-dimgray-200' : ''}`}>
+                          {exp.period}
+                        </div>
+                        <div className="h-0.5 flex-1 bg-gradient-to-r from-amber-200 to-transparent"></div>
                       </div>
-                      
-                      {/* 核心职责 */}
-                      {exp.responsibilities && (
-                        <>
-                          <div className="w-full">
-                            <h4 className="text-base sm:text-lg md:text-xl leading-normal">
-                              {index === 0 ? "核心职责：" : "内容："}
-                            </h4>
-                          </div>
-                          <div className="w-full text-sm sm:text-base leading-relaxed">
-                            <ol className="list-decimal pl-5 space-y-1">
-                              {exp.responsibilities.map((item, i) => (
-                                <li key={i}>{item}</li>
-                              ))}
-                            </ol>
-                          </div>
-                        </>
-                      )}
-                      
-                      {/* 主要成就 */}
-                      {exp.achievements && (
-                        <>
-                          <div className="w-full">
-                            <h4 className="text-base sm:text-lg md:text-xl leading-normal">
-                              {index === 0 ? "主要成就：" : "业绩："}
-                            </h4>
-                          </div>
-                          <div className="w-full text-sm sm:text-base leading-relaxed">
-                            {Array.isArray(exp.achievements) ? (
-                              <ol className="list-decimal pl-5 space-y-1">
-                                {exp.achievements.map((item, i) => (
-                                  <li key={i}>{item}</li>
+
+                      {/* 公司信息 */}
+                      <div className="w-full flex flex-col items-start gap-3 sm:gap-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-2 h-2 rounded-full bg-amber-500"></div>
+                          <h3 className={`text-lg sm:text-xl md:text-2xl font-semibold leading-normal ${index > 0 ? 'text-dimgray-200' : 'text-black'}`}>
+                            {exp.company}
+                          </h3>
+                        </div>
+                        <div className="text-base sm:text-lg md:text-xl font-light leading-normal text-amber-900">
+                          {exp.title}
+                        </div>
+                        
+                        {/* 核心职责 */}
+                        {exp.responsibilities && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.4, delay: 0.2 }}
+                            className="w-full mt-6"
+                          >
+                            <div className="flex items-center gap-2 mb-3">
+                              <div className="w-1 h-6 bg-amber-500 rounded-full"></div>
+                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-amber-900">
+                                {index === 0 ? "核心职责" : "工作内容"}
+                              </h4>
+                            </div>
+                            <div className="w-full text-sm sm:text-base leading-relaxed pl-4">
+                              <ol className="list-decimal space-y-3">
+                                {exp.responsibilities.map((item, i) => (
+                                  <motion.li 
+                                    key={i} 
+                                    initial={{ opacity: 0 }}
+                                    whileInView={{ opacity: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.4, delay: i * 0.1 }}
+                                    className="text-gray-700 hover:text-amber-900 transition-colors duration-200"
+                                  >
+                                    {item}
+                                  </motion.li>
                                 ))}
                               </ol>
-                            ) : (
-                              <div>{exp.achievements}</div>
-                            )}
-                          </div>
-                        </>
-                      )}
-                      
-                      {/* 技能专长 */}
-                      {exp.skills && (
-                        <>
-                          <div className="w-full">
-                            <h4 className="text-base sm:text-lg md:text-xl leading-normal">
-                              技能专长：
-                            </h4>
-                          </div>
-                          <div className="w-full text-sm sm:text-base leading-relaxed">
-                            <ol className="list-decimal pl-5 space-y-1">
-                              {exp.skills.map((item, i) => (
-                                <li key={i}>{item}</li>
-                              ))}
-                            </ol>
-                          </div>
-                        </>
-                      )}
-                      
-                      {/* 项目亮点 */}
-                      {exp.highlights && (
-                        <>
-                          <div className="w-full">
-                            <h4 className="text-base sm:text-lg md:text-xl leading-normal">
-                              项目亮点：
-                            </h4>
-                          </div>
-                          <div className="w-full text-sm sm:text-base leading-relaxed">
-                            <ol className="list-decimal pl-5 space-y-1">
-                              {exp.highlights.map((item, i) => (
-                                <li key={i}>{item}</li>
-                              ))}
-                            </ol>
-                          </div>
-                        </>
-                      )}
+                            </div>
+                          </motion.div>
+                        )}
+                        
+                        {/* 主要成就 */}
+                        {exp.achievements && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.4, delay: 0.3 }}
+                            className="w-full mt-6"
+                          >
+                            <div className="flex items-center gap-2 mb-3">
+                              <div className="w-1 h-6 bg-amber-500 rounded-full"></div>
+                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-amber-900">
+                                {index === 0 ? "主要成就" : "工作成果"}
+                              </h4>
+                            </div>
+                            <div className="w-full text-sm sm:text-base leading-relaxed pl-4">
+                              {Array.isArray(exp.achievements) ? (
+                                <ol className="list-decimal space-y-3">
+                                  {exp.achievements.map((item, i) => (
+                                    <motion.li 
+                                      key={i}
+                                      initial={{ opacity: 0 }}
+                                      whileInView={{ opacity: 1 }}
+                                      viewport={{ once: true }}
+                                      transition={{ duration: 0.4, delay: i * 0.1 }}
+                                      className="text-gray-700 hover:text-amber-900 transition-colors duration-200"
+                                    >
+                                      {item}
+                                    </motion.li>
+                                  ))}
+                                </ol>
+                              ) : (
+                                <div className="text-gray-700">{exp.achievements}</div>
+                              )}
+                            </div>
+                          </motion.div>
+                        )}
+                        
+                        {/* 技能专长 */}
+                        {exp.skills && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.4, delay: 0.4 }}
+                            className="w-full mt-6"
+                          >
+                            <div className="flex items-center gap-2 mb-3">
+                              <div className="w-1 h-6 bg-amber-500 rounded-full"></div>
+                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-amber-900">
+                                技能专长
+                              </h4>
+                            </div>
+                            <div className="w-full text-sm sm:text-base leading-relaxed pl-4">
+                              <ol className="list-decimal space-y-3">
+                                {exp.skills.map((item, i) => (
+                                  <motion.li 
+                                    key={i}
+                                    initial={{ opacity: 0 }}
+                                    whileInView={{ opacity: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.4, delay: i * 0.1 }}
+                                    className="text-gray-700 hover:text-amber-900 transition-colors duration-200"
+                                  >
+                                    {item}
+                                  </motion.li>
+                                ))}
+                              </ol>
+                            </div>
+                          </motion.div>
+                        )}
+                        
+                        {/* 项目亮点 */}
+                        {exp.highlights && (
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.4, delay: 0.5 }}
+                            className="w-full mt-6"
+                          >
+                            <div className="flex items-center gap-2 mb-3">
+                              <div className="w-1 h-6 bg-amber-500 rounded-full"></div>
+                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-amber-900">
+                                项目亮点
+                              </h4>
+                            </div>
+                            <div className="w-full text-sm sm:text-base leading-relaxed pl-4">
+                              <ol className="list-decimal space-y-3">
+                                {exp.highlights.map((item, i) => (
+                                  <motion.li 
+                                    key={i}
+                                    initial={{ opacity: 0 }}
+                                    whileInView={{ opacity: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.4, delay: i * 0.1 }}
+                                    className="text-gray-700 hover:text-amber-900 transition-colors duration-200"
+                                  >
+                                    {item}
+                                  </motion.li>
+                                ))}
+                              </ol>
+                            </div>
+                          </motion.div>
+                        )}
+                      </div>
                     </div>
-                  </section>
+                  </motion.section>
                 ))}
                 
                 {/* 时间线事件部分 */}
-                {Object.entries(timelineEvents).map(([year, events]) => (
-                  <section key={year} className="w-full flex flex-col items-start gap-5">
-                    <div className="text-base sm:text-lg md:text-xl font-medium text-dimgray-200 leading-normal">
-                      {year}
-                    </div>
-                    {events.map((event, index) => (
-                      <div key={index} className="w-full flex flex-col items-start gap-3 sm:gap-4">
-                        <h3 className="text-base sm:text-lg md:text-xl leading-normal">
-                          {event.date}
-                        </h3>
-                        <div className="w-full text-sm sm:text-base leading-relaxed">
-                          {event.description}
+                {Object.entries(timelineEvents).map(([year, events], yearIndex) => (
+                  <motion.section
+                    key={year}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.6, delay: (yearIndex + experiences.length) * 0.2 }}
+                    className="w-full flex flex-col items-start gap-5"
+                  >
+                    <div className="w-full bg-white/50 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-amber-200 hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                      {/* 时间线卡片装饰色块 */}
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-200/20 rounded-full blur-2xl"></div>
+                      <div className="absolute bottom-0 left-0 w-32 h-32 bg-amber-300/20 rounded-full blur-2xl"></div>
+                      
+                      <div className="flex items-center gap-2 mb-4">
+                        <div className="text-base sm:text-lg md:text-xl font-medium text-dimgray-200 leading-normal">
+                          {year}
                         </div>
+                        <div className="h-0.5 flex-1 bg-gradient-to-r from-amber-200 to-transparent"></div>
                       </div>
-                    ))}
-                  </section>
+                      {events.map((event, index) => (
+                        <motion.div 
+                          key={index} 
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.4, delay: index * 0.1 }}
+                          className="w-full flex flex-col items-start gap-3 sm:gap-4 mt-4"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-amber-500"></div>
+                            <h3 className="text-base sm:text-lg md:text-xl leading-normal text-amber-900">
+                              {event.date}
+                            </h3>
+                          </div>
+                          <div className="w-full text-sm sm:text-base leading-relaxed text-gray-700 pl-4">
+                            {event.description}
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.section>
                 ))}
               </div>
-              <div className="text-base sm:text-lg md:text-xl font-medium leading-normal">
-                更多经历正在体验中······
-              </div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.8 }}
+                className="text-base sm:text-lg md:text-xl font-medium leading-normal text-center w-full"
+              >
+                <div className="inline-block px-6 py-3 bg-white/50 backdrop-blur-sm rounded-full border border-amber-200 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                  {/* 底部文字装饰色块 */}
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-amber-200/20 rounded-full blur-xl"></div>
+                  <div className="absolute bottom-0 left-0 w-24 h-24 bg-orange-200/20 rounded-full blur-xl"></div>
+                  更多经历正在体验中······
+                </div>
+              </motion.div>
             </div>
           </div>
         </main>

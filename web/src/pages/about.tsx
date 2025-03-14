@@ -17,7 +17,7 @@ if (typeof window !== 'undefined') {
 // 懒加载组件
 const LazyProfessionalBg = dynamic(() => import('../sections/Professionalbg'), {
   ssr: false,
-  loading: () => <div className="w-full h-[50vh] bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+  loading: () => <div className="w-full h-[50vh] bg-gray-100 dark:bg-amber-900 flex items-center justify-center">
     <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500"></div>
   </div>
 });
@@ -119,7 +119,7 @@ const PhilosophyCard = ({ title, description, color, delay = 0 }: PhilosophyCard
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay }}
       viewport={{ once: true, margin: "-100px" }}
-      className={`bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-hidden transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 ${color}`}
+      className={`bg-white dark:bg-blue-900 rounded-xl shadow-xl overflow-hidden transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 ${color}`}
     >
       <div className="p-6">
         <h3 className="text-xl md:text-2xl font-bold mb-4">{title}</h3>
@@ -318,7 +318,7 @@ const About: NextPage = () => {
         <meta name="description" content="了解HUGH·Aix的理念、知识背景和技能" />
       </Head>
       
-      <div ref={containerRef} className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      <div ref={containerRef} className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-bg-blue-900">
         {/* 英雄区域 */}
         <motion.div 
           style={{ opacity, scale }}
@@ -388,7 +388,7 @@ const About: NextPage = () => {
         </section>
         
         {/* 知识背景部分 */}
-        <section id="knowledge-section" className="py-20 bg-gray-50 dark:bg-gray-800">
+        <section id="knowledge-section" className="py-20 bg-gray-50 dark:bg-blue-900">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">知识背景</h2>
@@ -441,7 +441,7 @@ const About: NextPage = () => {
         </section>
         
         {/* 职业背景部分 */}
-        <section id="professional-bg" className="py-20 bg-gray-50 dark:bg-gray-800">
+        <section id="professional-bg" className="py-20 bg-gray-50 dark:bg-blue-900">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">职业背景</h2>
