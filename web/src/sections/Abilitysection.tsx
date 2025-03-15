@@ -1,11 +1,18 @@
 import React, { useEffect, useRef, useState, Suspense, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Html, Float, Text3D, OrbitControls, useFont, Loader, useGLTF, Environment } from '@react-three/drei';
-import { Vector3, Mesh, Color, MeshPhongMaterial, Object3D } from 'three';
+import { Float, OrbitControls, Environment, useProgress, Html, useGLTF } from '@react-three/drei';
+import { Vector3, Mesh, MeshPhongMaterial, Object3D, Group } from 'three';
+import * as THREE from 'three';
 import { motion } from 'framer-motion';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useLoader } from '@react-three/fiber';
-import * as THREE from 'three';
+
+// 定义类型
+interface SkillModel {
+  name: string;
+  path: string;
+  position: [number, number, number];
+}
 
 /**
  * 生成随机位置的函数
@@ -30,7 +37,7 @@ const generateRandomPosition = (width: number, height: number) => {
  * - path: 模型文件路径
  * - position: 随机生成的位置
  */
-const getSkillModels = (width: number, height: number) => [
+const getSkillModels = (width: number, height: number): SkillModel[] => [
   { name: 'HTML', path: '/models/htmlmodel.glb', position: generateRandomPosition(width, height) },
   { name: 'CSS', path: '/models/cssmodel.glb', position: generateRandomPosition(width, height) },
   { name: 'JavaScript', path: '/models/JSmodel.glb', position: generateRandomPosition(width, height) },
@@ -57,7 +64,7 @@ const getSkillModels = (width: number, height: number) => [
  */
 const CenterModel = () => {
   const meshRef = useRef<Mesh>(null);
-  const gltf = useLoader(GLTFLoader, '/models/Learningabilitymodel.glb');
+  const { scene } = useGLTF('/models/Learningabilitymodel.glb');
   const [hovered, setHovered] = useState(false);
   
   // 使用 useMemo 缓存动画参数
@@ -90,9 +97,9 @@ const CenterModel = () => {
       }
     }
 
-    if (gltf.scene) {
+    if (scene) {
       // 优化模型
-      gltf.scene.traverse((child: Object3D) => {
+      scene.traverse((child: Object3D) => {
         if (child instanceof Mesh) {
           child.material = material;
           // 优化几何体
@@ -106,7 +113,7 @@ const CenterModel = () => {
         }
       });
     }
-  }, [gltf.scene, material]);
+  }, [scene, material]);
 
   // 使用 useFrame 的第二个参数优化动画更新频率
   useFrame((state, delta) => {
@@ -131,7 +138,7 @@ const CenterModel = () => {
   return (
     <primitive
       ref={meshRef}
-      object={gltf.scene}
+      object={scene}
       scale={animParams.baseScale}
       position={[0, 2, -5]}
       onPointerOver={() => setHovered(true)}
@@ -149,7 +156,7 @@ const CenterModel = () => {
  */
 const Model = ({ path, position }: { path: string; position: [number, number, number] }) => {
   const meshRef = useRef<THREE.Mesh>(null);
-  const gltf = useLoader(GLTFLoader, path);
+  const { scene } = useGLTF(path);
   const [hovered, setHovered] = useState(false);
   
   // 使用 useMemo 缓存动画参数
@@ -165,9 +172,9 @@ const Model = ({ path, position }: { path: string; position: [number, number, nu
   }), []);
 
   useEffect(() => {
-    if (gltf.scene) {
+    if (scene) {
       // 优化模型
-      gltf.scene.traverse((child: Object3D) => {
+      scene.traverse((child: Object3D) => {
         if (child instanceof Mesh) {
           // 优化几何体
           if (child.geometry) {
@@ -180,7 +187,7 @@ const Model = ({ path, position }: { path: string; position: [number, number, nu
         }
       });
     }
-  }, [gltf.scene]);
+  }, [scene]);
 
   // 使用 useFrame 的第二个参数优化动画更新频率
   useFrame((state, delta) => {
@@ -211,7 +218,7 @@ const Model = ({ path, position }: { path: string; position: [number, number, nu
     >
       <primitive
         ref={meshRef}
-        object={gltf.scene}
+        object={scene}
         position={position}
         scale={animationParams.baseScale}
         onPointerOver={() => setHovered(true)}
@@ -229,7 +236,7 @@ const Model = ({ path, position }: { path: string; position: [number, number, nu
  * 3. 处理模型的加载状态
  */
 const ModelsGrid = () => {
-  const [models, setModels] = useState<Array<any>>([]);
+  const [models, setModels] = useState<SkillModel[]>([]);
   const { size } = useThree();
   const [mounted, setMounted] = useState(false);
 
@@ -255,7 +262,7 @@ const ModelsGrid = () => {
         <Suspense key={`${model.name}-${size.width}-${size.height}`}>
           <Model 
             path={model.path} 
-            position={model.position as [number, number, number]} 
+            position={model.position} 
           />
         </Suspense>
       ))}
@@ -289,17 +296,34 @@ const ResponsiveContainer = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+// 加载进度组件
+function LoadingIndicator() {
+  const { progress } = useProgress();
+  return (
+    <Html center>
+      <div className="text-white text-xl">
+        加载中... {progress.toFixed(0)}%
+      </div>
+    </Html>
+  );
+}
+
+// 预加载所有模型
+const modelPaths = getSkillModels(0, 0).map(model => model.path);
+modelPaths.forEach(path => useGLTF.preload(path));
+
 const Scene = () => {
   return (
     <>
-      {/* 添加 HDR 环境光照 */}
+      {/* 设置环境背景 */}
       <Environment 
-        files="/moderimages/output.hdr"
-        background={true} // 不将 HDR 用作背景
-        blur={0.5} // 添加轻微模糊以柔化反射
+        files="/moderimages/output.hdr" // 环境背景文件路径
+        background={true} // 是否作为背景
+        blur={0.5} // 模糊度
+        resolution={256} // 分辨率
+        // preset="apartment" // 预设场景
       />
-      
-      <ambientLight intensity={0.8} /> {/* 降低环境光强度 */}
+      <ambientLight intensity={0.8} />
       <pointLight position={[10, 10, 10]} intensity={1.5} castShadow={false} />
       <pointLight position={[-10, -10, -5]} intensity={1} color="#ffffff" castShadow={false} />
       <pointLight position={[0, 0, 10]} intensity={1} castShadow={false} />
@@ -341,7 +365,7 @@ const AbilitySection = () => {
           });
           setKey(prev => prev + 1);
         }
-      }, 200); // 200ms 防抖
+      }, 200);
     };
   }, []);
 
@@ -369,8 +393,6 @@ const AbilitySection = () => {
 
   return (
     <section ref={containerRef} className="h-screen w-full relative overflow-hidden">
-     
-      
       <div className="absolute inset-0">
         {containerSize.width > 0 && containerSize.height > 0 && (
           <Canvas
@@ -383,17 +405,18 @@ const AbilitySection = () => {
             }}
             style={{ width: '100%', height: '100%' }}
             resize={{ scroll: false }}
-            dpr={[1, 2]}
+            dpr={window.devicePixelRatio > 2 ? 2 : window.devicePixelRatio}
             gl={{
               preserveDrawingBuffer: true,
               antialias: false,
               powerPreference: 'high-performance',
               alpha: false,
-              toneMapping: THREE.ACESFilmicToneMapping, // 添加色调映射
-              toneMappingExposure: 1.0 // 调整曝光度
+              toneMapping: THREE.ACESFilmicToneMapping,
+              toneMappingExposure: 1.0
             }}
+            performance={{ min: 0.5 }}
           >
-            <Suspense fallback={null}>
+            <Suspense fallback={<LoadingIndicator />}>
               <Scene />
               <OrbitControls
                 enableZoom={false}
@@ -459,12 +482,12 @@ const AbilitySection = () => {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-
         <p className="text-base md:text-lg font-medium mt-4 text-gray-300 italic">
           以上仅为部分技能，更多技能正在探索中……
         </p>
+          </div>
+        </div>
+
       </div>
     </div>
     </section>

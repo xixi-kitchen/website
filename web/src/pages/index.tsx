@@ -1,17 +1,49 @@
 import { NextPage } from "next";
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import { Geist, Geist_Mono } from "next/font/google";
 
+// 静态导入轻量级组件
 import Hero from "@/sections/hero";
-import Test from "@/sections/test";
 import Philosophy from "@/sections/philosophy";
-import ProjectsSection from "@/sections/ProjectsSection";
-import Informs from "@/sections/informs";
-import Knowledgebg from "@/sections/Knowledgebg";
-import Professionalbg from "@/sections/Professionalbg";
-import Honor from "@/sections/Honor";
-import ExperienceSection from "@/sections/ExperienceSection";
-import Abilitysection from "@/sections/Abilitysection";   
+import Test from "@/sections/test";
+
+// 动态导入重量级组件
+const ProjectsSection = dynamic(() => import("@/sections/ProjectsSection"), {
+  ssr: true,
+  loading: () => <div className="w-full h-screen bg-emerald-600 animate-pulse" />
+});
+
+const Informs = dynamic(() => import("@/sections/informs"), {
+  ssr: true,
+  loading: () => <div className="w-full h-screen bg-emerald-600 animate-pulse" />
+});
+
+const Knowledgebg = dynamic(() => import("@/sections/Knowledgebg"), {
+  ssr: true,
+  loading: () => <div className="w-full h-screen bg-emerald-600 animate-pulse" />
+});
+
+const Professionalbg = dynamic(() => import("@/sections/Professionalbg"), {
+  ssr: false,
+  loading: () => <div className="w-full h-screen bg-emerald-600 animate-pulse" />
+});
+
+const ExperienceSection = dynamic(() => import("@/sections/ExperienceSection"), {
+  ssr: true,
+  loading: () => <div className="w-full h-screen bg-emerald-600 animate-pulse" />
+});
+
+const Honor = dynamic(() => import("@/sections/Honor"), {
+  ssr: true,
+  loading: () => <div className="w-full h-screen bg-emerald-600 animate-pulse" />
+});
+
+// 3D 场景组件使用客户端渲染
+const Abilitysection = dynamic(() => import("@/sections/Abilitysection"), {
+  ssr: false,
+  loading: () => <div className="w-full h-screen bg-emerald-600 animate-pulse" />
+});
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
