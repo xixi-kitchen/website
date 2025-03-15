@@ -8,7 +8,7 @@ import { useLoader } from '@react-three/fiber';
 
 // 固定式的随机分布位置生成函数配置
 const generateRandomPosition = (width: number, height: number) => {
-  const radius = width / 2000; // 固定较小的半径范围
+  const radius = 8; // 固定较小的半径范围
   const angle = Math.random() * Math.PI * 2;
   const distance = Math.pow(Math.random(), 0.5) * radius; // 使用平方根使分布更均匀
   const x = Math.cos(angle) * distance;
@@ -18,23 +18,89 @@ const generateRandomPosition = (width: number, height: number) => {
 
 // 技能模型数据
 const getSkillModels = (width: number, height: number) => [
-  { name: 'HTML', path: '/models/htmlmodel.glb', position: generateRandomPosition(width, height), description: 'HTML5 网页开发' },
-  { name: 'CSS', path: '/models/cssmodel.glb', position: generateRandomPosition(width, height), description: 'CSS3 样式设计' },
-  { name: 'JavaScript', path: '/models/JSmodel.glb', position: generateRandomPosition(width, height), description: 'JavaScript 编程' },
-  { name: 'Java', path: '/models/javamodel.glb', position: generateRandomPosition(width, height), description: 'Java 应用开发' },
-  { name: 'Python', path: '/models/Pythonmodel.glb', position: generateRandomPosition(width, height), description: 'Python 开发' },
-  { name: 'Three.js', path: '/models/threemodel.glb', position: generateRandomPosition(width, height), description: '3D 网页开发' },
-  { name: 'Unity', path: '/models/unitymodel.glb', position: generateRandomPosition(width, height), description: 'Unity 游戏开发' },
-  { name: 'Unreal', path: '/models/unrealmodel.glb', position: generateRandomPosition(width, height), description: '虚幻引擎开发' },
-  { name: 'Rhino', path: '/models/rhinomodel.glb', position: generateRandomPosition(width, height), description: '工业设计建模' },
-  { name: 'C4D', path: '/models/c4dmodel.glb', position: generateRandomPosition(width, height), description: '动效设计' },
-  { name: 'Blender', path: '/models/blendermodel.glb', position: generateRandomPosition(width, height), description: '3D 建模与动画' },
-  { name: '3DS MAX', path: '/models/3dsmodel.glb', position: generateRandomPosition(width, height), description: '3D 场景建模' },
-  { name: 'Keyshot', path: '/models/keyshotmodel.glb', position: generateRandomPosition(width, height), description: '产品渲染' },
-  { name: 'Sketch', path: '/models/sketchmodel.glb', position: generateRandomPosition(width, height), description: 'UI/UX 设计' },
-  { name: 'Arduino', path: '/models/arduinomodel.glb', position: generateRandomPosition(width, height), description: '硬件开发' },
-  { name: '学习能力', path: '/models/Learningabilitymodel.glb', position: generateRandomPosition(width, height), description: '持续学习成长' }
+  { name: 'HTML', path: '/models/htmlmodel.glb', position: generateRandomPosition(width, height) },
+  { name: 'CSS', path: '/models/cssmodel.glb', position: generateRandomPosition(width, height) },
+  { name: 'JavaScript', path: '/models/JSmodel.glb', position: generateRandomPosition(width, height) },
+  { name: 'Java', path: '/models/javamodel.glb', position: generateRandomPosition(width, height) },
+  { name: 'Python', path: '/models/Pythonmodel.glb', position: generateRandomPosition(width, height) },
+  { name: 'Three.js', path: '/models/threemodel.glb', position: generateRandomPosition(width, height) },
+  { name: 'Unity', path: '/models/unitymodel.glb', position: generateRandomPosition(width, height) },
+  { name: 'Unreal', path: '/models/unrealmodel.glb', position: generateRandomPosition(width, height) },
+  { name: 'Rhino', path: '/models/rhinomodel.glb', position: generateRandomPosition(width, height) },
+  { name: 'C4D', path: '/models/c4dmodel.glb', position: generateRandomPosition(width, height) },
+  { name: 'Blender', path: '/models/blendermodel.glb', position: generateRandomPosition(width, height) },
+  { name: '3DS MAX', path: '/models/3dsmodel.glb', position: generateRandomPosition(width, height) },
+  { name: 'Keyshot', path: '/models/keyshotmodel.glb', position: generateRandomPosition(width, height) },
+  { name: 'Sketch', path: '/models/sketchmodel.glb', position: generateRandomPosition(width, height) },
+  { name: 'Arduino', path: '/models/arduinomodel.glb', position: generateRandomPosition(width, height) }
 ];
+
+// 中心学习能力模型组件
+const CenterModel = () => {
+  const meshRef = useRef<any>();
+  const gltf = useLoader(GLTFLoader, '/models/Learningabilitymodel.glb');
+  const [hovered, setHovered] = useState(false);
+  
+  // 旋转相关配置
+  const swingSpeed = 0.1;
+  const swingAmplitude = Math.PI / 6;
+
+  // 缩放相关配置
+  const baseScale = 0.25;
+  const hoverScale = 0.3;
+  const scaleTransitionSpeed = 0.1;
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y = Math.sin(state.clock.getElapsedTime() * swingSpeed) * swingAmplitude;
+
+      if (hovered) {
+        meshRef.current.scale.lerp(new Vector3(hoverScale, hoverScale, hoverScale), scaleTransitionSpeed);
+      } else {
+        meshRef.current.scale.lerp(new Vector3(baseScale, baseScale, baseScale), scaleTransitionSpeed);
+      }
+    }
+  });
+
+  return (
+    <group position={[0, 2, 0]}>
+      <primitive
+        ref={meshRef}
+        object={gltf.scene}
+        scale={baseScale}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+      />
+      <Html position={[0, -2, 0]} center>
+        <div className="text-center space-y-6 max-w-3xl">
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-brightblue">编程技能</h2>
+            <p className="text-gray-700 dark:text-gray-300">
+              HTML • CSS • JavaScript • Java • Python • Arduino • Processing • React • Next.js • Three.js • 
+              Data analysis library • Machine learning algorithm library • Deep learning algorithm library
+            </p>
+          </div>
+          
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-yellow">超多技能</h2>
+            <div className="text-gray-700 dark:text-gray-300 space-y-2">
+              <p>Adobe 全家桶全集</p>
+              <p>三维模型软件：Rhino • C4D • Blender • 3DS MAX • ProE • Solidworks</p>
+              <p>设计软件：Figma • Sketch</p>
+              <p>渲染软件：Keyshot • Unreal Engine • Unity • Cycles • V ray • Redshift</p>
+              <p>表面处理工艺（IMD • 水转印 • 蚀刻等）</p>
+              <p>生产制造技术（CNC • 3D打印等）</p>
+            </div>
+          </div>
+
+          <p className="text-lg text-deeppink italic">
+            以上仅为部分技能，更多技能正在探索中……
+          </p>
+        </div>
+      </Html>
+    </group>
+  );
+};
 
 // 单个模型组件配置
 const Model = ({ 
@@ -104,7 +170,6 @@ const ModelsGrid = () => {
   const { size } = useThree();
 
   useEffect(() => {
-    // 在客户端渲染时初始化模型位置
     setModels(getSkillModels(size.width * 100, size.height * 100));
   }, [size]);
 
@@ -114,6 +179,7 @@ const ModelsGrid = () => {
 
   return (
     <group>
+      <CenterModel />
       {models.map((model, index) => (
         <Suspense
           key={model.name}
@@ -165,27 +231,15 @@ const AbilitySection = () => {
       
       <Canvas
         camera={{ 
-          position: [0, 0, 20], // 调整相机距离更近
-          fov: 45 // 减小视野角度使画面更聚焦
+          position: [0, 0, 20],
+          fov: 45
         }}
         className="w-full h-full"
       >
         <Suspense fallback={<Loader />}>
-          <ambientLight intensity={0.7} /> {/* 增加环境光强度 */}
-          <pointLight position={[10, 10, 10]} intensity={1.2} /> {/* 增加点光源强度 */}
+          <ambientLight intensity={0.7} />
+          <pointLight position={[10, 10, 10]} intensity={1.2} />
           <ResponsiveContainer>
-            <group position={[0, 8, 0]}> {/* 调整标题位置 */}
-              <Html center>
-                <div className="text-center space-y-4">
-                  <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brightblue via-yellow to-deeppink">
-                    能力矩阵
-                  </h1>
-                  <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300">
-                    以下展示了我的主要技能和工具掌握程度
-                  </p>
-                </div>
-              </Html>
-            </group>
             <ModelsGrid />
           </ResponsiveContainer>
 
@@ -196,8 +250,8 @@ const AbilitySection = () => {
             maxPolarAngle={Math.PI / 1.8}
             minAzimuthAngle={-Math.PI / 4}
             maxAzimuthAngle={Math.PI / 4}
-            maxDistance={30} // 限制最大缩放距离
-            minDistance={10} // 限制最小缩放距离
+            maxDistance={30}
+            minDistance={10}
           />
         </Suspense>
       </Canvas>
