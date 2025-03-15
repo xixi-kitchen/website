@@ -11,7 +11,7 @@ import Knowledgebg from "@/sections/Knowledgebg";
 import Professionalbg from "@/sections/Professionalbg";
 import Honor from "@/sections/Honor";
 import ExperienceSection from "@/sections/ExperienceSection";
-
+import Abilitysection from "@/sections/Abilitysection";   
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -29,10 +29,15 @@ const Home: NextPage = () => {
     >
       <main className="flex flex-col gap-8 row-start-2 items-center bg-emerald-600 w-full">
         <Test />
-        <Knowledgebg />
+        <Hero />
+        <Philosophy />
+        <ProjectsSection />
+        <Informs />
+        <Knowledgebg />   
         <Professionalbg />
         <ExperienceSection />
         <Honor />
+        <Abilitysection />
       </main>
     </div>
   );

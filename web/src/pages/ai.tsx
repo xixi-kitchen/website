@@ -123,7 +123,7 @@ const AIPage: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-brightblue/20 dark:border-brightblue/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
+                  className="bg-white/50 dark:bg-brightblue/5 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-brightblue/20 dark:border-brightblue/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
                 >
                   {/* 卡片装饰色块 */}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-brightblue/10 dark:bg-brightblue/20 rounded-full blur-2xl group-hover:bg-brightblue/20 dark:group-hover:bg-brightblue/30 transition-colors duration-300"></div>
@@ -134,7 +134,7 @@ const AIPage: React.FC = () => {
                   </h3>
                   <ul className="space-y-2 relative">
                     {skill.items.map((item, i) => (
-                      <li key={i} className="text-gray-700 dark:text-gray-300 hover:text-brightblue dark:hover:text-brightblue/80 transition-colors duration-200">
+                      <li key={i} className="text-gray-700 dark:text-yellow/90 hover:text-brightblue dark:hover:text-brightblue/80 transition-colors duration-200">
                         {item}
                       </li>
                     ))}
@@ -158,7 +158,7 @@ const AIPage: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-yellow/20 dark:border-yellow/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
+                  className="bg-white/50 dark:bg-brightblue/5 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-yellow/20 dark:border-yellow/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
                 >
                   {/* 卡片装饰色块 */}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-yellow/10 dark:bg-yellow/20 rounded-full blur-2xl group-hover:bg-yellow/20 dark:group-hover:bg-yellow/30 transition-colors duration-300"></div>
@@ -167,7 +167,7 @@ const AIPage: React.FC = () => {
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 relative">
                     {project.title}
                   </h3>
-                  <p className="text-gray-700 dark:text-gray-300 mb-4 relative">
+                  <p className="text-gray-700 dark:text-yellow/90 mb-4 relative">
                     {project.description}
                   </p>
                   <div className="flex flex-wrap gap-2 mb-4 relative">
@@ -209,7 +209,7 @@ const AIPage: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-deeppink/20 dark:border-deeppink/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
+                  className="bg-white/50 dark:bg-brightblue/5 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-deeppink/20 dark:border-deeppink/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
                 >
                   {/* 卡片装饰色块 */}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-deeppink/10 dark:bg-deeppink/20 rounded-full blur-2xl group-hover:bg-deeppink/20 dark:group-hover:bg-deeppink/30 transition-colors duration-300"></div>
@@ -223,7 +223,7 @@ const AIPage: React.FC = () => {
                       {direction.status}
                     </span>
                   </div>
-                  <p className="text-gray-700 dark:text-gray-300 mt-2 relative">
+                  <p className="text-gray-700 dark:text-yellow/90 mt-2 relative">
                     {direction.description}
                   </p>
                 </motion.div>

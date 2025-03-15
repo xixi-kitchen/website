@@ -144,15 +144,15 @@ const ExperiencePage: React.FC = () => {
         <meta name="description" content={pageMetadata.description} />
       </Head>
 
-      <div className="w-full bg-gradient-to-br from-amber-50 to-amber-100 min-h-screen relative overflow-hidden">
+      <div className="w-full bg-gradient-to-br from-brightblue/5 via-yellow/5 to-deeppink/5 dark:from-brightblue/10 dark:via-yellow/10 dark:to-deeppink/10 min-h-screen relative overflow-hidden">
         {/* 装饰性色块 */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-amber-200/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute top-1/4 right-0 w-96 h-96 bg-orange-200/30 rounded-full blur-3xl translate-x-1/2"></div>
-        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-yellow-200/30 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-300/30 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 left-0 w-96 h-96 bg-brightblue/20 dark:bg-brightblue/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute top-1/4 right-0 w-96 h-96 bg-yellow/20 dark:bg-yellow/30 rounded-full blur-3xl translate-x-1/2"></div>
+        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-deeppink/20 dark:bg-deeppink/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brightblue/20 dark:bg-brightblue/30 rounded-full blur-3xl"></div>
         
         <main className="max-w-screen-xl mx-auto px-4 sm:px-6 py-8 sm:py-12 relative">
-          <div className="flex flex-col items-center justify-center gap-8 sm:gap-11 text-black">
+          <div className="flex flex-col items-center justify-center gap-8 sm:gap-11 text-gray-900 dark:text-white">
             {/* 页面标题部分 */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -161,7 +161,7 @@ const ExperiencePage: React.FC = () => {
               className="w-full flex flex-col items-start gap-6 sm:gap-10"
             >
               <div className="w-full flex flex-row items-center justify-between">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold leading-tight text-shadow-xl shadow-outline">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-brightblue via-yellow to-deeppink">
                   {pageTitle.main}
                 </h1>
                 <motion.div
@@ -179,13 +179,13 @@ const ExperiencePage: React.FC = () => {
                   />
                 </motion.div>
               </div>
-              <h2 className="text-xl sm:text-2xl md:text-3xl text-gray leading-normal">
+              <h2 className="text-xl sm:text-2xl md:text-3xl text-gray-700 dark:text-yellow/90 leading-normal">
                 {pageTitle.sub}
               </h2>
             </motion.div>
             
             {/* 经历内容部分 */}
-            <div className="w-full flex flex-col items-start gap-16 sm:gap-20 md:gap-24 text-dimgray-100">
+            <div className="w-full flex flex-col items-start gap-16 sm:gap-20 md:gap-24 text-gray-700 dark:text-yellow/90">
               <div className="w-full flex flex-col items-start gap-12 sm:gap-16">
                 {/* 工作经历部分 */}
                 {experiences.map((exp, index) => (
@@ -198,28 +198,28 @@ const ExperiencePage: React.FC = () => {
                     transition={{ duration: 0.6, delay: index * 0.2 }}
                     className="w-full flex flex-col items-start gap-5"
                   >
-                    <div className="w-full bg-white/50 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-amber-200 hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                    <div className="w-full bg-white/50 dark:bg-brightblue/5 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-brightblue/20 dark:border-brightblue/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden">
                       {/* 卡片装饰色块 */}
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-amber-200/20 rounded-full blur-2xl"></div>
-                      <div className="absolute bottom-0 left-0 w-32 h-32 bg-orange-200/20 rounded-full blur-2xl"></div>
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-brightblue/10 dark:bg-brightblue/20 rounded-full blur-2xl"></div>
+                      <div className="absolute bottom-0 left-0 w-32 h-32 bg-yellow/10 dark:bg-yellow/20 rounded-full blur-2xl"></div>
                       
                       {/* 时间标签 */}
                       <div className="flex items-center gap-2 mb-4">
-                        <div className={`text-base sm:text-lg md:text-xl font-medium leading-normal ${index > 0 ? 'text-dimgray-200' : ''}`}>
+                        <div className={`text-base sm:text-lg md:text-xl font-medium leading-normal ${index > 0 ? 'text-gray-700 dark:text-yellow/90' : 'text-gray-900 dark:text-white'}`}>
                           {exp.period}
                         </div>
-                        <div className="h-0.5 flex-1 bg-gradient-to-r from-amber-200 to-transparent"></div>
+                        <div className="h-0.5 flex-1 bg-gradient-to-r from-brightblue to-transparent"></div>
                       </div>
 
                       {/* 公司信息 */}
                       <div className="w-full flex flex-col items-start gap-3 sm:gap-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 rounded-full bg-amber-500"></div>
-                          <h3 className={`text-lg sm:text-xl md:text-2xl font-semibold leading-normal ${index > 0 ? 'text-dimgray-200' : 'text-black'}`}>
+                          <div className="w-2 h-2 rounded-full bg-brightblue"></div>
+                          <h3 className={`text-lg sm:text-xl md:text-2xl font-semibold leading-normal ${index > 0 ? 'text-gray-700 dark:text-yellow/90' : 'text-gray-900 dark:text-white'}`}>
                             {exp.company}
                           </h3>
                         </div>
-                        <div className="text-base sm:text-lg md:text-xl font-light leading-normal text-amber-900">
+                        <div className="text-base sm:text-lg md:text-xl font-light leading-normal text-brightblue dark:text-brightblue/80">
                           {exp.title}
                         </div>
                         
@@ -233,8 +233,8 @@ const ExperiencePage: React.FC = () => {
                             className="w-full mt-6"
                           >
                             <div className="flex items-center gap-2 mb-3">
-                              <div className="w-1 h-6 bg-amber-500 rounded-full"></div>
-                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-amber-900">
+                              <div className="w-1 h-6 bg-brightblue rounded-full"></div>
+                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-brightblue dark:text-brightblue/80">
                                 {index === 0 ? "核心职责" : "工作内容"}
                               </h4>
                             </div>
@@ -247,7 +247,7 @@ const ExperiencePage: React.FC = () => {
                                     whileInView={{ opacity: 1 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.4, delay: i * 0.1 }}
-                                    className="text-gray-700 hover:text-amber-900 transition-colors duration-200"
+                                    className="text-gray-700 dark:text-yellow/90 hover:text-brightblue dark:hover:text-brightblue/80 transition-colors duration-200"
                                   >
                                     {item}
                                   </motion.li>
@@ -257,56 +257,52 @@ const ExperiencePage: React.FC = () => {
                           </motion.div>
                         )}
                         
-                        {/* 主要成就 */}
+                        {/* 成就 */}
                         {exp.achievements && (
                           <motion.div 
                             initial={{ opacity: 0 }}
                             whileInView={{ opacity: 1 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.4, delay: 0.3 }}
+                            transition={{ duration: 0.4, delay: 0.2 }}
                             className="w-full mt-6"
                           >
                             <div className="flex items-center gap-2 mb-3">
-                              <div className="w-1 h-6 bg-amber-500 rounded-full"></div>
-                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-amber-900">
-                                {index === 0 ? "主要成就" : "工作成果"}
+                              <div className="w-1 h-6 bg-yellow rounded-full"></div>
+                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-yellow dark:text-yellow/80">
+                                主要成就
                               </h4>
                             </div>
                             <div className="w-full text-sm sm:text-base leading-relaxed pl-4">
-                              {Array.isArray(exp.achievements) ? (
-                                <ol className="list-decimal space-y-3">
-                                  {exp.achievements.map((item, i) => (
-                                    <motion.li 
-                                      key={i}
-                                      initial={{ opacity: 0 }}
-                                      whileInView={{ opacity: 1 }}
-                                      viewport={{ once: true }}
-                                      transition={{ duration: 0.4, delay: i * 0.1 }}
-                                      className="text-gray-700 hover:text-amber-900 transition-colors duration-200"
-                                    >
-                                      {item}
-                                    </motion.li>
-                                  ))}
-                                </ol>
-                              ) : (
-                                <div className="text-gray-700">{exp.achievements}</div>
-                              )}
+                              <ol className="list-decimal space-y-3">
+                                {exp.achievements.map((item, i) => (
+                                  <motion.li 
+                                    key={i} 
+                                    initial={{ opacity: 0 }}
+                                    whileInView={{ opacity: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.4, delay: i * 0.1 }}
+                                    className="text-gray-700 dark:text-yellow/90 hover:text-yellow dark:hover:text-yellow/80 transition-colors duration-200"
+                                  >
+                                    {item}
+                                  </motion.li>
+                                ))}
+                              </ol>
                             </div>
                           </motion.div>
                         )}
                         
-                        {/* 技能专长 */}
+                        {/* 技能 */}
                         {exp.skills && (
                           <motion.div 
                             initial={{ opacity: 0 }}
                             whileInView={{ opacity: 1 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.4, delay: 0.4 }}
+                            transition={{ duration: 0.4, delay: 0.2 }}
                             className="w-full mt-6"
                           >
                             <div className="flex items-center gap-2 mb-3">
-                              <div className="w-1 h-6 bg-amber-500 rounded-full"></div>
-                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-amber-900">
+                              <div className="w-1 h-6 bg-deeppink rounded-full"></div>
+                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-deeppink dark:text-deeppink/80">
                                 技能专长
                               </h4>
                             </div>
@@ -314,12 +310,12 @@ const ExperiencePage: React.FC = () => {
                               <ol className="list-decimal space-y-3">
                                 {exp.skills.map((item, i) => (
                                   <motion.li 
-                                    key={i}
+                                    key={i} 
                                     initial={{ opacity: 0 }}
                                     whileInView={{ opacity: 1 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.4, delay: i * 0.1 }}
-                                    className="text-gray-700 hover:text-amber-900 transition-colors duration-200"
+                                    className="text-gray-700 dark:text-yellow/90 hover:text-deeppink dark:hover:text-deeppink/80 transition-colors duration-200"
                                   >
                                     {item}
                                   </motion.li>
@@ -329,18 +325,18 @@ const ExperiencePage: React.FC = () => {
                           </motion.div>
                         )}
                         
-                        {/* 项目亮点 */}
+                        {/* 亮点 */}
                         {exp.highlights && (
                           <motion.div 
                             initial={{ opacity: 0 }}
                             whileInView={{ opacity: 1 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.4, delay: 0.5 }}
+                            transition={{ duration: 0.4, delay: 0.2 }}
                             className="w-full mt-6"
                           >
                             <div className="flex items-center gap-2 mb-3">
-                              <div className="w-1 h-6 bg-amber-500 rounded-full"></div>
-                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-amber-900">
+                              <div className="w-1 h-6 bg-brightblue rounded-full"></div>
+                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-brightblue dark:text-brightblue/80">
                                 项目亮点
                               </h4>
                             </div>
@@ -348,12 +344,12 @@ const ExperiencePage: React.FC = () => {
                               <ol className="list-decimal space-y-3">
                                 {exp.highlights.map((item, i) => (
                                   <motion.li 
-                                    key={i}
+                                    key={i} 
                                     initial={{ opacity: 0 }}
                                     whileInView={{ opacity: 1 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.4, delay: i * 0.1 }}
-                                    className="text-gray-700 hover:text-amber-900 transition-colors duration-200"
+                                    className="text-gray-700 dark:text-yellow/90 hover:text-brightblue dark:hover:text-brightblue/80 transition-colors duration-200"
                                   >
                                     {item}
                                   </motion.li>
