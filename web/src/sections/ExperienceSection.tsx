@@ -49,37 +49,38 @@ const experiences: Experience[] = [
 
 const ExperienceSection: React.FC = () => {
   return (
-    <section className="w-full py-20 bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="w-full py-12 md:py-20 bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 min-h-screen">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* 标题部分 */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-8 md:mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 md:mb-4">
             职业经历
           </h2>
-          <p className="text-xl text-purple-200">
+          <p className="text-lg md:text-xl text-purple-200">
             从工业设计到产品管理，不断探索与创新
           </p>
         </motion.div>
 
         {/* 经历时间线 */}
-        <div className="relative">
+        <div className="relative flex flex-col items-center">
           {/* 时间线装饰 */}
           <motion.div 
             initial={{ scaleY: 0 }}
             whileInView={{ scaleY: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.5 }}
-            className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-purple-400 via-indigo-400 to-blue-400"
+            className="absolute left-4 md:left-1/2 h-full w-0.5 bg-gradient-to-b from-purple-400 via-indigo-400 to-blue-400
+                      transform md:-translate-x-1/2"
           ></motion.div>
 
           {/* 经历卡片 */}
-          <div className="space-y-12">
+          <div className="space-y-8 md:space-y-12 w-full">
             {experiences.map((exp, index) => (
               <motion.div
                 key={index}
@@ -88,30 +89,33 @@ const ExperienceSection: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 className={`relative flex items-center ${
-                  index % 2 === 0 ? 'justify-start' : 'justify-end'
-                }`}
+                  index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'
+                } justify-start pl-12 md:pl-0`}
               >
                 {/* 时间线点 */}
                 <motion.div 
                   whileHover={{ scale: 1.2 }}
-                  className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white rounded-full border-4 border-purple-400"
+                  className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 w-3 md:w-4 h-3 md:h-4 
+                            bg-white rounded-full border-4 border-purple-400"
                 ></motion.div>
 
                 {/* 经历卡片 */}
-                <div className={`w-5/12 ${
-                  index % 2 === 0 ? 'pr-12' : 'pl-12'
-                }`}>
+                <div className={`
+                  w-full md:w-5/12 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}
+                `}>
                   <Link href={`/experience#${exp.id}`}>
                     <motion.div 
                       whileHover={{ scale: 1.02, y: -5 }}
-                      className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 shadow-xl border border-white/20 cursor-pointer transition-all duration-300 hover:bg-white/20"
+                      className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 md:p-6 shadow-xl 
+                               border border-white/20 cursor-pointer transition-all duration-300 
+                               hover:bg-white/20"
                     >
-                      <div className="text-purple-300 text-sm mb-2">{exp.period}</div>
-                      <h3 className="text-2xl font-bold text-white mb-2">{exp.company}</h3>
-                      <div className="text-purple-200 mb-4">{exp.title}</div>
+                      <div className="text-purple-300 text-xs md:text-sm mb-1 md:mb-2">{exp.period}</div>
+                      <h3 className="text-xl md:text-2xl font-bold text-white mb-1 md:mb-2">{exp.company}</h3>
+                      <div className="text-purple-200 text-sm md:text-base mb-2 md:mb-4">{exp.title}</div>
                       <ul className="space-y-2">
                         {exp.achievements.map((achievement, i) => (
-                          <li key={i} className="text-purple-100 flex items-start">
+                          <li key={i} className="text-purple-100 text-sm md:text-base flex items-start">
                             <span className="text-purple-400 mr-2">•</span>
                             {achievement}
                           </li>
@@ -131,10 +135,11 @@ const ExperienceSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-16 text-center"
+          className="mt-8 md:mt-16 text-center"
         >
-          <div className="inline-block px-6 py-3 bg-white/10 backdrop-blur-lg rounded-full border border-white/20">
-            <span className="text-purple-200">
+          <div className="inline-block px-4 md:px-6 py-2 md:py-3 bg-white/10 backdrop-blur-lg 
+                         rounded-full border border-white/20">
+            <span className="text-purple-200 text-sm md:text-base">
               更多经历正在体验中······
             </span>
           </div>

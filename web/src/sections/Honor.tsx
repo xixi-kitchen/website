@@ -13,7 +13,7 @@ const honorItems = [
 
 const Honor: NextPage = () => {
   return (
-    <section className="w-full bg-gray-50 py-16 md:py-24">
+    <section className="w-full bg-gray-50 py-16 md:py-24 h-auto md:h-screen">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-start gap-8 lg:gap-16 justify-between bg-amber-100">
         <div className="w-full md:w-1/2 bg-amber-400">
           <Image

@@ -4,7 +4,7 @@ import polygon3 from "../../public/Polygon3.svg";
 
 const Frame: NextPage = () => {
   return (
-    <div className="w-full bg-amber-800 flex justify-center items-center">
+    <div className="w-full bg-amber-800 flex justify-center items-center h-auto md:h-screen">
     <div className="w-full h-auto text-white font-pingfang-sc flex items-center justify-center gap-8 max-w-screen-xl flex-wrap  lg:flex-row">
         <div className="top-0 left-0 bg-deeppink w-full h-auto flex flex-row items-center justify-start py-30 px-20 box-border">
           <div className="flex-1 flex flex-col items-start justify-start gap-24">

@@ -6,7 +6,7 @@ import resume_touxiang from "../../public/resume_touxiang.png";
 
 const Information: React.FC = () => {
   return (
-    <section className="relative w-full bg-gradient-to-r from-purple-500 to-blue-500 py-16">
+    <section className="relative w-full bg-gradient-to-r from-purple-500 to-blue-500 py-16 h-screen">
       <div className="max-w-screen-xl mx-auto px-6 flex flex-col-reverse md:flex-row items-center justify-between gap-12">
         
         {/* 📌 左侧：个人信息 */}

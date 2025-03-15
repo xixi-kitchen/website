@@ -27,7 +27,7 @@ const Home: NextPage = () => {
     <div
       className={`${geistSans.variable} ${geistMono.variable} grid w-full items-center justify-items-center font-[family-name:var(--font-geist-sans)] bg-emerald-100`}
     >
-      <main className="flex flex-col gap-8 row-start-2 items-center bg-emerald-600 w-full">
+      <main className="flex flex-col gap-8 items-start bg-emerald-600 w-full">
         <Test />
         <Hero />
         <Philosophy />

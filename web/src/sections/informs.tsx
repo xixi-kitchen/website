@@ -4,7 +4,7 @@ import resume_touxiang from "../../public/resume_touxiang.png";
 
 const Informs: NextPage = () => {
 	return (
-		<div className="w-full h-auto bg-gray-400">
+		<div className="w-full h-auto md:h-screen bg-gray-400 flex items-center justify-center">
 			<div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex flex-col lg:flex-row items-center justify-between py-16 gap-8">
 					<div className="w-full lg:w-1/2 space-y-12">

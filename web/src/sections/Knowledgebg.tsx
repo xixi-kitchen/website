@@ -5,7 +5,7 @@ import { memo } from "react";
 // 使用memo优化组件性能，防止不必要的重渲染
 const Knowledgebg: NextPage = memo(() => {
   return (
-    <section className="w-full bg-amber-300 dark:bg-gray-900 py-16 md:py-24 overflow-hidden relative">
+    <section className="w-full bg-amber-300 dark:bg-blue-800 py-16 md:py-24 overflow-hidden relative h-auto md:h-screen flex items-center justify-center">
       {/* 背景装饰元素 */}
       <div className="absolute bottom-1/4 right-0 md:right-10 lg:right-20 w-64 h-64 md:w-96 md:h-96 rounded-full bg-deeppink opacity-20 blur-3xl"></div>
       

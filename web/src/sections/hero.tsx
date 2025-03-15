@@ -6,7 +6,7 @@ import Vector from "../../public/Vector.svg";
 
 const Hero: NextPage = () => {
   return (
-    <div className="w-full bg-amber-800 flex justify-center items-center">
+    <div className="w-full bg-amber-800 flex justify-center items-center h-auto md:h-screen ">
       <div className=" w-full max-w-screen-xl flex flex-col md:flex-row items-center justify-between bg-amber-600 ">
         <div className="flex flex-col items-start justify-between gap-4 max-w-7xl">
           <div className="flex flex-row items-center justify-start font-misans-vf">

@@ -262,7 +262,7 @@ const ProfessionalBg: NextPage = () => {
   }, []);
 
   return (
-    <div className="relative w-full min-h-[400px] h-[50vh] md:h-[60vh] lg:h-screen bg-gray">
+    <div className="relative w-full min-h-[400px]  md:h-[60vh] lg:h-screen bg-gray h-auto md:h-screenn">
       {/* Three.js 画布 */}
       <Canvas
         key={key}  // key 变化会触发画布重新渲染
