@@ -1,7 +1,5 @@
-import { useRef, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { useGLTF, OrbitControls } from "@react-three/drei";
-import { useState } from "react";
 
 const Model = () => {
   // 使用 useGLTF 来加载模型文件
@@ -10,6 +8,7 @@ const Model = () => {
     <primitive object={scene} scale={[0.3, 0.3, 0.3]} position={[0, -3, 0]} />
   );
 };
+
 export default function NotFindNet() {
   return (
     <div className="w-full h-full">

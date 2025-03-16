@@ -9,7 +9,16 @@ const nextConfig = {
   },
   // 配置资源域名
   images: {
-    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+      {
+        protocol: 'http',
+        hostname: '**',
+      }
+    ],
   },
   // 配置 webpack
   webpack: (config, { dev, isServer }) => {

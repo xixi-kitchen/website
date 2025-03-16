@@ -1,5 +1,6 @@
 // src/components/ProjectCard.tsx
 import React from "react";
+import Image from "next/image";
 
 interface ProjectCardProps {
   id: number;
@@ -46,10 +47,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       {/* 卡片图片 */}
       {image && (
         <div className="relative h-48 overflow-hidden">
-          <img
+          <Image
             src={image}
             alt={title}
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+            fill
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
           />
           {/* 标签显示在图片上 */}
           {tags && tags.length > 0 && (
