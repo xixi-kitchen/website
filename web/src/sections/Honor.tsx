@@ -13,9 +13,9 @@ const honorItems = [
 
 const Honor: NextPage = () => {
   return (
-    <section className="w-full bg-gray-50 py-16 md:py-24 h-auto md:h-screen">
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-start gap-8 lg:gap-16 justify-between bg-amber-100">
-        <div className="w-full md:w-1/2 bg-amber-400">
+    <section className="w-full bg-zinc-light dark:bg-zinc-dark py-16 md:py-24 h-auto md:h-screen">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-start gap-8 lg:gap-16 justify-between ">
+        <div className="w-full md:w-2/3 ">
           <Image
             src={HonorBg}
             alt="荣誉背景图"
@@ -25,12 +25,12 @@ const Honor: NextPage = () => {
             priority
           />
         </div>
-        <div className="flex flex-col w-full max-w-1/3 h-full items-end justify-between  gap-10 bg-amber-300">
+        <div className="flex flex-col w-full  h-full items-end justify-between  gap-10 ">
           <div className="w-full  space-y-4 items-start ">
             {honorItems.map((item, index) => (
               <div key={index} className="flex items-center gap-3 w-full">
-                <div className="w-3 h-3 rounded-full bg-pink-600 flex-shrink-0" />
-                <p className="text-gray-800 text-lg font-semibold w-full">
+                <div className="w-3 h-3 rounded-full bg-pink-base dark:bg-pink-dark flex-shrink-0" />
+                <p className="text-zinc-dark dark:text-zinc-light text-lg font-semibold w-full">
                   {item}
                 </p>
               </div>

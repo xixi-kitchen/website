@@ -20,7 +20,7 @@ const ProjectsSection: React.FC = () => {
         <motion.div
           animate={{ opacity: [0, 1, 0] }}
           transition={{ duration: 1, repeat: Infinity }}
-          className="text-gray-500 dark:text-gray-400"
+          className="text-zinc-light dark:text-zinc-light"
         >
           正在加载项目数据...
         </motion.div>
@@ -29,17 +29,15 @@ const ProjectsSection: React.FC = () => {
   }
 
   return (
-    <section className="relative w-full h-auto md:h-screen bg-teal-400 dark:bg-teal-900">
+    <section className="relative w-full h-auto md:h-screen bg-yellow-base dark:bg-yellow-dark flex items-center justify-center">
       {/* 内容容器 */}
-      <div className="container mx-auto px-4 sm:px-6 py-16 max-w-7xl flex flex-col items-center justify-center">
+      <div className="container mx-auto px-4 sm:px-6 py-16 max-w-7xl flex flex-col items-start justify-center ">
         {/* 标题区域 */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white">
-            个人项目
+        <div className="text-left mb-12">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-zinc-dark dark:text-zinc-light">
+            PROJECTS 
           </h2>
-          <p className="mt-4 text-gray-600 dark:text-gray-400">
-            精选 6 个个人项目，点击查看完整列表
-          </p>
+
         </div>
 
         {/* 项目网格 */}
@@ -50,30 +48,30 @@ const ProjectsSection: React.FC = () => {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="bg-white dark:bg-emerald-700 rounded-lg shadow-md hover:shadow-lg 
+              className="bg-blue-base dark:bg-blue-dark rounded-lg shadow-md hover:shadow-lg 
                          transition-all duration-300 p-6 border border-gray-200 
                          dark:border-gray-700"
             >
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+              <h3 className="text-xl sm:text-2xl font-bold text-white dark:text-zinc-">
                 {project.title}
               </h3>
-              <p className="mt-2 text-gray-600 dark:text-gray-400">
+              <p className="mt-2 text-zinc-light dark:text-zinc-light">
                 {project.subtitle}
               </p>
-              <p className="mt-2 text-sm text-gray-500 dark:text-gray-500">
+              <p className="mt-2 text-sm text-zinc-light dark:text-zinc-light">
                 {project.period}
               </p>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-500">
+              {/* <p className="mt-1 text-sm text-zinc-light dark:text-zinc-light">
                 角色：{project.role}
-              </p>
-              <p className="mt-4 text-gray-700 dark:text-gray-300 line-clamp-3">
+              </p> */}
+              <p className="mt-4 text-zinc-light dark:text-zinc-light line-clamp-3">
                 {project.description}
               </p>
 
               <Link
                 href={`/projects#${project.id}`}
-                className="mt-4 inline-flex items-center text-primary-600 hover:text-primary-700 
-                          dark:text-primary-400 dark:hover:text-primary-300 font-medium"
+                className="mt-4 inline-flex items-center text-zinc-light hover:text-zinc-light 
+                          dark:text-zinc-light dark:hover:text-zinc-light font-medium"
               >
                 查看详情
                 <svg
@@ -98,11 +96,11 @@ const ProjectsSection: React.FC = () => {
         <div className="mt-12 text-center">
           <Link
             href="/projects"
-            className="inline-flex items-center justify-center px-6 py-3 
-                       bg-primary-600 hover:bg-primary-700 text-white font-medium 
+            className="inline-flex items-center justify-center px-0 py-3 
+                       bg-primary-600 hover:bg-primary-700 text-zinc-dark dark:text-zinc-light font-medium 
                        rounded-lg transition-colors duration-200"
           >
-            查看所有项目
+            查看所有项目……
           </Link>
         </div>
       </div>

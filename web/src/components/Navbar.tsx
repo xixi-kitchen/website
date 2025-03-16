@@ -2,26 +2,40 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+/**
+ * 导航栏组件
+ * 功能：
+ * 1. 响应式设计：在移动端和桌面端有不同的显示方式
+ * 2. 支持暗色模式
+ * 3. 包含 Logo 和导航链接
+ * 4. 移动端支持汉堡菜单展开/收起
+ */
 const Navbar: React.FC = () => {
+  // 控制移动端菜单的展开状态
   const [isOpen, setIsOpen] = useState(false);
 
+  // 切换移动端菜单的展开/收起状态
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  // 点击链接时关闭移动端菜单
   const handleLinkClick = () => {
     setIsOpen(false);
   };
 
   return (
-    <nav className="bg-white dark:bg-brightblue shadow">
+    // 导航栏容器，使用渐变背景，支持暗色模式
+    <nav className={`bg-gradient-to-r from-blue-base via-yellow-base to-pink-base  ${isOpen ? 'shadow-lg' : 'shadow'} dark:bg-gradient-to-r dark:from-blue-dark dark:via-yellow-dark dark:to-pink-dark`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
+          {/* Logo 和导航链接容器 */}
           <div className="flex justify-between w-full">
+            {/* Logo 部分 */}
             <Link
               href="/"
               onClick={handleLinkClick}
-              className="flex-shrink-0 flex items-center text-xl font-bold text-gray-900 dark:text-white"
+              className="flex-shrink-0 flex items-center text-xl font-bold text-black dark:text-white"
             >
               <Image
                 className="dark:invert"
@@ -32,50 +46,56 @@ const Navbar: React.FC = () => {
               />
               HUGH·Aix
             </Link>
+
+            {/* 桌面端导航链接 */}
             <div className="hidden md:ml-6 md:flex md:space-x-8 md:items-center">
+              {/* 各个导航链接项 */}
               <Link
                 href="/ai"
-                className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
+                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105"
               >
                 AI 专刊
               </Link>
               <Link
                 href="/experience"
-                className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
+                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105"
               >
                 经历
               </Link>
               <Link
                 href="/projects"
-                className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
+                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105"
               >
                 项目
               </Link>
               <Link
                 href="/toys"
-                className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
+                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105"
               >
                 小玩意
               </Link>
               <Link
                 href="/contact"
-                className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
+                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105"
               >
                 联系
               </Link>
               <Link
                 href="/about"
-                className="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium"
+                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105"
               >
                 关于
               </Link>
             </div>
           </div>
+
+          {/* 移动端汉堡菜单按钮 */}
           <div className="-mr-2 flex items-center md:hidden">
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-900 dark:text-white hover:text-gray-500 dark:hover:text-gray-400 focus:outline-none"
+              className="inline-flex items-center justify-center p-2 rounded-md text-zinc-dark dark:text-white  focus:outline-none hover:scale-105"
             >
+              {/* 汉堡菜单图标，根据菜单状态显示不同图标 */}
               <svg
                 className="h-6 w-6"
                 stroke="currentColor"
@@ -83,6 +103,7 @@ const Navbar: React.FC = () => {
                 viewBox="0 0 24 24"
               >
                 {isOpen ? (
+                  // 关闭图标
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -90,6 +111,7 @@ const Navbar: React.FC = () => {
                     d="M6 18L18 6M6 6l12 12"
                   />
                 ) : (
+                  // 汉堡菜单图标
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -102,48 +124,51 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* 移动端展开的菜单 */}
       {isOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            {/* 移动端导航链接列表 */}
             <Link
               href="/ai"
               onClick={handleLinkClick}
-              className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
+              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105"
             >
               AI 专刊
             </Link>
             <Link
               href="/experience"
               onClick={handleLinkClick}
-              className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
+              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105"
             >
               经历
             </Link>
             <Link
               href="/projects"
               onClick={handleLinkClick}
-              className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
+              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105"
             >
               项目
             </Link>
             <Link
               href="/toys"
               onClick={handleLinkClick}
-              className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
+              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105"
             >
               小玩意
             </Link>
             <Link
               href="/contact"
               onClick={handleLinkClick}
-              className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
+              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105"
             >
               联系
             </Link>
             <Link
               href="/about"
               onClick={handleLinkClick}
-              className="block text-gray-900 dark:text-white px-3 py-2 rounded-md text-base font-medium"
+              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105"
             >
               关于
             </Link>
@@ -152,6 +177,6 @@ const Navbar: React.FC = () => {
       )}
     </nav>
   );
-};
+}
 
 export default Navbar;

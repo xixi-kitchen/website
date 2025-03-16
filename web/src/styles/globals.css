@@ -4,31 +4,97 @@
 @import "tailwindcss";
 @config "../../tailwind.config.js";
 
+/* 定义根元素的变量 */
 :root {
+  /* 默认背景色为白色 */
   --background: #ffffff;
+  /* 默认前景色为深灰色 */
   --foreground: #171717;
 }
 
+@theme{
+
+    /* 粉色系列 */
+    --color-pink-light: #f9a8d4;    /* pink-300 */
+    --color-pink-base: #ec4899;     /* pink-500 */
+    --color-pink-dark: #be185d;     /* pink-700 */
+  
+    /* 蓝色系列 */
+    --color-blue-light: #3b82f6;    /* blue-500 */
+    --color-blue-base: #1d4ed8;     /* blue-700 */
+    --color-blue-dark: #1e3a8a;     /* blue-900 */
+  
+    /* 黄色系列 */
+    --color-yellow-light: #fef9c3;  /* yellow-100 */
+    --color-yellow-base: #fde047;   /* yellow-300 */
+    --color-yellow-dark: #eab308;   /* yellow-500 */
+  
+    /* 灰色系列 */
+    --color-zinc-light: #d4d4d8;    /* Zinc-300 */
+    --color-zinc-base: #71717a;     /* Zinc-500 */
+    --color-zinc-dark: #3f3f46;     /* Zinc-700 */
+  
+    /* 黑白系列 */
+    --color-white: #fafafa;         /* Gray-50 */
+    --color-black: #030712;         /* Gray-950 */
+  
+    /* 青色系列 */
+    --color-cyan-light: #cffafe;    /* cyan-100 */
+    --color-cyan-base: #67e8f9;     /* cyan-300 */
+    --color-cyan-dark: #0891b2;     /* cyan-600 */
+  
+    /* 保留原有的颜色变量 */
+    --color-darkslategray: #404040;
+    --color-deeppink: #ff0088;
+    --color-yellow: #fff000;
+    --color-brightblue: #5522ff;
+    --color-dimgray: #696969;
+    --color-lightgray: #d3d3d3;
+    --color-gray: #0e0e0e;
+
+
+
+  --font-pingfang-sc: "'PingFang SC'";
+  --font-nabla: "Nabla";
+  --font-misans-vf: "'MiSans VF'";
+
+}
+
+/* 定义主题变量 */
 @theme inline {
+  /* 背景色变量 */
   --color-background: var(--background);
+  /* 前景色变量 */
   --color-foreground: var(--foreground);
+  /* 无衬线字体变量 */
   --font-sans: var(--font-geist-sans);
+  /* 等宽字体变量 */
   --font-mono: var(--font-geist-mono);
 }
 
+/* 响应式设计，根据系统的暗黑模式设置背景和前景色 */
 @media (prefers-color-scheme: dark) {
   :root {
+    /* 在暗黑模式下，背景色为深灰色 */
     --background: #0a0a0a;
+    /* 在暗黑模式下，前景色为浅灰色 */
     --foreground: #ededed;
   }
 }
 
+/* 设置body元素的样式 */
 body {
+  /* 背景色使用变量 */
   background: var(--background);
+  /* 前景色使用变量 */
   color: var(--foreground);
+  /* 字体设置 */
   font-family: Arial, Helvetica, sans-serif;
+  /* 应用正常行高和边距为0的样式 */
   @apply leading-[normal] m-0;
 }
+
+/* 设置所有元素、伪元素和伪类的边框宽度为0 */
 *,
 ::before,
 ::after {

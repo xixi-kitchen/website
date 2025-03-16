@@ -262,7 +262,7 @@ const ProfessionalBg: NextPage = () => {
   }, []);
 
   return (
-    <div className="relative w-full min-h-[400px]  md:h-[60vh] lg:h-screen bg-gray h-auto md:h-screenn">
+    <div className="relative w-full min-h-[400px]  md:h-[60vh] lg:h-screen bg-zinc-dark dark:bg-black h-auto md:h-screenn">
       {/* Three.js 画布 */}
       <Canvas
         key={key}  // key 变化会触发画布重新渲染
@@ -276,16 +276,13 @@ const ProfessionalBg: NextPage = () => {
       {/* 刷新按钮：重新渲染场景 */}
       <button 
         onClick={() => setKey(prev => prev + 1)}
-        className="absolute bottom-4 right-4 px-6 py-3 bg-deeppink text-white rounded-full 
-                   shadow-lg hover:bg-[#d6006f] transition-all duration-300 ease-in-out
+        className="absolute bottom-4 right-4 px-6 py-3 bg-yellow-base dark:bg-yellow-dark text-white rounded-full 
+                   shadow-lg hover:bg-yellow-dark dark:hover:bg-yellow-base transition-all duration-300 ease-in-out
                    transform hover:scale-105 active:scale-95
                    flex items-center gap-2"
       >
         {/* 旋转的刷新图标 */}
-        <svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none">
-          <path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z" fill="currentColor"/>
-          <path d="M22 12C22 17.5228 17.5228 22 12 22V19C15.866 19 19 15.866 19 12H22Z" fill="currentColor"/>
-        </svg>
+      
         刷新场景
       </button>
     </div>

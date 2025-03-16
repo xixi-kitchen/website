@@ -10,38 +10,38 @@ import Test from "@/sections/test";
 // 动态导入重量级组件
 const ProjectsSection = dynamic(() => import("@/sections/ProjectsSection"), {
   ssr: true,
-  loading: () => <div className="w-full h-screen bg-emerald-600 animate-pulse" />
+  loading: () => <div className="w-full h-screen bg-white dark:bg-zinc-light animate-pulse" />
 });
 
 const Informs = dynamic(() => import("@/sections/informs"), {
   ssr: true,
-  loading: () => <div className="w-full h-screen bg-emerald-600 animate-pulse" />
+  loading: () => <div className="w-full h-screen bg-white dark:bg-zinc-light animate-pulse" />
 });
 
 const Knowledgebg = dynamic(() => import("@/sections/Knowledgebg"), {
   ssr: true,
-  loading: () => <div className="w-full h-screen bg-emerald-600 animate-pulse" />
+  loading: () => <div className="w-full h-screen bg-white dark:bg-zinc-light animate-pulse" />
 });
 
 const Professionalbg = dynamic(() => import("@/sections/Professionalbg"), {
   ssr: false,
-  loading: () => <div className="w-full h-screen bg-emerald-600 animate-pulse" />
+  loading: () => <div className="w-full h-screen bg-white dark:bg-zinc-light animate-pulse" />
 });
 
 const ExperienceSection = dynamic(() => import("@/sections/ExperienceSection"), {
   ssr: true,
-  loading: () => <div className="w-full h-screen bg-emerald-600 animate-pulse" />
+  loading: () => <div className="w-full h-screen bg-white dark:bg-zinc-light animate-pulse" />
 });
 
 const Honor = dynamic(() => import("@/sections/Honor"), {
   ssr: true,
-  loading: () => <div className="w-full h-screen bg-emerald-600 animate-pulse" />
+  loading: () => <div className="w-full h-screen bg-white dark:bg-zinc-light animate-pulse" />
 });
 
 // 3D 场景组件使用客户端渲染
 const Abilitysection = dynamic(() => import("@/sections/Abilitysection"), {
   ssr: false,
-  loading: () => <div className="w-full h-screen bg-emerald-600 animate-pulse" />
+  loading: () => <div className="w-full h-screen bg-white dark:bg-zinc-light animate-pulse" />
 });
 
 const geistSans = Geist({
@@ -57,19 +57,19 @@ const geistMono = Geist_Mono({
 const Home: NextPage = () => {
   return (
     <div
-      className={`${geistSans.variable} ${geistMono.variable} grid w-full items-center justify-items-center font-[family-name:var(--font-geist-sans)] bg-emerald-100`}
+      className={`${geistSans.variable} ${geistMono.variable} grid w-full items-center justify-items-center font-[family-name:var(--font-geist-sans)]`}
     >
-      <main className="flex flex-col gap-8 items-start bg-emerald-600 w-full">
-        <Test />
+      <main className="flex flex-col gap-0 items-start bg-white dark:bg-zinc-light w-full">
+        {/* <Test /> */}
         <Hero />
         <Philosophy />
-        <ProjectsSection />
-        <Informs />
+        {/* <Informs /> */}
         <Knowledgebg />   
         <Professionalbg />
-        <ExperienceSection />
-        <Honor />
         <Abilitysection />
+        <Honor />
+        <ExperienceSection />
+        <ProjectsSection />
       </main>
     </div>
   );

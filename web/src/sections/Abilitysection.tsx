@@ -317,15 +317,15 @@ const Scene = () => {
     <>
       {/* 设置环境背景 */}
       <Environment 
-        files="/moderimages/output.hdr" // 环境背景文件路径
-        background={true} // 是否作为背景
+        files="/moderimages/Lamp_1.hdr" // 环境背景文件路径
+        background={false} // 是否作为背景
         blur={0.5} // 模糊度
         resolution={256} // 分辨率
         // preset="apartment" // 预设场景
       />
       <ambientLight intensity={0.8} />
       <pointLight position={[10, 10, 10]} intensity={1.5} castShadow={false} />
-      <pointLight position={[-10, -10, -5]} intensity={1} color="#ffffff" castShadow={false} />
+      {/* <pointLight position={[-10, -10, -5]} intensity={1} color="#ffffff" castShadow={false} /> */}
       <pointLight position={[0, 0, 10]} intensity={1} castShadow={false} />
       
       <ResponsiveContainer>
@@ -434,13 +434,13 @@ const AbilitySection = () => {
           </Canvas>
         )}
       </div>
-    <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent text-white py-4 px-4 ">
+    <div className="absolute bottom-0 left-0 w-full  text-white py-4 px-4 ">
       <div className="max-w-5xl mx-auto">
        
         <div className="space-y-4 md:space-y-6">
           {/* 开发技能部分 */}
           <div className="flex flex-col items-center">
-            <h3 className="text-lg md:text-xl font-semibold mb-2 text-blue-300">开发技能</h3>
+            <h3 className="text-lg md:text-xl font-semibold mb-2 text-blue-base dark:text-blue-dark">开发技能</h3>
             <div className="flex flex-wrap justify-center gap-2">
               {[
                 "HTML", "CSS", "JavaScript", "Java", "Python", "Arduino",
@@ -462,7 +462,7 @@ const AbilitySection = () => {
 
           {/* 其他技能部分 */}
           <div className="flex flex-col items-center">
-            <h3 className="text-lg md:text-xl font-semibold mb-2 text-cyan-300">其他技能</h3>
+            <h3 className="text-lg md:text-xl font-semibold mb-2 text-blue-base dark:text-blue-dark">其他技能</h3>
             <div className="flex flex-wrap justify-center gap-2 max-w-3xl">
               {[
                 "Adobe 全家桶全集",
@@ -482,7 +482,7 @@ const AbilitySection = () => {
                 </div>
               ))}
             </div>
-        <p className="text-base md:text-lg font-medium mt-4 text-gray-300 italic">
+        <p className="text-base md:text-lg font-medium mt-4 text-zinc-light dark:text-zinc-dark italic">
           以上仅为部分技能，更多技能正在探索中……
         </p>
           </div>

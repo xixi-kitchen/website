@@ -7,20 +7,20 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        darkslategray: "#404040",
-        black: "#000",
-        deeppink: "#ff0088",
-        yellow: "#fff000",
-        brightblue: "#5522ff",
-        white: "#fff",
-        dimgray: "#696969",
-        lightgray: "#d3d3d3",
-        gray: "#0e0e0e",
+        // darkslategray: "#404040",
+        // black: "#000",
+        // deeppink: "#ff0088",
+        // yellow: "#fff000",
+        // brightblue: "#5522ff",
+        // white: "#fff",
+        // dimgray: "#696969",
+        // lightgray: "#d3d3d3",
+        // gray: "#0e0e0e",
       },
       fontFamily: {
-        "pingfang-sc": "'PingFang SC'",
-        nabla: "Nabla",
-        "misans-vf": "'MiSans VF'",
+        // "pingfang-sc": "'PingFang SC'",
+        // "nabla": "Nabla",
+        // "misans-vf": "'MiSans VF'",
       },
       fontSize: {
 
