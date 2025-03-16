@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, Suspense } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Text, Float, useGLTF, Environment, OrbitControls } from '@react-three/drei';
+import { useGLTF, Environment, OrbitControls } from '@react-three/drei';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
@@ -63,43 +63,6 @@ const Lightbulb = () => {
       scale={1.2} 
       position={[0, 0, 0]} 
     />
-  );
-};
-
-// 类型定义
-interface AnimatedTextProps {
-  text: string;
-  position: [number, number, number];
-  color?: string;
-  size?: number;
-}
-
-// 3D文字
-const AnimatedText = ({ text, position, color = '#ffffff', size = 0.5 }: AnimatedTextProps) => {
-  const textRef = useRef<THREE.Mesh>(null);
-  
-  useFrame(({ clock }) => {
-    if (textRef.current) {
-      textRef.current.position.y = Math.sin(clock.getElapsedTime()) * 0.1;
-    }
-  });
-
-  return (
-    <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
-      <Text
-        ref={textRef}
-        position={position}
-        color={color}
-        fontSize={size}
-        maxWidth={10}
-        lineHeight={1}
-        letterSpacing={0.05}
-        textAlign="center"
-        font="/fonts/Inter-Bold.woff"
-      >
-        {text}
-      </Text>
-    </Float>
   );
 };
 

@@ -1,12 +1,7 @@
 import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import GlitchText from "../components/GlitchText";
 import TextPressure from "../components/TextPressure";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -15,7 +10,7 @@ const geistMono = Geist_Mono({
 
 export default function Test() {
   return (
-    <div className="w-full h-auto md:h-screen bg-amber-800 flex justify-center items-center">
+    <div className={`w-full h-auto md:h-screen bg-amber-800 flex justify-center items-center ${geistMono.variable}`}>
       <div className="grid  w-full h-screen items-center justify-items-start  p-8 pb-20 gap-4 sm:p-20 max-w-screen-xl">
         <Image
           className="dark:invert"
