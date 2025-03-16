@@ -1,9 +1,5 @@
 import type { NextPage } from "next";
 import Image from "next/image";
-import Rectangle from "../../public/Rectangle.png";
-import Polygon8 from "../../public/Polygon8.svg";
-import Vector from "../../public/Vector.svg";
-
 const Hero: NextPage = () => {
   return (
     <div className="w-full min-h-screen bg-blue-base dark:bg-blue-dark flex justify-center items-center py-12 md:py-0">

@@ -1,11 +1,8 @@
 import React, { useEffect, useRef, useState, Suspense, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Float, OrbitControls, Environment, useProgress, Html, useGLTF } from '@react-three/drei';
-import { Vector3, Mesh, MeshPhongMaterial, Object3D, Group } from 'three';
+import { Vector3, Mesh, MeshPhongMaterial, Object3D } from 'three';
 import * as THREE from 'three';
-import { motion } from 'framer-motion';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { useLoader } from '@react-three/fiber';
 
 // 定义类型
 interface SkillModel {
@@ -20,7 +17,7 @@ interface SkillModel {
  * @param height - 画布高度
  * @returns [x, y, z] 坐标数组
  */
-const generateRandomPosition = (width: number, height: number) => {
+const generateRandomPosition = () => {
   const radius = 20; // 增加分布半径，让模型分布更分散
   const angle = Math.random() * Math.PI * 2;
   const distance = Math.pow(Math.random(), 0.5) * radius;
@@ -37,22 +34,22 @@ const generateRandomPosition = (width: number, height: number) => {
  * - path: 模型文件路径
  * - position: 随机生成的位置
  */
-const getSkillModels = (width: number, height: number): SkillModel[] => [
-  { name: 'HTML', path: '/models/htmlmodel.glb', position: generateRandomPosition(width, height) },
-  { name: 'CSS', path: '/models/cssmodel.glb', position: generateRandomPosition(width, height) },
-  { name: 'JavaScript', path: '/models/JSmodel.glb', position: generateRandomPosition(width, height) },
-  { name: 'Java', path: '/models/javamodel.glb', position: generateRandomPosition(width, height) },
-  { name: 'Python', path: '/models/Pythonmodel.glb', position: generateRandomPosition(width, height) },
-  { name: 'Three.js', path: '/models/threemodel.glb', position: generateRandomPosition(width, height) },
-  { name: 'Unity', path: '/models/unitymodel.glb', position: generateRandomPosition(width, height) },
-  { name: 'Unreal', path: '/models/unrealmodel.glb', position: generateRandomPosition(width, height) },
-  { name: 'Rhino', path: '/models/rhinomodel.glb', position: generateRandomPosition(width, height) },
-  { name: 'C4D', path: '/models/c4dmodel.glb', position: generateRandomPosition(width, height) },
-  { name: 'Blender', path: '/models/blendermodel.glb', position: generateRandomPosition(width, height) },
-  { name: '3DS MAX', path: '/models/3dsmodel.glb', position: generateRandomPosition(width, height) },
-  { name: 'Keyshot', path: '/models/keyshotmodel.glb', position: generateRandomPosition(width, height) },
-  { name: 'Sketch', path: '/models/sketchmodel.glb', position: generateRandomPosition(width, height) },
-  { name: 'Arduino', path: '/models/arduinomodel.glb', position: generateRandomPosition(width, height) }
+const getSkillModels = (): SkillModel[] => [
+  { name: 'HTML', path: '/models/htmlmodel.glb', position: generateRandomPosition() },
+  { name: 'CSS', path: '/models/cssmodel.glb', position: generateRandomPosition() },
+  { name: 'JavaScript', path: '/models/JSmodel.glb', position: generateRandomPosition() },
+  { name: 'Java', path: '/models/javamodel.glb', position: generateRandomPosition() },
+  { name: 'Python', path: '/models/Pythonmodel.glb', position: generateRandomPosition() },
+  { name: 'Three.js', path: '/models/threemodel.glb', position: generateRandomPosition() },
+  { name: 'Unity', path: '/models/unitymodel.glb', position: generateRandomPosition() },
+  { name: 'Unreal', path: '/models/unrealmodel.glb', position: generateRandomPosition() },
+  { name: 'Rhino', path: '/models/rhinomodel.glb', position: generateRandomPosition() },
+  { name: 'C4D', path: '/models/c4dmodel.glb', position: generateRandomPosition() },
+  { name: 'Blender', path: '/models/blendermodel.glb', position: generateRandomPosition() },
+  { name: '3DS MAX', path: '/models/3dsmodel.glb', position: generateRandomPosition() },
+  { name: 'Keyshot', path: '/models/keyshotmodel.glb', position: generateRandomPosition() },
+  { name: 'Sketch', path: '/models/sketchmodel.glb', position: generateRandomPosition() },
+  { name: 'Arduino', path: '/models/arduinomodel.glb', position: generateRandomPosition() }
 ];
 
 /**
@@ -243,7 +240,7 @@ const ModelsGrid = () => {
   // 初始化和窗口大小变化时重新生成模型
   useEffect(() => {
     const generateModels = () => {
-      const newModels = getSkillModels(size.width * 100, size.height * 100);
+      const newModels = getSkillModels();
       setModels(newModels);
       setMounted(true);
     };
@@ -307,9 +304,8 @@ function LoadingIndicator() {
     </Html>
   );
 }
-
 // 预加载所有模型
-const modelPaths = getSkillModels(0, 0).map(model => model.path);
+const modelPaths = getSkillModels().map(model => model.path);
 modelPaths.forEach(path => useGLTF.preload(path));
 
 const Scene = () => {

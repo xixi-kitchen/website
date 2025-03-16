@@ -5,7 +5,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 // 静态导入轻量级组件
 import Hero from "@/sections/hero";
 import Philosophy from "@/sections/philosophy";
-import Test from "@/sections/test";
 
 // 动态导入重量级组件
 const ProjectsSection = dynamic(() => import("@/sections/ProjectsSection"), {
@@ -13,10 +12,6 @@ const ProjectsSection = dynamic(() => import("@/sections/ProjectsSection"), {
   loading: () => <div className="w-full h-screen bg-white dark:bg-zinc-light animate-pulse" />
 });
 
-const Informs = dynamic(() => import("@/sections/informs"), {
-  ssr: true,
-  loading: () => <div className="w-full h-screen bg-white dark:bg-zinc-light animate-pulse" />
-});
 
 const Knowledgebg = dynamic(() => import("@/sections/Knowledgebg"), {
   ssr: true,
