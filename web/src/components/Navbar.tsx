@@ -52,37 +52,37 @@ const Navbar: React.FC = () => {
               {/* 各个导航链接项 */}
               <Link
                 href="/ai"
-                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105"
+                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105 hover:font-extrabold"
               >
-                AI 专刊
+               AI(Building)
               </Link>
               <Link
                 href="/experience"
-                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105"
+                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105 hover:font-extrabold"
               >
                 经历
               </Link>
               <Link
                 href="/projects"
-                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105"
+                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105 hover:font-extrabold"
               >
                 项目
               </Link>
               <Link
                 href="/toys"
-                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105"
+                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105 hover:font-extrabold"
               >
-                小玩意
+                创意(Building)
               </Link>
               <Link
                 href="/contact"
-                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105"
+                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105 hover:font-extrabold"
               >
                 联系
               </Link>
               <Link
                 href="/about"
-                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105"
+                className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-105 hover:font-extrabold"
               >
                 关于
               </Link>
@@ -133,42 +133,42 @@ const Navbar: React.FC = () => {
             <Link
               href="/ai"
               onClick={handleLinkClick}
-              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105"
+              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105 focus:scale-105 focus:font-extrabold"
             >
-              AI 专刊
+              AI(Building)
             </Link>
             <Link
               href="/experience"
               onClick={handleLinkClick}
-              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105"
+              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105 focus:scale-105 focus:font-extrabold"
             >
               经历
             </Link>
             <Link
               href="/projects"
               onClick={handleLinkClick}
-              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105"
+              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105 focus:scale-105 focus:font-extrabold"
             >
               项目
             </Link>
             <Link
               href="/toys"
               onClick={handleLinkClick}
-              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105"
+              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105 focus:scale-105 focus:font-extrabold"
             >
-              小玩意
+              创意(Building)
             </Link>
             <Link
               href="/contact"
               onClick={handleLinkClick}
-              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105"
+              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105 focus:scale-105 focus:font-extrabold"
             >
               联系
             </Link>
             <Link
               href="/about"
               onClick={handleLinkClick}
-              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105"
+              className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105 focus:scale-105 focus:font-extrabold"
             >
               关于
             </Link>

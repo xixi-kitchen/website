@@ -144,15 +144,76 @@ const ExperiencePage: React.FC = () => {
         <meta name="description" content={pageMetadata.description} />
       </Head>
 
-      <div className="w-full bg-gradient-to-br from-brightblue/5 via-yellow/5 to-deeppink/5 dark:from-brightblue/10 dark:via-yellow/10 dark:to-deeppink/10 min-h-screen relative overflow-hidden">
-        {/* 装饰性色块 */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-brightblue/20 dark:bg-brightblue/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute top-1/4 right-0 w-96 h-96 bg-yellow/20 dark:bg-yellow/30 rounded-full blur-3xl translate-x-1/2"></div>
-        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-deeppink/20 dark:bg-deeppink/30 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brightblue/20 dark:bg-brightblue/30 rounded-full blur-3xl"></div>
+      <div className="w-full bg-gradient-to-br from-blue-base/5 via-yellow-base/5 to-pink-base/5 dark:from-blue-base/10 dark:via-yellow-base/10 dark:to-pink-base/10 min-h-screen relative overflow-hidden">
+        {/* 装饰性图形 */}
+        <div className="absolute inset-0 dark:hidden blur-2xl">
+          {/* 圆环 */}
+          <svg className="absolute top-[15%] left-[10%] w-96 h-96 ">
+            <circle
+              cx="192"
+              cy="192"
+              r="100"
+              fill="none"
+              stroke="#ec4899"
+              strokeWidth="48"
+              opacity="1"
+            />
+          </svg>
+          <svg className="absolute bottom-[20%] right-[15%] w-96 h-96">
+            <circle
+              cx="192"
+              cy="192"
+              r="100"
+              fill="none"
+              stroke="#ec4899"
+              strokeWidth="48"
+              opacity="1"
+            />
+          </svg>
+
+          {/* 三角形 */}
+          <svg className="absolute top-[25%] right-[20%] w-64 h-64">
+            <path
+              d="M128,0 L256,256 L0,256 Z"
+              fill="#1d4ed8"
+              opacity="1"
+            />
+          </svg>
+          <svg className="absolute bottom-[30%] left-[25%] w-64 h-64">
+            <path
+              d="M128,256 L256,0 L0,0 Z"
+              fill="#1d4ed8"
+              opacity="1"
+            />
+          </svg>
+
+          {/* 正方形 */}
+          <svg className="absolute top-[40%] left-[35%] w-64 h-64">
+            <rect
+              x="0"
+              y="0"
+              width="256"
+              height="256"
+              fill="#fde047"
+              opacity="1"
+              rx="16"
+            />
+          </svg>
+          <svg className="absolute top-[60%] right-[30%] w-64 h-64">
+            <rect
+              x="0"
+              y="0"
+              width="256"
+              height="256"
+              fill="#fde047"
+              opacity="1"
+              rx="16"
+            />
+          </svg>
+        </div>
         
         <main className="max-w-screen-xl mx-auto px-4 sm:px-6 py-8 sm:py-12 relative">
-          <div className="flex flex-col items-center justify-center gap-8 sm:gap-11 text-gray-900 dark:text-white">
+          <div className="flex flex-col items-center justify-center gap-8 sm:gap-11 text-zinc-dark dark:text-white">
             {/* 页面标题部分 */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -161,7 +222,7 @@ const ExperiencePage: React.FC = () => {
               className="w-full flex flex-col items-start gap-6 sm:gap-10"
             >
               <div className="w-full flex flex-row items-center justify-between">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-brightblue via-yellow to-deeppink">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-base via-yellow-base to-pink-base">
                   {pageTitle.main}
                 </h1>
                 <motion.div
@@ -179,13 +240,13 @@ const ExperiencePage: React.FC = () => {
                   />
                 </motion.div>
               </div>
-              <h2 className="text-xl sm:text-2xl md:text-3xl text-gray-700 dark:text-yellow/90 leading-normal">
+              <h2 className="text-xl sm:text-2xl md:text-3xl text-zinc-base dark:text-zinc-base leading-normal">
                 {pageTitle.sub}
               </h2>
             </motion.div>
             
             {/* 经历内容部分 */}
-            <div className="w-full flex flex-col items-start gap-16 sm:gap-20 md:gap-24 text-gray-700 dark:text-yellow/90">
+            <div className="w-full flex flex-col items-start gap-16 sm:gap-20 md:gap-24 text-zinc-base dark:text-zinc-light">
               <div className="w-full flex flex-col items-start gap-12 sm:gap-16">
                 {/* 工作经历部分 */}
                 {experiences.map((exp, index) => (
@@ -198,28 +259,28 @@ const ExperiencePage: React.FC = () => {
                     transition={{ duration: 0.6, delay: index * 0.2 }}
                     className="w-full flex flex-col items-start gap-5"
                   >
-                    <div className="w-full bg-white/50 dark:bg-brightblue/5 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-brightblue/20 dark:border-brightblue/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                    <div className="w-full bg-white/50 dark:bg-blue-base/5 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-blue-base/20 dark:border-blue-base/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden">
                       {/* 卡片装饰色块 */}
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-brightblue/10 dark:bg-brightblue/20 rounded-full blur-2xl"></div>
-                      <div className="absolute bottom-0 left-0 w-32 h-32 bg-yellow/10 dark:bg-yellow/20 rounded-full blur-2xl"></div>
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-blue-base/10 dark:bg-blue-base/20 rounded-full blur-2xl"></div>
+                      <div className="absolute bottom-0 left-0 w-32 h-32 bg-yellow-base/10 dark:bg-yellow-base/20 rounded-full blur-2xl"></div>
                       
                       {/* 时间标签 */}
                       <div className="flex items-center gap-2 mb-4">
-                        <div className={`text-base sm:text-lg md:text-xl font-medium leading-normal ${index > 0 ? 'text-gray-700 dark:text-yellow/90' : 'text-gray-900 dark:text-white'}`}>
+                        <div className={`text-base sm:text-lg md:text-xl font-medium leading-normal ${index > 0 ? 'text-zinc-base dark:text-zinc-light' : 'text-zinc-dark dark:text-white'}`}>
                           {exp.period}
                         </div>
-                        <div className="h-0.5 flex-1 bg-gradient-to-r from-brightblue to-transparent"></div>
+                        <div className="h-0.5 flex-1 bg-gradient-to-r from-blue-base to-transparent"></div>
                       </div>
 
                       {/* 公司信息 */}
                       <div className="w-full flex flex-col items-start gap-3 sm:gap-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 rounded-full bg-brightblue"></div>
-                          <h3 className={`text-lg sm:text-xl md:text-2xl font-semibold leading-normal ${index > 0 ? 'text-gray-700 dark:text-yellow/90' : 'text-gray-900 dark:text-white'}`}>
+                          <div className="w-2 h-2 rounded-full bg-blue-base"></div>
+                          <h3 className={`text-xl sm:text-2xl md:text-3xl font-semibold leading-normal ${index > 0 ? 'text-zinc-base dark:text-zinc-light' : 'text-zinc-dark dark:text-white'}`}>
                             {exp.company}
                           </h3>
                         </div>
-                        <div className="text-base sm:text-lg md:text-xl font-light leading-normal text-brightblue dark:text-brightblue/80">
+                        <div className="text-base sm:text-lg md:text-xl font-light leading-normal text-blue-base dark:text-blue-light">
                           {exp.title}
                         </div>
                         
@@ -233,8 +294,8 @@ const ExperiencePage: React.FC = () => {
                             className="w-full mt-6"
                           >
                             <div className="flex items-center gap-2 mb-3">
-                              <div className="w-1 h-6 bg-brightblue rounded-full"></div>
-                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-brightblue dark:text-brightblue/80">
+                              <div className="w-1 h-6 bg-blue-base rounded-full"></div>
+                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-blue-base dark:text-blue-base/80">
                                 {index === 0 ? "核心职责" : "工作内容"}
                               </h4>
                             </div>
@@ -247,7 +308,7 @@ const ExperiencePage: React.FC = () => {
                                     whileInView={{ opacity: 1 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.4, delay: i * 0.1 }}
-                                    className="text-gray-700 dark:text-yellow/90 hover:text-brightblue dark:hover:text-brightblue/80 transition-colors duration-200"
+                                    className="text-zinc-base dark:text-zinc-base/90 hover:text-zinc-dark dark:hover:text-zinc-light transition-colors duration-200"
                                   >
                                     {item}
                                   </motion.li>
@@ -267,8 +328,8 @@ const ExperiencePage: React.FC = () => {
                             className="w-full mt-6"
                           >
                             <div className="flex items-center gap-2 mb-3">
-                              <div className="w-1 h-6 bg-yellow rounded-full"></div>
-                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-yellow dark:text-yellow/80">
+                              <div className="w-1 h-6 bg-blue-base rounded-full"></div>
+                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-blue-base dark:text-blue-base/80">
                                 主要成就
                               </h4>
                             </div>
@@ -281,7 +342,7 @@ const ExperiencePage: React.FC = () => {
                                     whileInView={{ opacity: 1 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.4, delay: i * 0.1 }}
-                                    className="text-gray-700 dark:text-yellow/90 hover:text-yellow dark:hover:text-yellow/80 transition-colors duration-200"
+                                    className="text-zinc-base dark:text-zinc-base/90 hover:text-zinc-dark dark:hover:text-zinc-light transition-colors duration-200"
                                   >
                                     {item}
                                   </motion.li>
@@ -301,8 +362,8 @@ const ExperiencePage: React.FC = () => {
                             className="w-full mt-6"
                           >
                             <div className="flex items-center gap-2 mb-3">
-                              <div className="w-1 h-6 bg-deeppink rounded-full"></div>
-                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-deeppink dark:text-deeppink/80">
+                              <div className="w-1 h-6 bg-blue-base rounded-full"></div>
+                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-blue-base dark:text-blue-base/80">
                                 技能专长
                               </h4>
                             </div>
@@ -314,8 +375,8 @@ const ExperiencePage: React.FC = () => {
                                     initial={{ opacity: 0 }}
                                     whileInView={{ opacity: 1 }}
                                     viewport={{ once: true }}
-                                    transition={{ duration: 0.4, delay: i * 0.1 }}
-                                    className="text-gray-700 dark:text-yellow/90 hover:text-deeppink dark:hover:text-deeppink/80 transition-colors duration-200"
+                                    transition={{ duration: 0.4, delay: i * 0.1 }}  
+                                    className="text-zinc-base dark:text-zinc-base/90 hover:text-zinc-dark dark:hover:text-zinc-light transition-colors duration-200"
                                   >
                                     {item}
                                   </motion.li>
@@ -335,8 +396,8 @@ const ExperiencePage: React.FC = () => {
                             className="w-full mt-6"
                           >
                             <div className="flex items-center gap-2 mb-3">
-                              <div className="w-1 h-6 bg-brightblue rounded-full"></div>
-                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-brightblue dark:text-brightblue/80">
+                              <div className="w-1 h-6 bg-blue-base rounded-full"></div>
+                              <h4 className="text-base sm:text-lg md:text-xl font-medium text-blue-base dark:text-blue-base/80">
                                 项目亮点
                               </h4>
                             </div>
@@ -349,7 +410,7 @@ const ExperiencePage: React.FC = () => {
                                     whileInView={{ opacity: 1 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.4, delay: i * 0.1 }}
-                                    className="text-gray-700 dark:text-yellow/90 hover:text-brightblue dark:hover:text-brightblue/80 transition-colors duration-200"
+                                    className="text-zinc-base dark:text-zinc-base/90 hover:text-zinc-dark dark:hover:text-zinc-light transition-colors duration-200"
                                   >
                                     {item}
                                   </motion.li>
@@ -373,16 +434,16 @@ const ExperiencePage: React.FC = () => {
                     transition={{ duration: 0.6, delay: (yearIndex + experiences.length) * 0.2 }}
                     className="w-full flex flex-col items-start gap-5"
                   >
-                    <div className="w-full bg-white/50 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-amber-200 hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                    <div className="w-full bg-white/50 dark:bg-blue-base/5 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-blue-base/20 dark:border-blue-base/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden">
                       {/* 时间线卡片装饰色块 */}
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-200/20 rounded-full blur-2xl"></div>
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-base-200/20 rounded-full blur-2xl"></div>
                       <div className="absolute bottom-0 left-0 w-32 h-32 bg-amber-300/20 rounded-full blur-2xl"></div>
                       
                       <div className="flex items-center gap-2 mb-4">
                         <div className="text-base sm:text-lg md:text-xl font-medium text-dimgray-200 leading-normal">
                           {year}
                         </div>
-                        <div className="h-0.5 flex-1 bg-gradient-to-r from-amber-200 to-transparent"></div>
+                        <div className="h-0.5 flex-1 bg-gradient-to-r from-zinc-base dark:from-zinc-base/90 to-transparent"></div>
                       </div>
                       {events.map((event, index) => (
                         <motion.div 
@@ -394,12 +455,12 @@ const ExperiencePage: React.FC = () => {
                           className="w-full flex flex-col items-start gap-3 sm:gap-4 mt-4"
                         >
                           <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-amber-500"></div>
-                            <h3 className="text-base sm:text-lg md:text-xl leading-normal text-amber-900">
+                            <div className="w-2 h-2 rounded-full bg-zinc-base dark:bg-yellow-base/90"></div>
+                            <h3 className="text-base sm:text-lg md:text-xl leading-normal text-zinc-base dark:text-yellow-base/90">
                               {event.date}
                             </h3>
                           </div>
-                          <div className="w-full text-sm sm:text-base leading-relaxed text-gray-700 pl-4">
+                          <div className="w-full text-sm sm:text-base leading-relaxed text-zinc-base pl-4">
                             {event.description}
                           </div>
                         </motion.div>
@@ -415,10 +476,10 @@ const ExperiencePage: React.FC = () => {
                 transition={{ duration: 0.6, delay: 0.8 }}
                 className="text-base sm:text-lg md:text-xl font-medium leading-normal text-center w-full"
               >
-                <div className="inline-block px-6 py-3 bg-white/50 backdrop-blur-sm rounded-full border border-amber-200 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                <div className="inline-block px-6 py-3 bg-white/50 backdrop-blur-sm rounded-full border border-yellow-base shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden">
                   {/* 底部文字装饰色块 */}
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-amber-200/20 rounded-full blur-xl"></div>
-                  <div className="absolute bottom-0 left-0 w-24 h-24 bg-orange-200/20 rounded-full blur-xl"></div>
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-yellow-base/20 rounded-full blur-xl"></div>
+                  <div className="absolute bottom-0 left-0 w-24 h-24 bg-yellow-base/20 rounded-full blur-xl"></div>
                   更多经历正在体验中······
                 </div>
               </motion.div>

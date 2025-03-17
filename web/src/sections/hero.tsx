@@ -19,7 +19,7 @@ const Hero: NextPage = () => {
               你好，我是
             </div>
             <div className="flex flex-row items-center justify-start gap-6 md:gap-8">
-              <div className="text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-pink-base via-blue-base to-yellow-base animate-gradient-x">
+              <div className="text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-base via-yellow-base to-pink-base animate-gradient-x">
                 HUGH·Aix
               </div>
              

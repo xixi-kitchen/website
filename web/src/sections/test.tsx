@@ -10,11 +10,11 @@ const geistMono = Geist_Mono({
 
 export default function Test() {
   return (
-    <div className={`w-full h-auto md:h-screen bg-amber-800 flex justify-center items-center ${geistMono.variable}`}>
-      <div className="grid  w-full h-screen items-center justify-items-start  p-8 pb-20 gap-4 sm:p-20 max-w-screen-xl">
+    <div className={`w-full h-auto md:h-screen bg-pink-base dark:bg-zinc-dark flex justify-center  ${geistMono.variable}`}>
+      <div className="grid gap-2  w-full h-screen items-center justify-items-start  p-8 pb-20 sm:p-20 max-w-screen-xl">
         <Image
           className="dark:invert"
-          src="/next.svg"
+          src="/threevector.svg"
           alt="Next.js logo"
           width={180}
           height={38}
@@ -22,19 +22,19 @@ export default function Test() {
         />
         <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2">
-            Get started by editing{" "}
+          Beginning of the experience{" "}
             <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/pages/index.tsx
+              XIXIKITCHEN
             </code>
             .
           </li>
-          <li>Save and see your changes instantly.</li>
+          <li>My personal showcase space.</li>
         </ol>
         <GlitchText
           speed={1}
           enableShadows={true}
           enableOnHover={true}
-          className="custom-class bg-amber-300 "
+          className="custom-class bg-yellow-base "
         >
           xixikitchen
         </GlitchText>
@@ -50,7 +50,7 @@ export default function Test() {
           textColor="#333333"
           strokeColor="#ff0000"
           minFontSize={20}
-          className="relative w-full h-auto"
+          className="relative w-full h-auto bg-yellow-base"
         />
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
@@ -67,7 +67,7 @@ export default function Test() {
               width={20}
               height={20}
             />
-            Deploy now
+            Get to know me.
           </a>
           <a
             className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
@@ -75,7 +75,7 @@ export default function Test() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Read our docs
+            View Resume
           </a>
         </div>
       </div>
