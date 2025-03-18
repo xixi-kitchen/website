@@ -1,56 +1,28 @@
-// src/components/ProjectCard.tsx
 import React from "react";
 
-interface ProjectCardProps {
+interface HomeProjectCardProps {
   id: number;
   title: string;
   description: string;
   tags: string[];
-  link?: string;
   type: "latest" | "past" | "personal";
   role?: string;
   period?: string;
-  projectInfo?: {
-    background: string;
-    objectives?: string[];
-    challenges?: string[];
-    solutions?: string[];
-  };
   achievements?: {
     metrics: string[];
     highlights: string[];
   };
-  features?: {
-    core: string[];
-    design: string[];
-    technical?: string[];
-  };
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({
+const HomeProjectCard: React.FC<HomeProjectCardProps> = ({
   title,
   description,
   type,
   role,
   period,
   achievements,
-  features,
   tags,
 }) => {
-  // 根据项目类型设置不同的样式
-  const getTypeStyle = () => {
-    switch (type) {
-      case "latest":
-        return "border-yellow-base/20 dark:border-yellow-base/30";
-      case "past":
-        return "border-yellow-base/20 dark:border-yellow-base/30";
-      case "personal":
-        return "border-yellow-base/20 dark:border-yellow-base/30";
-      default:
-        return "border-zinc-base/20 dark:border-zinc-dark/30";
-    }
-  };
-
   // 获取项目类型图标
   const getTypeIcon = () => {
     switch (type) {
@@ -78,64 +50,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   };
 
   return (
-    <div
-      className={`group h-full bg-white/50 dark:bg-zinc-dark/50 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1 relative border ${getTypeStyle()}`}
-    >
+    <div className="group relative bg-white/80 dark:bg-zinc-dark/50 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1 border border-yellow-base/20 dark:border-yellow-base/30">
       {/* 卡片装饰色块 */}
-      <div
-        className={`absolute top-0 right-0 w-32 h-32 bg-${
-          type === "latest"
-            ? "yellow-base"
-            : type === "past"
-            ? "yellow-base"
-            : "yellow-base"
-        }/10 dark:bg-${
-          type === "latest"
-            ? "yellow-base"
-            : type === "past"
-            ? "yellow-base"
-            : "yellow-base"
-        }/20 rounded-full blur-2xl group-hover:bg-${
-          type === "latest"
-            ? "yellow-base"
-            : type === "past"
-            ? "yellow-base"
-            : "yellow-base"
-        }/20 dark:group-hover:bg-${
-          type === "latest"
-            ? "yellow-base"
-            : type === "past"
-            ? "yellow-base"
-            : "yellow-base"
-        }/30 transition-colors duration-300`}
-      ></div>
-      <div
-        className={`absolute bottom-0 left-0 w-32 h-32 bg-${
-          type === "latest"
-            ? "yellow-base"
-            : type === "past"
-            ? "yellow-base"
-            : "yellow-base"
-        }/10 dark:bg-${
-          type === "latest"
-            ? "yellow-base"
-            : type === "past"
-            ? "yellow-base"
-            : "yellow-base"
-        }/20 rounded-full blur-2xl group-hover:bg-${
-          type === "latest"
-            ? "yellow-base"
-            : type === "past"
-            ? "yellow-base"
-            : "yellow-base"
-        }/20 dark:group-hover:bg-${
-          type === "latest"
-            ? "yellow-base"
-            : type === "past"
-            ? "yellow-base"
-            : "yellow-base"
-        }/30 transition-colors duration-300`}
-      ></div>
+      <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-base/10 dark:bg-yellow-base/20 rounded-full blur-2xl group-hover:bg-yellow-base/20 dark:group-hover:bg-yellow-base/30 transition-colors duration-300"></div>
+      <div className="absolute bottom-0 left-0 w-32 h-32 bg-yellow-base/10 dark:bg-yellow-base/20 rounded-full blur-2xl group-hover:bg-yellow-base/20 dark:group-hover:bg-yellow-base/30 transition-colors duration-300"></div>
 
       {/* 卡片内容 */}
       <div className="p-6 relative">
@@ -159,13 +77,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               {tags.slice(0, 2).map((tag, index) => (
                 <span
                   key={index}
-                  className="text-xs font-medium px-2 py-1 rounded-full bg-yellow-base/20 text-yellow-dark dark:text-yellow-base/60"
+                  className="text-xs font-medium px-2 py-1 rounded-full bg-yellow-base text-white "
                 >
                   {tag}
                 </span>
               ))}
               {tags.length > 2 && (
-                <span className="text-xs font-medium px-2 py-1 rounded-full bg-yellow-base/10 text-yellow-dark dark:text-yellow-base/60">
+                <span className="text-xs font-medium px-2 py-1 rounded-full bg-yellow-base text-white ">
                   +{tags.length - 2}
                 </span>
               )}
@@ -187,28 +105,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         <p className="text-zinc-base dark:text-zinc-light line-clamp-2 mb-4">
           {description}
         </p>
-
-        {/* 核心功能预览 */}
-        {features?.core && features.core.length > 0 && (
-          <div className="mb-4">
-            <div className="flex items-center gap-1 mb-2">
-              <svg className="w-4 h-4 text-yellow-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              <span className="text-sm font-medium text-yellow-dark dark:text-yellow-base">核心功能</span>
-            </div>
-            <div className="flex flex-wrap gap-1">
-              {features.core.slice(0, 2).map((feature, index) => (
-                <span
-                  key={index}
-                  className="text-xs px-2 py-1 rounded-full bg-yellow-base text-zinc-dark dark:text-yellow-base/60"
-                >
-                  {feature}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* 成就亮点预览 */}
         {achievements?.highlights && achievements.highlights.length > 0 && (
@@ -249,4 +145,4 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   );
 };
 
-export default ProjectCard;
+export default HomeProjectCard; 

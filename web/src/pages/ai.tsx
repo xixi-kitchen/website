@@ -8,12 +8,6 @@ interface AISkill {
   items: string[];
 }
 
-interface AIProject {
-  title: string;
-  description: string;
-  technologies: string[];
-  link?: string;
-}
 
 const aiSkills: AISkill[] = [
   {
@@ -46,47 +40,7 @@ const aiSkills: AISkill[] = [
   
 ];
 
-const aiProjects: AIProject[] = [
-  {
-    title: "智能图像识别系统",
-    description:
-      "基于深度学习的商品识别系统，支持多类别商品检测和分类，准确率达到98%。",
-    technologies: ["PyTorch", "YOLOv5", "OpenCV"],
-    link: "https://github.com/yourusername/project1",
-  },
-  {
-    title: "智能客服机器人",
-    description:
-      "基于BERT的智能客服系统，实现意图识别和实体抽取，提升客服效率60%。",
-    technologies: ["Transformers", "BERT", "FastAPI"],
-    link: "https://github.com/yourusername/project2",
-  },
-  {
-    title: "个性化推荐系统",
-    description: "基于协同过滤和深度学习的推荐系统，为用户提供个性化内容推荐。",
-    technologies: ["TensorFlow", "scikit-learn", "Redis"],
-    link: "https://github.com/yourusername/project3",
-  },
-];
 
-const learningDirections = [
-  {
-    title: "大语言模型研究",
-    description:
-      "研究 GPT、BERT 等大语言模型的原理和应用，探索模型优化和部署方案。",
-    status: "进行中",
-  },
-  {
-    title: "多模态学习",
-    description: "探索文本、图像、语音等多模态数据的融合学习方法和应用。",
-    status: "计划中",
-  },
-  {
-    title: "AI 系统架构",
-    description: "研究 AI 系统的架构设计、性能优化和部署策略。",
-    status: "进行中",
-  },
-];
 
 const AIPage: React.FC = () => {
   const [positions, setPositions] = useState({
@@ -413,7 +367,7 @@ const AIPage: React.FC = () => {
           </div>
 
           {/* 下半部分内容 - 使用网格布局 */}
-          <div className="mt-20 pt-16 pb-12 bg-gradient-to-br from-blue-base/5 via-transparent to-pink-base/5 dark:from-blue-base/10 dark:via-transparent dark:to-pink-base/10 border-t border-gray-100/50 dark:border-gray-800/50 relative overflow-hidden">
+          <div className=" mt-20 pt-16 pb-12 bg-gradient-to-br from-blue-base/5 via-transparent to-pink-base/5 dark:from-blue-base/10 dark:via-transparent dark:to-pink-base/10 border-t border-gray-100/50 dark:border-gray-800/50 relative overflow-hidden rounded-2xl">
             {/* 背景装饰 */}
             <div className="absolute inset-0 opacity-30 dark:opacity-20">
               <div className="absolute top-0 left-1/4 w-64 h-64 bg-blue-base/10 rounded-full filter blur-3xl"></div>

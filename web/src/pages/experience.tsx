@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -137,6 +137,49 @@ const pageTitle = {
 };
 
 const ExperiencePage: React.FC = () => {
+  const [positions, setPositions] = useState({
+    circle1: { top: "15%", left: "10%" },
+    circle2: { bottom: "20%", right: "15%" },
+    triangle1: { top: "25%", right: "20%" },
+    triangle2: { bottom: "30%", left: "25%" },
+    square1: { top: "40%", left: "35%" },
+    square2: { top: "60%", right: "30%" }
+  });
+
+  useEffect(() => {
+    const updatePositions = () => {
+      setPositions({
+        circle1: {
+          top: `${Math.random() * 30 + 5}%`,
+          left: `${Math.random() * 20 + 5}%`
+        },
+        circle2: {
+          bottom: `${Math.random() * 30 + 5}%`,
+          right: `${Math.random() * 20 + 5}%`
+        },
+        triangle1: {
+          top: `${Math.random() * 30 + 15}%`,
+          right: `${Math.random() * 20 + 10}%`
+        },
+        triangle2: {
+          bottom: `${Math.random() * 30 + 15}%`,
+          left: `${Math.random() * 20 + 10}%`
+        },
+        square1: {
+          top: `${Math.random() * 30 + 25}%`,
+          left: `${Math.random() * 20 + 20}%`
+        },
+        square2: {
+          top: `${Math.random() * 30 + 45}%`,
+          right: `${Math.random() * 20 + 15}%`
+        }
+      });
+    };
+
+    const interval = setInterval(updatePositions, 10000); // 每10秒更新一次位置
+
+    return () => clearInterval(interval);
+  }, []);
   return (
     <>
       <Head>
@@ -148,7 +191,15 @@ const ExperiencePage: React.FC = () => {
         {/* 装饰性图形 */}
         <div className="absolute inset-0 dark:hidden blur-2xl">
           {/* 圆环 */}
-          <svg className="absolute top-[15%] left-[10%] w-96 h-96  ">
+          <motion.svg 
+            className="absolute w-96 h-96"
+            initial={positions.circle1}
+            animate={positions.circle1}
+            transition={{
+              duration: 10,
+              ease: "easeInOut"
+            }}
+          >
             <circle
               cx="192"
               cy="192"
@@ -158,8 +209,16 @@ const ExperiencePage: React.FC = () => {
               strokeWidth="48"
               opacity="1"
             />
-          </svg>
-          <svg className="absolute bottom-[20%] right-[15%] w-96 h-96">
+          </motion.svg>
+          <motion.svg 
+            className="absolute w-96 h-96"
+            initial={positions.circle2}
+            animate={positions.circle2}
+            transition={{
+              duration: 10,
+              ease: "easeInOut"
+            }}
+          >
             <circle
               cx="192"
               cy="192"
@@ -169,26 +228,50 @@ const ExperiencePage: React.FC = () => {
               strokeWidth="48"
               opacity="1"
             />
-          </svg>
+          </motion.svg>
 
           {/* 三角形 */}
-          <svg className="absolute top-[25%] right-[20%] w-64 h-64">
+          <motion.svg 
+            className="absolute w-64 h-64"
+            initial={positions.triangle1}
+            animate={positions.triangle1}
+            transition={{
+              duration: 10,
+              ease: "easeInOut"
+            }}
+          >
             <path
               d="M128,0 L256,256 L0,256 Z"
               fill="#1d4ed8"
               opacity="1"
             />
-          </svg>
-          <svg className="absolute bottom-[30%] left-[25%] w-64 h-64">
+          </motion.svg>
+          <motion.svg 
+            className="absolute w-64 h-64"
+            initial={positions.triangle2}
+            animate={positions.triangle2}
+            transition={{
+              duration: 10,
+              ease: "easeInOut"
+            }}
+          >
             <path
               d="M128,256 L256,0 L0,0 Z"
               fill="#1d4ed8"
               opacity="1"
             />
-          </svg>
+          </motion.svg>
 
           {/* 正方形 */}
-          <svg className="absolute top-[40%] left-[35%] w-64 h-64">
+          <motion.svg 
+            className="absolute w-64 h-64"
+            initial={positions.square1}
+            animate={positions.square1}
+            transition={{
+              duration: 10,
+              ease: "easeInOut"
+            }}
+          >
             <rect
               x="0"
               y="0"
@@ -198,8 +281,16 @@ const ExperiencePage: React.FC = () => {
               opacity="1"
               rx="16"
             />
-          </svg>
-          <svg className="absolute top-[60%] right-[30%] w-64 h-64">
+          </motion.svg>
+          <motion.svg 
+            className="absolute w-64 h-64"
+            initial={positions.square2}
+            animate={positions.square2}
+            transition={{
+              duration: 10,
+              ease: "easeInOut"
+            }}
+          >
             <rect
               x="0"
               y="0"
@@ -209,7 +300,7 @@ const ExperiencePage: React.FC = () => {
               opacity="1"
               rx="16"
             />
-          </svg>
+          </motion.svg>
         </div>
         
         <main className="max-w-screen-xl mx-auto px-4 sm:px-6 py-8 sm:py-12 relative">

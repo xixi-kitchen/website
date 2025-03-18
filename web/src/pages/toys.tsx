@@ -10,7 +10,7 @@ interface ToyCardProps {
 const ToyCard: React.FC<ToyCardProps> = ({ toy, onClick }) => {
   const statusColors = {
     completed: "bg-green-500",
-    "in-progress": "bg-yellow-500",
+    "in-progress": "bg-yellow-base",
     planned: "bg-blue-500",
   };
 
@@ -22,17 +22,17 @@ const ToyCard: React.FC<ToyCardProps> = ({ toy, onClick }) => {
 
   return (
     <div
-      className="group relative bg-white/50 dark:bg-brightblue/5 backdrop-blur-sm rounded-2xl p-6 border border-brightblue/20 dark:border-brightblue/30 hover:border-brightblue/50 dark:hover:border-brightblue/60 transition-all cursor-pointer"
+      className="group relative bg-white/50 dark:bg-blue-base/5 backdrop-blur-sm rounded-2xl p-6 border border-blue-base/20 dark:border-blue-base/30 hover:border-blue-base/50 dark:hover:border-blue-base/60 transition-all cursor-pointer"
       onClick={onClick}
     >
       {/* 装饰性色块 */}
-      <div className="absolute -top-2 -right-2 w-20 h-20 bg-deeppink/10 dark:bg-deeppink/20 rounded-full blur-2xl group-hover:bg-deeppink/20 dark:group-hover:bg-deeppink/30 transition-all"></div>
-      <div className="absolute -bottom-2 -left-2 w-20 h-20 bg-yellow/10 dark:bg-yellow/20 rounded-full blur-2xl group-hover:bg-yellow/20 dark:group-hover:bg-yellow/30 transition-all"></div>
+      <div className="absolute -top-2 -right-2 w-20 h-20 bg-pink-base/10 dark:bg-pink-base/20 rounded-full blur-2xl group-hover:bg-pink-base/20 dark:group-hover:bg-pink-base/30 transition-all"></div>
+      <div className="absolute -bottom-2 -left-2 w-20 h-20 bg-yellow-base/10 dark:bg-yellow-base/20 rounded-full blur-2xl group-hover:bg-yellow-base/20 dark:group-hover:bg-yellow-base/30 transition-all"></div>
 
       <div className="relative">
         {/* 标题和状态 */}
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-brightblue dark:group-hover:text-brightblue/90 transition-colors">
+          <h3 className="text-xl font-bold text-zinc-dark dark:text-white group-hover:text-blue-base dark:group-hover:text-blue-base/90 transition-colors">
             {toy.title}
           </h3>
           <span
@@ -45,7 +45,7 @@ const ToyCard: React.FC<ToyCardProps> = ({ toy, onClick }) => {
         </div>
 
         {/* 描述 */}
-        <p className="text-gray-700 dark:text-yellow/90 mb-4">
+        <p className="text-zinc-base dark:text-yellow-base/90 mb-4">
           {toy.description}
         </p>
 
@@ -55,7 +55,7 @@ const ToyCard: React.FC<ToyCardProps> = ({ toy, onClick }) => {
             {toy.techStack.map((tech, index) => (
               <span
                 key={index}
-                className="px-2 py-1 text-xs font-medium rounded-full bg-brightblue/10 dark:bg-brightblue/20 text-brightblue dark:text-brightblue/90"
+                className="px-2 py-1 text-xs font-medium rounded-full bg-blue-base/10 dark:bg-blue-base/20 text-blue-base dark:text-blue-base/90"
               >
                 {tech}
               </span>
@@ -68,7 +68,7 @@ const ToyCard: React.FC<ToyCardProps> = ({ toy, onClick }) => {
           {toy.tags.map((tag, index) => (
             <span
               key={index}
-              className="px-2 py-1 text-xs font-medium rounded-full bg-deeppink/10 dark:bg-deeppink/20 text-deeppink dark:text-deeppink/90"
+              className="px-2 py-1 text-xs font-medium rounded-full bg-pink-base/10 dark:bg-pink-base/20 text-pink-base dark:text-pink-base/90"
             >
               {tag}
             </span>
@@ -91,17 +91,17 @@ const ToyModal: React.FC<ToyModalProps> = ({ toy, onClose }) => {
       onClick={onClose}
     >
       <div
-        className="relative max-w-3xl w-full max-h-[90vh] overflow-y-auto bg-white/95 dark:bg-brightblue/5 rounded-2xl shadow-2xl border border-brightblue/20 dark:border-brightblue/30"
+        className="relative max-w-3xl w-full max-h-[90vh] overflow-y-auto bg-white/95 dark:bg-blue-base/5 rounded-2xl shadow-2xl border border-blue-base/20 dark:border-blue-base/30"
         onClick={(e) => e.stopPropagation()}
       >
         {/* 弹窗头部 */}
-        <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-yellow/20 dark:border-yellow/30 bg-white/90 dark:bg-brightblue/10 backdrop-blur-sm">
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-yellow-base/20 dark:border-yellow-base/30 bg-white/90 dark:bg-blue-base/10 backdrop-blur-sm">
+          <h3 className="text-2xl font-bold text-zinc-dark dark:text-white">
             {toy.title}
           </h3>
           <button
             onClick={onClose}
-            className="p-2 text-deeppink/70 hover:text-deeppink dark:text-deeppink/50 dark:hover:text-deeppink rounded-full hover:bg-deeppink/10 dark:hover:bg-deeppink/20 transition-colors"
+            className="p-2 text-pink-base/70 hover:text-pink-base dark:text-pink-base/50 dark:hover:text-pink-base rounded-full hover:bg-pink-base/10 dark:hover:bg-pink-base/20 transition-colors"
           >
             <svg
               className="w-6 h-6"
@@ -123,17 +123,17 @@ const ToyModal: React.FC<ToyModalProps> = ({ toy, onClose }) => {
         <div className="p-6">
           <div className="prose dark:prose-invert max-w-none">
             {/* 描述 */}
-            <p className="text-gray-700 dark:text-yellow/90 mb-6">
+            <p className="text-zinc-dark dark:text-yellow-base/90 mb-6">
               {toy.description}
             </p>
 
             {/* 灵感来源 */}
             {toy.inspiration && (
               <div className="mb-6">
-                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <h4 className="text-lg font-semibold text-zinc-dark dark:text-white mb-2">
                   灵感来源
                 </h4>
-                <p className="text-gray-700 dark:text-yellow/90">
+                <p className="text-zinc-dark dark:text-yellow-base/90">
                   {toy.inspiration}
                 </p>
               </div>
@@ -142,10 +142,10 @@ const ToyModal: React.FC<ToyModalProps> = ({ toy, onClose }) => {
             {/* 功能特点 */}
             {toy.features && (
               <div className="mb-6">
-                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <h4 className="text-lg font-semibold text-zinc-dark dark:text-white mb-2">
                   功能特点
                 </h4>
-                <ul className="list-disc pl-5 space-y-1 text-gray-700 dark:text-yellow/90">
+                <ul className="list-disc pl-5 space-y-1 text-zinc-dark dark:text-yellow-base/90">
                   {toy.features.map((feature, index) => (
                     <li key={index}>{feature}</li>
                   ))}
@@ -155,14 +155,14 @@ const ToyModal: React.FC<ToyModalProps> = ({ toy, onClose }) => {
 
             {/* 技术栈 */}
             <div className="mb-6">
-              <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              <h4 className="text-lg font-semibold text-zinc-dark dark:text-white mb-2">
                 技术栈
               </h4>
               <div className="flex flex-wrap gap-2">
                 {toy.techStack.map((tech, index) => (
                   <span
                     key={index}
-                    className="px-3 py-1 text-sm font-medium rounded-full bg-brightblue/10 dark:bg-brightblue/20 text-brightblue dark:text-brightblue/90"
+                    className="px-3 py-1 text-sm font-medium rounded-full bg-blue-base/10 dark:bg-blue-base/20 text-blue-base dark:text-blue-base/90"
                   >
                     {tech}
                   </span>
@@ -177,7 +177,7 @@ const ToyModal: React.FC<ToyModalProps> = ({ toy, onClose }) => {
                   href={toy.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-deeppink text-white rounded-lg hover:bg-deeppink/80 transition-colors"
+                  className="inline-flex items-center px-4 py-2 bg-pink-base text-white rounded-lg hover:bg-pink-base/80 transition-colors"
                 >
                   查看演示
                   <svg
@@ -200,7 +200,7 @@ const ToyModal: React.FC<ToyModalProps> = ({ toy, onClose }) => {
                   href={toy.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-brightblue text-white rounded-lg hover:bg-brightblue/80 transition-colors"
+                  className="inline-flex items-center px-4 py-2 bg-blue-base text-white rounded-lg hover:bg-blue-base/80 transition-colors"
                 >
                   GitHub
                   <svg
@@ -235,13 +235,13 @@ const Toys: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brightblue/5 via-yellow/5 to-deeppink/5 dark:from-brightblue/10 dark:via-yellow/10 dark:to-deeppink/10 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-blue-base/5 via-yellow-base/5 to-pink-base/5 dark:from-blue-base/10 dark:via-yellow-base/10 dark:to-pink-base/10 relative overflow-hidden">
       {/* 装饰性色块 */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-brightblue/20 dark:bg-brightblue/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-      <div className="absolute top-1/4 right-0 w-96 h-96 bg-yellow/20 dark:bg-yellow/30 rounded-full blur-3xl translate-x-1/2"></div>
-      <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-deeppink/20 dark:bg-deeppink/30 rounded-full blur-3xl"></div>
+      <div className="absolute top-0 left-0 w-96 h-96 bg-blue-base/20 dark:bg-blue-base/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute top-1/4 right-0 w-96 h-96 bg-yellow-base/20 dark:bg-yellow-base/30 rounded-full blur-3xl translate-x-1/2"></div>
+      <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-pink-base/20 dark:bg-pink-base/30 rounded-full blur-3xl"></div>
 
-      <div className="max-w-6xl mx-auto py-16 px-6 relative">
+      <div className="max-w-7xl mx-auto py-16 px-6 relative">
         {/* 提醒横幅 */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -300,8 +300,8 @@ const Toys: React.FC = () => {
             onClick={() => setFilter("all")}
             className={`px-4 py-2 rounded-lg transition-colors ${
               filter === "all"
-                ? "bg-brightblue text-white"
-                : "bg-brightblue/10 dark:bg-brightblue/20 text-brightblue dark:text-brightblue/90 hover:bg-brightblue/20 dark:hover:bg-brightblue/30"
+                ? "bg-blue-base text-white"
+                : "bg-blue-base/10 dark:bg-blue-base/20 text-blue-base dark:text-blue-base/90 hover:bg-blue-base/20 dark:hover:bg-blue-base/30"
             }`}
           >
             全部
@@ -320,8 +320,8 @@ const Toys: React.FC = () => {
             onClick={() => setFilter("in-progress")}
             className={`px-4 py-2 rounded-lg transition-colors ${
               filter === "in-progress"
-                ? "bg-yellow-500 text-white"
-                : "bg-yellow-500/10 dark:bg-yellow-500/20 text-yellow-500 dark:text-yellow-500/90 hover:bg-yellow-500/20 dark:hover:bg-yellow-500/30"
+                ? "bg-yellow-base text-white"
+                : "bg-yellow-base/10 dark:bg-yellow-base/20 text-yellow-base dark:text-yellow-base/90 hover:bg-yellow-base/20 dark:hover:bg-yellow-base/30"
             }`}
           >
             进行中
@@ -352,7 +352,7 @@ const Toys: React.FC = () => {
         {/* 无结果提示 */}
         {filteredToys.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-deeppink/70 dark:text-yellow/70 text-lg">
+            <p className="text-pink-base/70 dark:text-yellow-base/70 text-lg">
               暂时没有相关项目
             </p>
           </div>
