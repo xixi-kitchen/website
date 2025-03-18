@@ -287,9 +287,21 @@ const About: NextPage = () => {
           style={{ opacity, scale }}
           className="relative h-screen flex items-center justify-center overflow-hidden"
         >
+          {/* 背景装饰 - 渐变气泡效果 */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {/* 左上角紫色气泡 */}
             <div className="absolute -top-20 -left-20 w-60 h-60 bg-purple-300 dark:bg-purple-900 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-xl opacity-70 animate-blob"></div>
+            {/* 右上角黄色气泡 */}
+            {/* 右上角的装饰性气泡元素:
+              - 定位在右上角,向右偏移-20px
+              - 80x80的圆形
+              - 浅色模式下为黄色(bg-yellow-300),深色模式下为深黄色(bg-yellow-900)  
+              - 使用mix-blend-multiply混合模式,深色模式下使用mix-blend-soft-light
+              - 添加模糊效果(blur-xl)和70%透明度
+              - 应用blob动画,延迟2000ms
+            */}
             <div className="absolute top-0 -right-20 w-80 h-80 bg-yellow-300 dark:bg-yellow-900 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+            {/* 左下角粉色气泡 */}
             <div className="absolute -bottom-20 left-20 w-80 h-80 bg-pink-300 dark:bg-pink-900 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
           </div>
           

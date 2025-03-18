@@ -148,7 +148,7 @@ const ExperiencePage: React.FC = () => {
         {/* 装饰性图形 */}
         <div className="absolute inset-0 dark:hidden blur-2xl">
           {/* 圆环 */}
-          <svg className="absolute top-[15%] left-[10%] w-96 h-96 ">
+          <svg className="absolute top-[15%] left-[10%] w-96 h-96  ">
             <circle
               cx="192"
               cy="192"
