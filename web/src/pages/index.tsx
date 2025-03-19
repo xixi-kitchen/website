@@ -6,6 +6,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Hero from "@/sections/hero";
 import Philosophy from "@/sections/philosophy";
 import Test from "@/sections/test";
+import Link from "next/link";
 
 // 动态导入重量级组件
 const ProjectsSection = dynamic(() => import("@/sections/ProjectsSection"), {
@@ -56,7 +57,10 @@ const Home: NextPage = () => {
       className={`${geistSans.variable} ${geistMono.variable} grid w-full items-center justify-items-center font-[family-name:var(--font-geist-sans)]`}
     >
       <main className="flex flex-col gap-0 items-start bg-white dark:bg-zinc-light w-full">
-        <Test />
+        <Link href="/aboutme">
+        aboutme test
+        </Link>
+          <Test />
         <Hero />
         <Philosophy />
         {/* <Informs /> */}
