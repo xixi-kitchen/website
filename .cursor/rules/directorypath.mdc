@@ -1,0 +1,10 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+For this project, modifications should always be made in the web file directory.
+Every time, NPM needs to ensure it is installed under the web directory.

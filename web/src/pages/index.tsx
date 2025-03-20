@@ -60,6 +60,9 @@ const Home: NextPage = () => {
         <Link href="/aboutme">
         aboutme test
         </Link>
+        <Link href="/markdown-test" className="ml-4">
+          Markdown 测试页面
+        </Link>
           <Test />
         <Hero />
         <Philosophy />

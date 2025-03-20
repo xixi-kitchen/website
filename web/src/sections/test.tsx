@@ -33,7 +33,7 @@ export default function Test() {
         <GlitchText
           speed={1}
           enableShadows={true}
-          enableOnHover={true}
+          enableOnHover={false}
           className="custom-class bg-yellow-base "
         >
           xixikitchen
