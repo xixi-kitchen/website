@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { toys, Toy } from "../data/toys";
 import { motion } from "framer-motion"; 
 import Image from "next/image";
+import Link from "next/link";
 interface ToyCardProps {
   toy: Toy;
   onClick: () => void;
@@ -363,6 +364,12 @@ const Toys: React.FC = () => {
       {selectedToy && (
         <ToyModal toy={selectedToy} onClose={() => setSelectedToy(null)} />
       )}
+       <Link href="/aboutme">
+        aboutme test
+        </Link>
+        <Link href="/markdown-test" className="ml-4">
+          Markdown 测试页面
+        </Link>
     </div>
   );
 };

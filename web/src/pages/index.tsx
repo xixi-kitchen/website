@@ -57,12 +57,7 @@ const Home: NextPage = () => {
       className={`${geistSans.variable} ${geistMono.variable} grid w-full items-center justify-items-center font-[family-name:var(--font-geist-sans)]`}
     >
       <main className="flex flex-col gap-0 items-start bg-white dark:bg-zinc-light w-full">
-        <Link href="/aboutme">
-        aboutme test
-        </Link>
-        <Link href="/markdown-test" className="ml-4">
-          Markdown 测试页面
-        </Link>
+       
           <Test />
         <Hero />
         <Philosophy />
