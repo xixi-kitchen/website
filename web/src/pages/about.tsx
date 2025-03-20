@@ -1,459 +1,703 @@
-import { useEffect, useState, useRef, Suspense } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF, Environment, OrbitControls } from '@react-three/drei';
-import { motion, useScroll, useTransform } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
-import * as THREE from 'three';
-import dynamic from 'next/dynamic';
 
-// 注册GSAP插件
+// 注册 GSAP 插件
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// 懒加载组件
-const LazyProfessionalBg = dynamic(() => import('../sections/Professionalbg'), {
-  ssr: false,
-  loading: () => <div className="w-full h-[50vh] bg-gray-100 dark:bg-amber-900 flex items-center justify-center">
-    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500"></div>
-  </div>
-});
-
-// 3D模型 - 大脑
-const Brain = () => {
-  const { scene } = useGLTF('/models/model.glb');
-  const ref = useRef<THREE.Group>(null);
+// 闪烁背景效果组件
+const GlitchyBackground = () => {
+  const [initialized, setInitialized] = useState(false);
   
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.y = state.clock.getElapsedTime() * 0.1;
-      ref.current.rotation.z = Math.sin(state.clock.getElapsedTime() * 0.2) * 0.1;
-    }
-  });
-
-  return (
-    <primitive 
-      ref={ref}
-      object={scene} 
-      scale={1.5} 
-      position={[0, 0, 0]} 
-    />
-  );
-};
-
-// 3D模型 - 灯泡（创意）
-const Lightbulb = () => {
-  const { scene } = useGLTF('/models/model.glb');
-  const ref = useRef<THREE.Group>(null);
+  useEffect(() => {
+    // 确保在客户端渲染后再显示背景元素
+    setInitialized(true);
+    return () => setInitialized(false);
+  }, []);
   
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.y = state.clock.getElapsedTime() * 0.15;
-      ref.current.position.y = Math.sin(state.clock.getElapsedTime()) * 0.2;
-    }
-  });
-
+  if (!initialized) return null;
+  
   return (
-    <primitive 
-      ref={ref}
-      object={scene} 
-      scale={1.2} 
-      position={[0, 0, 0]} 
-    />
-  );
-};
-
-// 类型定义
-interface PhilosophyCardProps {
-  title: string;
-  description: string;
-  color: string;
-  delay?: number;
-}
-
-// 理念卡片组件
-const PhilosophyCard = ({ title, description, color, delay = 0 }: PhilosophyCardProps) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay }}
-      viewport={{ once: true, margin: "-100px" }}
-      className={`bg-white dark:bg-blue-900 rounded-xl shadow-xl overflow-hidden transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 ${color}`}
-    >
-      <div className="p-6">
-        <h3 className="text-xl md:text-2xl font-bold mb-4">{title}</h3>
-        <p className="text-gray-600 dark:text-gray-300">{description}</p>
-      </div>
-    </motion.div>
-  );
-};
-
-// 类型定义
-interface SkillTagProps {
-  skill: string;
-  delay?: number;
-}
-
-// 技能标签组件
-const SkillTag = ({ skill, delay = 0 }: SkillTagProps) => {
-  return (
-    <motion.span
-      initial={{ opacity: 0, scale: 0.8 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, delay }}
-      viewport={{ once: true }}
-      className="inline-block bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-2 rounded-full text-sm font-medium m-1 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-    >
-      {skill}
-    </motion.span>
-  );
-};
-
-// 类型定义
-interface ThreeDSceneProps {
-  modelComponent: React.ComponentType;
-}
-
-// 3D场景组件
-const ThreeDScene = ({ modelComponent: ModelComponent }: ThreeDSceneProps) => {
-  return (
-    <div className="h-[300px] md:h-[400px] w-full">
-      <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 5], fov: 45 }}>
-        <Suspense fallback={null}>
-          <ambientLight intensity={0.5} />
-          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
-          <pointLight position={[-10, -10, -10]} intensity={0.5} />
-          <ModelComponent />
-          <Environment preset="city" />
-          <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
-        </Suspense>
-      </Canvas>
+    <div className="glitchy-background absolute inset-0 z-0 overflow-hidden opacity-0 transition-opacity duration-700 " 
+         style={{animationDelay: '200ms', animationDuration: '700ms', animationName: 'fadeIn', animationFillMode: 'forwards'}}>
+      {/* 粉色圆环元素 - 来自Ellipse.svg */}
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div 
+          key={`circle-${i}`}
+          className="absolute"
+          style={{
+            width: `${Math.random() * 15 + 20}vh`,
+            height: `${Math.random() * 15 + 20}vh`,
+            left: `${Math.random() * 100}vw`,
+            top: `${Math.random() * 100}vh`,
+            animationDelay: `${Math.random() * 6 + 0.7}s`,
+            animationDuration: `${Math.random() * 10 + 15}s`,
+            animationName: `float-circle-${i % 4}`,
+            backgroundImage: 'url(/Ellipse.svg)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            opacity: 1
+          }}
+        />
+      ))}
+      
+      {/* 蓝色三角形元素 - 来自Polygon.svg */}
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div 
+          key={`triangle-${i}`}
+          className="absolute"
+          style={{
+            width: `${Math.random() * 15 + 20}vh`,
+            height: `${Math.random() * 15 + 20}vh`,
+            left: `${Math.random() * 100}vw`,
+            top: `${Math.random() * 100}vh`,
+            transform: `rotate(${Math.random() * 360}deg)`,
+            animationDelay: `${Math.random() * 3 + 0.8}s`,
+            animationDuration: `${Math.random() * 8 + 12}s`,
+            animationName: `float-shape-${i % 4}`,
+            backgroundImage: 'url(/Polygon.svg)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            opacity: 1
+          }}
+        />
+      ))}
+      
+      {/* 黄色正方形元素 - 来自Rectangle.svg */}
+      {Array.from({ length: 2 }).map((_, i) => (
+        <div 
+          key={`square-${i}`}
+          className="absolute"
+          style={{
+            width: `${Math.random() * 15 + 15}vh`,
+            height: `${Math.random() * 15 + 15}vh`,
+            left: `${Math.random() * 100}vw`,
+            top: `${Math.random() * 100}vh`,
+            transform: `rotate(${Math.random() * 45}deg)`,
+            animationDelay: `${Math.random() * 4 + 0.9}s`,
+            animationDuration: `${Math.random() * 9 + 12}s`,
+            animationName: `float-shape-${i % 4}`,
+            backgroundImage: 'url(/Rectangle.svg)',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            opacity: 1
+          }}
+        />
+      ))}
     </div>
   );
 };
 
-// 类型定义
-interface KnowledgeArea {
-  area: string;
-  color: string;
-  description?: string;
-}
-
-interface Philosophy {
-  title: string;
-  description: string;
-  color: string;
-}
-
 const About: NextPage = () => {
-  const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+  const [pageLoaded, setPageLoaded] = useState(false);
   
-  // 滚动动画效果
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-  
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
-  
-  // 理念数据
-  const philosophies: Philosophy[] = [
-    {
-      title: "人性至上",
-      description: "在遵循人性的前提下达到最简单的平衡。人性——最本质的冲动，简单——极致的低成本，平衡——价值的最大化。",
-      color: "border-l-4 border-deeppink"
-    },
-    {
-      title: "跨领域思维",
-      description: "善用跨领域底层逻辑，以多面手视角驱动效率。以复合型思维支撑多维任务，擅长通过掌握学科核心方法论，快速解析模块化问题并实现资源协作。",
-      color: "border-l-4 border-yellow"
-    },
-    {
-      title: "设计理念",
-      description: "\"一个人就是一个团队，每一个方面都需要懂——最基础的原理和原则\"。通过深入理解用户需求，创造简洁而有力的解决方案。",
-      color: "border-l-4 border-brightblue"
-    }
-  ];
-  
-  // 知识背景数据
-  const knowledgeAreas: KnowledgeArea[] = [
-    { area: "哲学", color: "text-deeppink" },
-    { area: "心理学", color: "text-deeppink", description: "研究生学习心理学，专业课274分（总分300）" },
-    { area: "工业设计", color: "text-yellow", description: "本专业，专业排名第一，获得多项工业设计奖项" },
-    { area: "交互设计", color: "text-yellow", description: "完成 google 交互设计专业认证" },
-    { area: "用户体验系统", color: "text-yellow", description: "通过 Coursera 用户体验设计专业课程认证" },
-    { area: "计算机", color: "text-brightblue", description: "自学编程多年，拥有完全独立编写的个人网站" },
-    { area: "数据分析", color: "text-brightblue", description: "自学 Python 及NumPy、Pandas、Matplotlib、Scikit-learn等数据分析库" },
-    { area: "人工智能", color: "text-brightblue", description: "自学机器学习数学基础、机器学习算法、神经网络原理等，自行部署有本地化大模型及云端调用各类大模型 API" }
-  ];
-  
-  // 技能数据
-  const skills: string[] = [
-    "产品管理", "UI/UX设计", "交互设计", "工业设计", "用户研究", 
-    "数据分析", "Python", "React", "TypeScript", "Three.js",
-    "机器学习", "项目管理", "创意思维", "问题解决", "团队协作"
-  ];
-  
-  // GSAP动画
+  // 页面加载淡入效果
   useEffect(() => {
+    // 设置初始状态
+    document.body.style.overflow = 'hidden';
+    
+    // 延迟显示内容，给页面元素预加载时间
+    const timer = setTimeout(() => {
+      setPageLoaded(true);
+      document.body.style.overflow = '';
+    }, 100);
+    
+    return () => {
+      clearTimeout(timer);
+      document.body.style.overflow = '';
+    };
+  }, []);
+  
+  // 滚动动画设置
+  useEffect(() => {
+    // 确保组件已挂载且DOM可用
     if (!mounted) {
       setMounted(true);
       return;
     }
     
-    // 标题动画
-    const titleTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#about-title",
-        start: "top 80%",
-        end: "bottom 20%",
-        toggleActions: "play none none reverse"
-      }
-    });
+    // 防止页面刷新时动画突兀
+    gsap.set('.content-section', { opacity: 0, y: 30 });
+    gsap.set('.divider', { scaleX: 0, opacity: 0 });
+    gsap.set('.scattered-text', { opacity: 0 });
     
-    titleTimeline.from("#about-title", {
-      duration: 1,
-      y: 50,
-      opacity: 0,
-      ease: "power3.out"
-    });
+    // 标题字母动画 - 只在初始加载时执行一次
+    const heroLetters = document.querySelectorAll('.hero-letter');
+    gsap.set(heroLetters, { y: 300, opacity: 0 });
     
-    // 理念部分动画
-    gsap.from("#philosophy-section", {
-      scrollTrigger: {
-        trigger: "#philosophy-section",
-        start: "top 70%",
-        end: "bottom 20%",
-        toggleActions: "play none none reverse"
-      },
-      duration: 1,
-      y: 100,
-      opacity: 0,
-      ease: "power3.out"
-    });
-    
-    // 知识背景动画
-    gsap.from("#knowledge-section", {
-      scrollTrigger: {
-        trigger: "#knowledge-section",
-        start: "top 70%",
-        end: "bottom 20%",
-        toggleActions: "play none none reverse"
-      },
-      duration: 1,
-      y: 100,
-      opacity: 0,
-      ease: "power3.out"
-    });
-    
-    // 技能部分动画
-    gsap.from("#skills-section", {
-      scrollTrigger: {
-        trigger: "#skills-section",
-        start: "top 70%",
-        end: "bottom 20%",
-        toggleActions: "play none none reverse"
-      },
-      duration: 1,
-      y: 100,
-      opacity: 0,
-      ease: "power3.out"
-    });
+    // 等DOM完全准备好并且页面已加载
+    const animationInitializer = setTimeout(() => {
+      gsap.to(heroLetters, {
+        y: 0,
+        opacity: 1,
+        duration: 1.5,
+        stagger: 0.1,
+        ease: 'power4.out',
+        delay: 0.5
+      });
+      
+      // 滚动进度条
+      gsap.to('progress', {
+        value: 100,
+        ease: 'none',
+        scrollTrigger: { 
+          trigger: containerRef.current,
+          scrub: 0.3,
+          start: 'top top',
+          end: 'bottom bottom',
+          onUpdate: (self) => {
+            const progress = self.progress.toFixed(2);
+            document.documentElement.style.setProperty('--scroll', progress);
+          }
+        }
+      });
+      
+      // 散布文字动画 - 使用scrub代替toggleActions，减少闪烁
+      const scatteredTexts = document.querySelectorAll('.scattered-text');
+      scatteredTexts.forEach((el, i) => {
+        gsap.fromTo(el, 
+          { 
+            opacity: 0,
+            x: i % 2 === 0 ? -100 : 100,
+            y: 50
+          }, 
+          {
+            opacity: 1,
+            x: 0,
+            y: 0,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: '.scattered-section',
+              start: 'top 80%',
+              end: 'center 30%',
+              scrub: 1, // 使用scrub实现平滑过渡
+            }
+          }
+        );
+      });
+      
+      // 内容区域的滚动效果 - 使用markers创建更平滑的动画
+      const contentSections = document.querySelectorAll('.content-section');
+      
+      contentSections.forEach((section, index) => {
+        // 创建一个时间轴，便于控制动画序列
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 80%',
+            end: 'top 20%',
+            scrub: 1, // 平滑过渡，减少闪烁
+            toggleActions: 'play none none reverse',
+          }
+        });
+        
+        // 添加整个部分的淡入淡出
+        tl.to(section, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: 'power2.inOut',
+        });
+        
+        // 为偶数和奇数部分添加不同的横向移动效果
+        if (index % 2 === 1) {
+          gsap.fromTo(
+            section,
+            { xPercent: -3 },
+            {
+              xPercent: 0,
+              ease: 'power1.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top bottom',
+                end: 'top center',
+                scrub: 1.5, // 更慢的过渡，减少抖动
+              }
+            }
+          );
+        } else {
+          gsap.fromTo(
+            section,
+            { xPercent: 3 },
+            {
+              xPercent: 0,
+              ease: 'power1.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top bottom',
+                end: 'top center',
+                scrub: 1.5, // 更慢的过渡，减少抖动
+              }
+            }
+          );
+        }
+        
+        // 单独为标题添加渐显效果
+        const title = section.querySelector('h2');
+        gsap.fromTo(
+          title,
+          { y: 50, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.5,
+            scrollTrigger: {
+              trigger: title,
+              start: 'top 90%',
+              end: 'top 60%',
+              scrub: 1,
+            }
+          }
+        );
+      });
+      
+      // 分隔线使用scrub实现平滑过渡
+      const dividers = document.querySelectorAll('.divider');
+      dividers.forEach((divider) => {
+        gsap.to(divider, {
+          scaleX: 1,
+          opacity: 1,
+          ease: 'power2.inOut',
+          scrollTrigger: {
+            trigger: divider,
+            start: 'top 95%',
+            end: 'top 70%',
+            scrub: 1, // 平滑过渡，减少闪烁
+          }
+        });
+      });
+      
+      // 背景元素动画 - 移除所有透明度变化
+      gsap.to('.glitchy-background div', {
+        ease: 'power1.inOut',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 2
+        }
+      });
+    }, 100);
     
     // 清理函数
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach(t => t.kill());
+      clearTimeout(animationInitializer);
     };
   }, [mounted]);
-  
-  if (!mounted) return null;
   
   return (
     <>
       <Head>
-        <title>关于我 | HUGH·Aix</title>
-        <meta name="description" content="了解HUGH·Aix的理念、知识背景和技能" />
+        <title>关于我 | 我的心路历程</title>
+        <meta name="description" content="探索我的设计之路，从工业设计到用户体验，从心理学到哲学的思考历程" />
       </Head>
-      
-      <div ref={containerRef} className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-bg-blue-900">
-        {/* 英雄区域 */}
-        <motion.div 
-          style={{ opacity, scale }}
-          className="relative h-screen flex items-center justify-center overflow-hidden"
-        >
-          {/* 背景装饰 - 渐变气泡效果 */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {/* 左上角紫色气泡 */}
-            <div className="absolute -top-20 -left-20 w-60 h-60 bg-purple-300 dark:bg-purple-900 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-xl opacity-70 animate-blob"></div>
-            {/* 右上角黄色气泡 */}
-            {/* 右上角的装饰性气泡元素:
-              - 定位在右上角,向右偏移-20px
-              - 80x80的圆形
-              - 浅色模式下为黄色(bg-yellow-300),深色模式下为深黄色(bg-yellow-900)  
-              - 使用mix-blend-multiply混合模式,深色模式下使用mix-blend-soft-light
-              - 添加模糊效果(blur-xl)和70%透明度
-              - 应用blob动画,延迟2000ms
-            */}
-            <div className="absolute top-0 -right-20 w-80 h-80 bg-yellow-300 dark:bg-yellow-900 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-            {/* 左下角粉色气泡 */}
-            <div className="absolute -bottom-20 left-20 w-80 h-80 bg-pink-300 dark:bg-pink-900 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-          </div>
+      <div className={`page-transition ${pageLoaded ? 'loaded' : ''}`}>
+      <div className="relative w-full min-h-screen  overflow-hidden">
+        {/* 渐变背景光效 */}
+        <div className="font-pingfang-sc absolute inset-0 blur-3xl bg-gradient-to-br from-blue-base via-yellow-base to-pink-base opacity-100 dark:from-blue-dark dark:via-blue-base dark:to-pink-dark dark:opacity-30"></div>
+
+        
+          <progress max="100" value="0" className="fixed top-0 left-0 right-0 h-[3px] w-full appearance-none [&::-webkit-progress-bar]:bg-transparent [&::-webkit-progress-value]:bg-deeppink dark:[&::-webkit-progress-value]:bg-pink-base z-50">
+            <div className="progress-bar"></div>
+          </progress>
           
-          <div className="container mx-auto px-4 z-10 text-center">
-            <motion.h1 
-              initial={{ opacity: 0, y: -50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-              className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-6"
-            >
-              关于我
-            </motion.h1>
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.3 }}
-              className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
-            >
-              跨领域思考者，复合型人才，善于将不同学科的知识融会贯通，创造独特价值
-            </motion.p>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.6 }}
-              className="mt-12"
-            >
-              <svg className="w-10 h-10 mx-auto text-gray-400 dark:text-gray-500 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-              </svg>
-            </motion.div>
-          </div>
-        </motion.div>
-        
-        {/* 理念部分 */}
-        <section id="philosophy-section" className="py-20 bg-white dark:bg-gray-900">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 id="about-title" className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">我的理念</h2>
-              <div className="w-24 h-1 bg-purple-600 mx-auto"></div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {philosophies.map((philosophy, index) => (
-                <PhilosophyCard
-                  key={philosophy.title}
-                  title={philosophy.title}
-                  description={philosophy.description}
-                  color={philosophy.color}
-                  delay={index * 0.2}
-                />
-              ))}
-            </div>
-            
-            <div className="mt-20">
-              <ThreeDScene modelComponent={Lightbulb} />
-            </div>
-          </div>
-        </section>
-        
-        {/* 知识背景部分 */}
-        <section id="knowledge-section" className="py-20 bg-gray-50 dark:bg-blue-900">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">知识背景</h2>
-              <div className="w-24 h-1 bg-yellow mx-auto"></div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <ThreeDScene modelComponent={Brain} />
-              </div>
-              
-              <div className="space-y-6">
-                {knowledgeAreas.map((item, index) => (
-                  <motion.div
-                    key={item.area}
-                    initial={{ opacity: 0, x: 50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-4"
-                  >
-                    <h3 className={`text-xl font-bold ${item.color} flex items-center`}>
-                      <span className="w-3 h-3 rounded-full bg-current mr-2"></span>
-                      {item.area}
-                    </h3>
-                    {item.description && (
-                      <p className="mt-2 text-gray-600 dark:text-gray-300">{item.description}</p>
-                    )}
-                  </motion.div>
-                ))}
+          <GlitchyBackground />
+          
+          {/* 英雄区域 */}
+          <section className="hero-section relative min-h-screen flex flex-col justify-center pt-20">
+            <div className="container mx-auto px-4 z-10">
+              <div className="hero-title">
+                <h1 className="text-9xl md:text-[15rem] font-extrabold leading-none tracking-tighter overflow-hidden text-zinc-dark dark:text-zinc-light">
+                  {'关于我'.split('').map((letter, index) => (
+                    <span key={index} className="hero-letter inline-block">{letter}</span>
+                  ))}
+                </h1>
               </div>
             </div>
-          </div>
-        </section>
-        
-        {/* 技能部分 */}
-        <section id="skills-section" className="py-20 bg-white dark:bg-gray-900">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">技能专长</h2>
-              <div className="w-24 h-1 bg-brightblue mx-auto"></div>
+
+            <div className="absolute bottom-20 left-0 w-full">
+              <div className="container mx-auto px-4">
+                <p className="text-2xl md:text-4xl text-zinc-dark dark:text-gray-300 max-w-md fade-in ">
+                  ———— 我的设计之路
+                </p>
+              </div>
             </div>
-            
-            <div className="text-center mb-12">
-              {skills.map((skill, index) => (
-                <SkillTag key={skill} skill={skill} delay={index * 0.05} />
-              ))}
+          </section>
+
+          {/* 散布文字介绍区域 */}
+          <section className="scattered-section relative py-32 min-h-[70vh]">
+            <div className="container mx-auto">
+              <div className="scattered-text absolute left-[5%] top-20 text-4xl md:text-6xl font-bold text-deeppink dark:text-pink-base">
+                设计
+              </div>
+              <div className="scattered-text absolute right-[10%] top-40 text-3xl md:text-5xl font-bold text-zinc-dark dark:text-white">
+                思考
+              </div>
+              <div className="scattered-text absolute left-[20%] top-80 text-5xl md:text-7xl font-bold text-brightblue dark:text-blue-base">
+                探索
+              </div>
+              <div className="scattered-text absolute right-[25%] top-96 text-2xl md:text-4xl font-bold text-zinc-dark dark:text-white">
+                跨领域
+              </div>
+              <div className="scattered-text absolute left-[30%] top-[400px] text-4xl md:text-6xl font-bold text-yellow dark:text-yellow-base">
+                创新
+              </div>
+              <div className="scattered-text absolute right-[15%] top-[300px] text-2xl md:text-3xl font-bold text-deeppink dark:text-pink-base">
+                知行合一
+              </div>
+              <div className="scattered-text absolute left-[8%] top-[360px] text-2xl md:text-4xl font-bold text-brightblue dark:text-blue-base">
+                人性至上
+              </div>
+              <div className="scattered-text absolute right-[28%] top-[200px] text-xl md:text-2xl font-bold text-yellow dark:text-yellow-base">
+                辩证唯物
+              </div>
+              <div className="scattered-text absolute left-[40%] top-[250px] text-xl md:text-3xl font-bold text-zinc-dark dark:text-white">
+                心理学
+              </div>
+              <div className="scattered-text absolute right-[5%] top-[460px] text-2xl md:text-3xl font-bold text-brightblue dark:text-blue-base">
+                勇敢真诚
+              </div>
             </div>
+          </section>
+
+          {/* 内容区域 */}
+          <div className="container mx-auto px-4 py-16">
+            {/* 第一部分 */}
+            <section className="content-section mb-40">
+              <h2 className="text-6xl md:text-8xl font-bold mb-20 leading-none">
+                <span className="block">从探索</span>
+                <span className="block text-deeppink dark:text-pink-base">开始</span>
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                <div>
+                  <p className="text-xl text-zinc-dark dark:text-gray-300 mb-8 leading-relaxed">
+                    一切都要从大学开始说起。
+                    我毕业于上海海事大学，本科专业是工业设计。在这里，我打开了设计的大门，素质教育让我养成了设计思维、设计方法，也塑造了我的设计素养。但我很快发现，单靠学校的教育是不够的。
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xl text-zinc-dark dark:text-gray-300 mb-8 leading-relaxed">
+                    幸运的是，我自小养成的学习习惯和对世界的好奇，让我在大学期间对各种领域都充满探索精神。我研究设计原理、表现手法、计算机、代码编程、Arduino、嵌入式系统、网页开发、摄影、剪辑、特效动画、建模、程序化建模…… 
+                  </p>
+                  <p className="text-xl text-deeppink dark:text-pink-base font-bold leading-relaxed">
+                    这一切积累，让我在毕业时荣获&ldquo;上海市优秀大学生&rdquo;称号，这是我人生中的一个重要里程碑。
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <div className="divider h-px bg-gradient-to-r from-transparent via-deeppink dark:via-pink-base to-transparent my-40"></div>
+
+            {/* 第二部分 */}
+            <section className="content-section mb-40">
+              <h2 className="text-6xl md:text-8xl font-bold mb-20 leading-none">
+                <span className="block">从学习到</span>
+                <span className="block text-brightblue dark:text-blue-base">思考</span>
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                <div>
+                  <p className="text-xl text-zinc-dark dark:text-gray-300 mb-8 leading-relaxed">
+                    但当我回头审视自己所学的一切，我突然意识到一个问题——
+                    我学了很多技能，但我好像缺少了自己的设计理念，没有真正属于自己的思想。
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xl text-zinc-dark dark:text-gray-300 mb-8 leading-relaxed">
+                    从大二开始，我尝试在设计中使用符号、色彩来强化我的理念和品牌，但始终觉得不够深入，似乎缺少了一个更核心的支撑点。
+                  </p>
+                  <p className="text-xl text-zinc-dark dark:text-gray-300 leading-relaxed">
+                    直到大三，我接触了心理学。
+                    心理学的神秘感、对人性的探索，填补了我对设计理念的需求，它让我理解了设计心理学、同理心、用户体验的更深层次内容。
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <div className="divider h-px bg-gradient-to-r from-transparent via-brightblue dark:via-blue-base to-transparent my-40"></div>
+
+            {/* 第三部分 */}
+            <section className="content-section mb-40">
+              <h2 className="text-6xl md:text-8xl font-bold mb-20 leading-none">
+                <span className="block">从心理学到</span>
+                <span className="block text-yellow dark:text-yellow-base">哲学</span>
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                <div>
+                  <p className="text-xl text-zinc-dark dark:text-gray-300 mb-8 leading-relaxed">
+                    所幸，考研的经历让我接触到了马克思主义辩证唯物法。
+                    这次的启发像是一扇通往新世界的大门——它成功地将我过往所有的知识串联在了一起。
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xl text-zinc-dark dark:text-gray-300 mb-8 leading-relaxed">从那时起，我开始涉猎哲学：</p>
+                  <ul className="space-y-6 text-xl text-zinc-dark dark:text-gray-300">
+                    <li className="flex items-start">
+                      <span className="text-yellow dark:text-yellow-base mr-4 text-3xl">•</span>
+                      <span>我学习王阳明心学，理解&ldquo;知行合一&rdquo;</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-yellow dark:text-yellow-base mr-4 text-3xl">•</span>
+                      <span>我研究逻辑学，探索理性思维</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-yellow dark:text-yellow-base mr-4 text-3xl">•</span>
+                      <span>我阅读中国古典哲学，感悟东方智慧</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-yellow dark:text-yellow-base mr-4 text-3xl">•</span>
+                      <span>我钻研《资本论》，理解社会结构与发展</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <div className="divider h-px bg-gradient-to-r from-transparent via-yellow dark:via-yellow-base to-transparent my-40"></div>
+
+            {/* 第四部分 */}
+            <section className="content-section mb-40">
+              <h2 className="text-6xl md:text-8xl font-bold mb-20 leading-none">
+                <span className="block">从探索到</span>
+                <span className="block text-deeppink dark:text-pink-base">实践</span>
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                <div>
+                  <p className="text-xl text-zinc-dark dark:text-gray-300 mb-8 leading-relaxed">
+                    一路走来，我不断突破自我——
+                    从工业设计，跨越到用户体验设计，再到产品经理、软件产品总监，我成功用职业生涯去推动世界的改变。
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xl text-zinc-dark dark:text-gray-300 mb-8 leading-relaxed">
+                    于是，我决定打造自己的个人网站，让它成为我的作品、我的思想、我的信仰的载体。
+                  </p>
+                  <ul className="space-y-6 text-xl text-zinc-dark dark:text-gray-300">
+                    <li className="flex items-start">
+                      <span className="text-deeppink dark:text-pink-base mr-4 text-3xl">•</span>
+                      <span>2021年，我首次尝试，但由于技术能力尚未成熟，最终只完成了设计，无法落地</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-deeppink dark:text-pink-base mr-4 text-3xl">•</span>
+                      <span>2023年，我再次挑战，勉强实现了第一个版本，但并不完美</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-deeppink dark:text-pink-base mr-4 text-3xl">•</span>
+                      <span>2025年，经过不断学习，我已经深入掌握计算机技术、前端开发、交互动画、AI 技术，终于独立完成了「设计+开发+部署」的全过程</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <div className="divider h-px bg-gradient-to-r from-transparent via-deeppink dark:via-pink-base to-transparent my-40"></div>
+
+            {/* 第五部分 */}
+            <section className="content-section mb-40">
+              <h2 className="text-6xl md:text-8xl font-bold mb-20 leading-none">
+                <span className="block">未来</span>
+                <span className="block text-brightblue dark:text-blue-base">的路</span>
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                <div>
+                  <p className="text-xl text-zinc-dark dark:text-gray-300 mb-8 leading-relaxed">
+                    未来，我会继续深入研究心理学、哲学、人工智能，并推动「设计以人为本」的理念，不断挑战边界。
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xl text-zinc-dark dark:text-gray-300 mb-8 leading-relaxed">
+                    &ldquo;设计&rdquo;从来不止于产品，而是对世界的理解、对人性的探索、对系统的优化、对体验的提升。
+                    我希望能用设计的力量，让世界变得更好。
+                  </p>
+                  <p className="text-3xl text-brightblue dark:text-blue-base font-bold leading-relaxed">
+                    未来，我想要改变世界——
+                    <br />从我自己开始！ 🚀
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <div className="divider h-px bg-gradient-to-r from-transparent via-brightblue dark:via-blue-base to-transparent my-40"></div>
+
+            {/* 结语 */}
+            <section className="content-section text-center mb-40">
+              <h2 className="text-2xl md:text-4xl font-bold mb-20 leading-none">
+                <span className="block">🌟</span>
+                <span className="block text-yellow dark:text-yellow-base">结语</span>
+              </h2>
+              <div className="max-w-3xl mx-auto">
+                <p className="text-xl text-zinc-dark dark:text-gray-300 mb-12 leading-relaxed">
+                  这一段旅程，不是终点，而是新的起点。
+                  我期待与你一起探索更多可能性！
+                </p>
+                <p className="text-4xl md:text-6xl text-yellow dark:text-yellow-base font-bold leading-relaxed">
+                  &ldquo;勇敢
+                  <br />
+                  &nbsp;&nbsp;&nbsp;&nbsp;且真诚&rdquo;
+                </p>
+                <p className="text-2xl text-zinc-dark dark:text-gray-300 mt-4">
+                  这不仅是我的信念，也是我的设计哲学。
+                </p>
+              </div>
+            </section>
           </div>
-        </section>
-        
-        {/* 职业背景部分 */}
-        <section id="professional-bg" className="py-20 bg-gray-50 dark:bg-blue-900">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">职业背景</h2>
-              <div className="w-24 h-1 bg-deeppink mx-auto"></div>
-              <p className="mt-4 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                我的职业经历涵盖了多个领域，从工业设计到产品管理，从交互设计到用户体验，每一段经历都为我提供了独特的视角和宝贵的经验。
-              </p>
-            </div>
-            
-            <LazyProfessionalBg />
-          </div>
-        </section>
+        </div>
       </div>
       
-      <style jsx>{`
-        @keyframes blob {
+      <style jsx global>{`
+        .glitchy-background div {
+          animation: float 10s infinite ease-in-out;
+        }
+        
+        @keyframes fadeIn {
           0% {
-            transform: translate(0px, 0px) scale(1);
-          }
-          33% {
-            transform: translate(30px, -50px) scale(1.1);
-          }
-          66% {
-            transform: translate(-20px, 20px) scale(0.9);
+            opacity: 0;
           }
           100% {
-            transform: translate(0px, 0px) scale(1);
+            opacity: 1;
           }
         }
-        .animate-blob {
-          animation: blob 7s infinite;
+        
+        .page-transition {
+          opacity: 0;
+          transition: opacity 600ms ease-in-out;
         }
-        .animation-delay-2000 {
-          animation-delay: 2s;
+        
+        .page-transition.loaded {
+          opacity: 1;
         }
-        .animation-delay-4000 {
-          animation-delay: 4s;
+        
+        @keyframes float {
+          0%, 100% {
+            transform: translate(0, 0) scale(1);
+          }
+          50% {
+            transform: translate(30px, 20px) scale(1.1);
+          }
+        }
+        
+        @keyframes float-circle-0 {
+          0%, 100% {
+            transform: translate(0, 0) scale(1);
+          }
+          33% {
+            transform: translate(40px, -20px) scale(1.1);
+          }
+          66% {
+            transform: translate(-30px, 40px) scale(0.9);
+          }
+        }
+        
+        @keyframes float-circle-1 {
+          0%, 100% {
+            transform: translate(0, 0) scale(1);
+          }
+          33% {
+            transform: translate(-50px, -30px) scale(1.15);
+          }
+          66% {
+            transform: translate(35px, 25px) scale(0.85);
+          }
+        }
+        
+        @keyframes float-circle-2 {
+          0%, 100% {
+            transform: translate(0, 0) scale(1) rotate(0deg);
+          }
+          50% {
+            transform: translate(25px, 45px) scale(1.05) rotate(30deg);
+          }
+        }
+        
+        @keyframes float-circle-3 {
+          0%, 100% {
+            transform: translate(0, 0) scale(1) rotate(0deg);
+          }
+          50% {
+            transform: translate(-35px, -30px) scale(1.15) rotate(-45deg);
+          }
+        }
+        
+        @keyframes float-shape-0 {
+          0%, 100% {
+            transform: translate(0, 0) rotate(0deg);
+          }
+          25% {
+            transform: translate(50px, -30px) rotate(15deg);
+          }
+          75% {
+            transform: translate(-20px, 40px) rotate(-15deg);
+          }
+        }
+        
+        @keyframes float-shape-1 {
+          0%, 100% {
+            transform: translate(0, 0) rotate(0deg);
+          }
+          33% {
+            transform: translate(-40px, -50px) rotate(-20deg);
+          }
+          66% {
+            transform: translate(60px, 30px) rotate(40deg);
+          }
+        }
+        
+        @keyframes float-shape-2 {
+          0%, 100% {
+            transform: translate(0, 0) rotate(0deg) scale(1);
+          }
+          50% {
+            transform: translate(30px, 60px) rotate(30deg) scale(1.2);
+          }
+        }
+        
+        @keyframes float-shape-3 {
+          0%, 100% {
+            transform: translate(0, 0) rotate(0deg) scale(1);
+          }
+          50% {
+            transform: translate(-60px, -40px) rotate(-45deg) scale(0.8);
+          }
+        }
+        
+        :root {
+          --scroll: 0;
+        }
+        
+        /* 进度条样式 */
+        progress {
+          border: none;
+        }
+        
+        progress::-webkit-progress-bar {
+          background-color: transparent;
+        }
+        
+        progress::-webkit-progress-value {
+          background: linear-gradient(to right, #ff0088, #5522ff);
+        }
+        
+        /* 平滑滚动 */
+        html {
+          scroll-behavior: smooth;
+        }
+        
+        /* 提高渲染性能 */
+        .content-section, .divider, .scattered-text {
+          will-change: transform, opacity;
+          backface-visibility: hidden;
+          transform: translateZ(0);
+        }
+        
+        /* 预加载隐藏 */
+        .content-section {
+          opacity: 0;
         }
       `}</style>
     </>
