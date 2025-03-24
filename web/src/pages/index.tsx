@@ -6,7 +6,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Hero from "@/sections/hero";
 import Philosophy from "@/sections/philosophy";
 import Test from "@/sections/test";
-import Link from "next/link";
 
 // 动态导入重量级组件
 const ProjectsSection = dynamic(() => import("@/sections/ProjectsSection"), {
