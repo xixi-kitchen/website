@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className={`bg-gradient-to-r from-blue-base via-yellow-base to-pink-base ${isOpen ? 'shadow-lg' : 'shadow'} dark:bg-gradient-to-r dark:from-blue-dark dark:via-yellow-dark dark:to-pink-dark relative z-50 animate-pulse`}>
+      <nav className={`bg-gradient-to-r from-blue-base via-yellow-base to-pink-base ${isOpen ? 'shadow-lg' : 'shadow'} dark:bg-gradient-to-r dark:from-blue-dark dark:via-yellow-dark dark:to-pink-dark relative z-50 `}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             {/* Logo 和导航链接容器 */}
