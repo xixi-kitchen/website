@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Geist_Mono } from "next/font/google";
 import GlitchText from "../components/GlitchText";
 import TextPressure from "../components/TextPressure";
+import Link from "next/link";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -40,7 +41,7 @@ export default function Test() {
         </GlitchText>
 
         <TextPressure
-          text="Hello，This is my website.!"
+          text="Hello, Welcome to visit my website!"
           flex={true}
           alpha={false}
           stroke={false}
@@ -54,11 +55,9 @@ export default function Test() {
         />
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
+          <Link
             className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/contact"
           >
             <Image
               className="dark:invert"
@@ -67,16 +66,16 @@ export default function Test() {
               width={20}
               height={20}
             />
-            Get to know me.
-          </a>
-          <a
+            Contact me soon.
+          </Link>
+          <Link
             className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
+            href="/about"
+            target="_self"
             rel="noopener noreferrer"
           >
             View Resume
-          </a>
+          </Link>
         </div>
       </div>
     </div>
