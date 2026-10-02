@@ -1,67 +1,73 @@
-import Image from "next/image";
-import Polygon3 from "../../public/Polygon3.svg";
+import React from "react";
+import SectionHeader from "@/components/ui/SectionHeader";
+import Reveal from "@/components/ui/Reveal";
+import { Ring, Square, Triangle } from "@/components/ui/BrandShapes";
 
-const Philosophy = () => {
-  return (
-    <section className="w-full min-h-screen flex items-center justify-center py-12 md:py-20 bg-yellow-base dark:bg-yellow-dark">
-      <div className="w-full max-w-screen-xl mx-auto px-4 md:px-8 flex flex-col lg:flex-row gap-8 text-white">
-        {/* 左侧内容区域 */}
-        <div className="w-full lg:w-1/2 bg-pink-base dark:bg-pink-dark  p-8 md:p-12">
-          <div className="flex flex-col gap-12">
-            {/* 标题部分 */}
-            <div className="flex flex-col gap-6">
-              <div className="flex items-center gap-3">
-                <Image
-                  src={Polygon3}
-                  alt="装饰图形"
-                  width={48}
-                  height={40}
-                  className="w-12 h-10"
-                />
-                <div className="w-12 h-12 bg-yellow-base dark:bg-yellow-dark " />
-              </div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight">
-                在遵循人性的前提下达到最简单的平衡
-              </h2>
-            </div>
-            
-            {/* 三个核心理念 */}
-            <div className="space-y-4 text-2xl md:text-3xl lg:text-4xl font-semibold">
-              <p>人性——最本质的冲动</p>
-              <p>简单——极致的低成本</p>
-              <p>平衡——价值的最大化</p>
-            </div>
-          </div>
-        </div>
+const principles = [
+  { term: "人性", meaning: "最本质的冲动" },
+  { term: "简单", meaning: "极致的低成本" },
+  { term: "平衡", meaning: "价值的最大化" },
+];
 
-        {/* 右侧内容区域 */}
-        <div className="w-full lg:w-1/2 bg-blue-base dark:bg-blue-dark  p-8 md:p-12">
-          <div className="flex flex-col gap-12">
-            {/* 标题和说明部分 */}
-            <div className="flex flex-col gap-6">
+const Philosophy: React.FC = () => (
+  <section className="section-y">
+    <div className="container-page">
+      <SectionHeader
+        index="01"
+        label="Philosophy"
+        title="我的设计理念"
+        description="设计不止于产品，而是对人性的理解、对系统的优化。"
+      />
+
+      <div className="mt-14 grid gap-5 lg:grid-cols-2">
+        <Reveal className="h-full">
+          <article className="flex h-full flex-col justify-between gap-14 rounded-3xl bg-brand-pink p-8 text-[#121214] md:p-12">
+            <div>
               <div className="flex items-end gap-3">
-                <div className="w-11 h-11 rounded-full bg-pink-base dark:bg-pink-dark" />
-                <div className="w-12 h-12 bg-yellow-base dark:bg-yellow-dark " />
+                <Triangle size={44} className="text-[#121214]" />
+                <Square size={40} className="text-brand-yellow" />
               </div>
-              <div className="space-y-4">
-                <h3 className="text-2xl md:text-3xl lg:text-4xl font-semibold">
-                  善用跨领域底层逻辑 | 以多面手视角驱动效率
-                </h3>
-                <p className="text-lg md:text-xl lg:text-2xl font-semibold leading-relaxed">
-                  以复合型思维支撑多维任务，虽无需深耕每个领域，但擅长通过掌握学科核心方法论，快速解析模块化问题并实现资源协作。
-                </p>
-              </div>
+              <h3 className="mt-10 text-[clamp(1.6rem,2.6vw,2.5rem)] font-semibold leading-[1.2] tracking-tight">
+                在遵循人性的前提下，
+                <br />
+                达到最简单的平衡
+              </h3>
             </div>
+            <dl className="divide-y divide-[#121214]/15 border-t border-[#121214]/15">
+              {principles.map((p) => (
+                <div key={p.term} className="flex items-baseline justify-between gap-6 py-4">
+                  <dt className="text-2xl font-semibold md:text-3xl">{p.term}</dt>
+                  <dd className="text-base font-medium md:text-lg">{p.meaning}</dd>
+                </div>
+              ))}
+            </dl>
+          </article>
+        </Reveal>
 
-            {/* 引用部分 */}
-            <blockquote className="text-xl md:text-2xl lg:text-3xl font-semibold text-yellow-base dark">
-              &quot;一个人就是一个团队，每一个方面都需要懂——最基础的原理和原则&quot;
+        <Reveal delay={0.1} className="h-full">
+          <article className="flex h-full flex-col justify-between gap-14 rounded-3xl bg-brand-blue p-8 text-white md:p-12">
+            <div>
+              <div className="flex items-end gap-3">
+                <Ring size={42} className="text-brand-pink" />
+                <Square size={40} className="text-brand-yellow" />
+              </div>
+              <h3 className="mt-10 text-[clamp(1.6rem,2.6vw,2.5rem)] font-semibold leading-[1.2] tracking-tight">
+                善用跨领域底层逻辑
+                <br />
+                以多面手视角驱动效率
+              </h3>
+              <p className="mt-6 max-w-lg text-lg leading-relaxed text-white/85">
+                以复合型思维支撑多维任务，虽无需深耕每个领域，但擅长通过掌握学科核心方法论，快速解析模块化问题并实现资源协作。
+              </p>
+            </div>
+            <blockquote className="border-l-4 border-brand-yellow pl-5 text-xl font-semibold leading-snug text-brand-yellow md:text-2xl">
+              “一个人就是一个团队，每一个方面都需要懂——最基础的原理和原则。”
             </blockquote>
-          </div>
-        </div>
+          </article>
+        </Reveal>
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
 export default Philosophy;

@@ -93,4 +93,11 @@ const AboutPage = () => {
   );
 };
 
+export async function getStaticProps() {
+  if (process.env.NODE_ENV === "production") {
+    return { notFound: true };
+  }
+  return { props: {} };
+}
+
 export default AboutPage;

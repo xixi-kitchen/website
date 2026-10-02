@@ -1,81 +1,79 @@
-import type { NextPage } from "next";
-import Image from "next/image";
-const Hero: NextPage = () => {
-  return (
-    <div className="w-full min-h-screen bg-blue-base dark:bg-blue-dark flex justify-center items-center py-12 md:py-0">
-      <div className="w-full max-w-screen-xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16">
-        {/* 左侧文本内容区域 */}
-        <div className="flex flex-col items-start justify-between gap-8 md:gap-32 max-w-2xl">
-          {/* Hello 部分 */}
-          <div className="flex flex-row items-center justify-start font-misans-vf">
-            <div className="text-5xl md:text-7xl lg:text-8xl leading-tight font-semibold font-pingfang-sc text-white text-stroke-black transform hover:scale-105 transition-transform duration-300">
-              Hello！
-            </div>
-          </div>
+import React from "react";
+import { motion } from "framer-motion";
+import Button from "@/components/ui/Button";
+import { BrandMark } from "@/components/ui/BrandShapes";
 
-          {/* 个人介绍部分 */}
-          <div className="flex flex-col items-start justify-center gap-2">
-            <div className="text-3xl md:text-4xl lg:text-5xl leading-tight font-semibold text-white text-shadow-lg">
-              你好，我是
-            </div>
-            <div className="flex flex-row items-center justify-start gap-6 md:gap-8">
-              <div className="text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-base via-yellow-base to-pink-base animate-gradient-x">
-                HUGH·Aix
-              </div>
-             
-            </div>
-            <div className="text-3xl md:text-4xl lg:text-5xl leading-tight font-semibold text-white text-shadow-lg">
-              一个讨厌平淡的人
-            </div>
-          </div>
+const roles = ["工业设计师", "交互设计师", "体验设计师", "产品经理", "产品 Leader"];
 
-          {/* 标签部分 */}
-          <div className="flex flex-col items-start justify-start gap-2 text-base md:text-lg">
-            <div className="flex flex-wrap gap-3 md:gap-4">
-              {[
-                "#工业设计师",
-                "#交互设计师",
-                "#体验设计师",
-                "#产品经理",
-                "#产品Leader"
-              ].map((tag, index) => (
-                <div 
-                  key={index}
-                  className="relative line-through leading-tight font-semibold text-white/70 hover:text-white transition-colors duration-300 cursor-default"
-                >
-                  {tag}
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-row items-center justify-start gap-3 group">
-              <Image 
-                className="w-15 h-20 transform group-hover:rotate-180 transition-transform duration-500"
-                width={20}
-                height={20}
-                alt="装饰图标"
-                src="/threevector.svg"
-              />
-              <div className="relative leading-tight font-semibold bg-clip-text bg-gradient-to-r text-white max-w-lg">
-                这些不过是我一个个单一的标签，真正完整的我等待你的发现～
-              </div>
-            </div>
-          </div>
-        </div>
+const ease = [0.22, 1, 0.36, 1] as const;
 
-        {/* 右侧图片区域 */}
-        {/* <div className="flex-shrink-0 relative">
-          <Image
-            className="w-72 md:w-96 h-72 md:h-96 object-cover shadow-2xl transform hover:scale-105 transition-transform duration-300"
-            width={384}
-            height={384}
-            alt="个人照片"
-            src={Rectangle}
-            priority
-          />
-        </div> */}
+const fadeUp = (delay: number) => ({
+  initial: { opacity: 0, y: 28 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.8, ease, delay },
+});
+
+const Hero: React.FC = () => (
+  <section className="relative isolate overflow-hidden">
+    <div className="container-page grid min-h-[calc(100svh-4rem)] items-center gap-14 py-16 md:grid-cols-[1.3fr_1fr] md:py-20">
+      <div className="min-w-0">
+        <motion.p {...fadeUp(0)} className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
+          Xixikitchen · Personal Portfolio
+        </motion.p>
+
+        <motion.h1
+          {...fadeUp(0.08)}
+          className="mt-8 text-[clamp(2.4rem,5.2vw,4.75rem)] font-semibold leading-[1.08] tracking-[-0.03em] text-ink"
+        >
+          <span className="block text-[0.45em] font-medium tracking-normal text-muted">你好，我是</span>
+          <span className="mt-2 block text-[1.45em] leading-none">HUGH·Aix</span>
+          <span className="mt-4 block">
+            一个讨厌
+            <span className="relative mx-[0.05em] inline-block">
+              <span className="absolute inset-x-[-0.08em] bottom-[0.04em] top-[0.5em] -z-10 bg-brand-yellow" aria-hidden />
+              平淡
+            </span>
+            的人
+          </span>
+        </motion.h1>
+
+        <motion.div {...fadeUp(0.18)} className="mt-10 max-w-xl">
+          <ul className="flex flex-wrap gap-x-4 gap-y-2 text-base text-muted" aria-label="曾经的身份标签">
+            {roles.map((role) => (
+              <li key={role} className="line-through decoration-brand-pink decoration-2">
+                #{role}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 leading-relaxed text-ink">这些不过是一个个单一的标签，真正完整的我，等你来发现。</p>
+        </motion.div>
+
+        <motion.div {...fadeUp(0.28)} className="mt-10 flex flex-wrap items-center gap-3">
+          <Button href="/projects">看看我的项目</Button>
+          <Button href="/contact" variant="secondary" arrow={false}>
+            联系我
+          </Button>
+          <Button href="/about" variant="ghost" className="sm:ml-3">
+            我的故事
+          </Button>
+        </motion.div>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.88, rotate: -6 }}
+        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+        transition={{ duration: 1.1, ease, delay: 0.2 }}
+        className="relative mx-auto w-full max-w-[22rem] md:max-w-none"
+      >
+        <BrandMark animated className="h-auto w-full" />
+      </motion.div>
     </div>
-  );
-};
+
+    <div className="container-page pointer-events-none absolute inset-x-0 bottom-6 hidden items-center gap-3 font-mono text-[11px] uppercase tracking-[0.25em] text-muted md:flex">
+      <span className="h-px w-10 bg-muted/50" />
+      Scroll
+    </div>
+  </section>
+);
 
 export default Hero;

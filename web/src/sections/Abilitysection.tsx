@@ -1,142 +1,87 @@
-import React, { useEffect, useRef, useState, Suspense, useMemo } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Float, OrbitControls, Environment, useProgress, Html, useGLTF } from '@react-three/drei';
-import { Vector3, Mesh, MeshPhongMaterial, Object3D } from 'three';
-import * as THREE from 'three';
+import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Environment, Float, Html, Lightformer, OrbitControls, useGLTF, useProgress } from "@react-three/drei";
+import { Group, Mesh, MeshPhongMaterial, Object3D, Vector3 } from "three";
+import SectionHeader from "@/components/ui/SectionHeader";
+import Tag from "@/components/ui/Tag";
+import { useInView, useIsCoarsePointer } from "@/hooks/useInView";
 
-// 定义类型
-interface SkillModel {
-  name: string;
-  path: string;
-  position: [number, number, number];
-}
+type Vec3 = [number, number, number];
 
-/**
- * 生成随机位置的函数
- * @param width - 画布宽度
- * @param height - 画布高度
- * @returns [x, y, z] 坐标数组
- */
-const generateRandomPosition = () => {
-  const radius = 20; // 增加分布半径，让模型分布更分散
-  const angle = Math.random() * Math.PI * 2;
-  const distance = Math.pow(Math.random(), 0.5) * radius;
-  const x = Math.cos(angle) * distance;
-  const y = (Math.random() - 0.5) * 20; // 增加垂直范围，使模型分布更均匀
-  const z = Math.sin(angle) * distance * 0.5; // 添加z轴偏移，创造深度感
-  return [x, y, z] as [number, number, number];
-};
-
-/**
- * 技能模型数据配置
- * 包含所有需要显示的 3D 模型信息：
- * - name: 模型名称
- * - path: 模型文件路径
- * - position: 随机生成的位置
- */
-const getSkillModels = (): SkillModel[] => [
-  { name: 'HTML', path: '/models/htmlmodel.glb', position: generateRandomPosition() },
-  { name: 'CSS', path: '/models/cssmodel.glb', position: generateRandomPosition() },
-  { name: 'JavaScript', path: '/models/JSmodel.glb', position: generateRandomPosition() },
-  { name: 'Java', path: '/models/javamodel.glb', position: generateRandomPosition() },
-  { name: 'Python', path: '/models/Pythonmodel.glb', position: generateRandomPosition() },
-  { name: 'Three.js', path: '/models/threemodel.glb', position: generateRandomPosition() },
-  { name: 'Unity', path: '/models/unitymodel.glb', position: generateRandomPosition() },
-  { name: 'Unreal', path: '/models/unrealmodel.glb', position: generateRandomPosition() },
-  { name: 'Rhino', path: '/models/rhinomodel.glb', position: generateRandomPosition() },
-  { name: 'C4D', path: '/models/c4dmodel.glb', position: generateRandomPosition() },
-  { name: 'Blender', path: '/models/blendermodel.glb', position: generateRandomPosition() },
-  { name: '3DS MAX', path: '/models/3dsmodel.glb', position: generateRandomPosition() },
-  { name: 'Keyshot', path: '/models/keyshotmodel.glb', position: generateRandomPosition() },
-  { name: 'Sketch', path: '/models/sketchmodel.glb', position: generateRandomPosition() },
-  { name: 'Arduino', path: '/models/arduinomodel.glb', position: generateRandomPosition() }
+const SKILL_MODELS = [
+  { name: "HTML", path: "/models/htmlmodel.glb" },
+  { name: "CSS", path: "/models/cssmodel.glb" },
+  { name: "JavaScript", path: "/models/JSmodel.glb" },
+  { name: "Java", path: "/models/javamodel.glb" },
+  { name: "Python", path: "/models/Pythonmodel.glb" },
+  { name: "Three.js", path: "/models/threemodel.glb" },
+  { name: "Unity", path: "/models/unitymodel.glb" },
+  { name: "Unreal", path: "/models/unrealmodel.glb" },
+  { name: "Rhino", path: "/models/rhinomodel.glb" },
+  { name: "C4D", path: "/models/c4dmodel.glb" },
+  { name: "Blender", path: "/models/blendermodel.glb" },
+  { name: "3DS MAX", path: "/models/3dsmodel.glb" },
+  { name: "Keyshot", path: "/models/keyshotmodel.glb" },
+  { name: "Sketch", path: "/models/sketchmodel.glb" },
+  { name: "Arduino", path: "/models/arduinomodel.glb" },
 ];
 
-/**
- * 中心学习能力模型组件
- * 特点：
- * 1. 自动摆动动画
- * 2. 鼠标悬停缩放效果
- * 3. 固定在画面中央偏上位置
- */
-const CenterModel = () => {
-  const meshRef = useRef<Mesh>(null);
-  const { scene } = useGLTF('/models/Learningabilitymodel.glb');
+const devSkills = [
+  "HTML", "CSS", "JavaScript", "Java", "Python", "Arduino", "Processing", "React", "Next.js", "Three.js",
+  "数据分析库", "机器学习算法库", "深度学习算法库",
+];
+
+const otherSkills = [
+  "Adobe 全家桶",
+  "Rhino · C4D · Blender · 3DS MAX · ProE · Solidworks",
+  "Figma · Sketch",
+  "Keyshot · Unreal Engine · Unity · Cycles · V-Ray · Redshift",
+  "表面处理工艺（IMD、水转印、蚀刻等）",
+  "生产制造技术（CNC、3D 打印等）",
+];
+
+const randomPosition = (): Vec3 => {
+  const radius = 20;
+  const angle = Math.random() * Math.PI * 2;
+  const distance = Math.sqrt(Math.random()) * radius;
+  return [Math.cos(angle) * distance, (Math.random() - 0.5) * 20, Math.sin(angle) * distance * 0.5];
+};
+
+const prepareScene = (scene: Object3D, material?: MeshPhongMaterial) => {
+  scene.traverse((child) => {
+    if (child instanceof Mesh) {
+      if (material) child.material = material;
+      child.matrixAutoUpdate = false;
+      child.updateMatrix();
+    }
+  });
+};
+
+const CenterModel: React.FC = () => {
+  const ref = useRef<Group>(null);
+  const { scene } = useGLTF("/models/Learningabilitymodel.glb");
   const [hovered, setHovered] = useState(false);
-  
-  // 使用 useMemo 缓存动画参数
-  const animParams = useMemo(() => ({
-    swingSpeed: 0.08,
-    swingAmplitude: Math.PI / 8,
-    baseScale: 1,
-    hoverScale: 1.5,
-    scaleTransitionSpeed: 0.1
-  }), []);
+  const target = useMemo(() => new Vector3(), []);
+  const material = useMemo(
+    () => new MeshPhongMaterial({ color: 0xff0088, emissive: 0x2a1060, shininess: 60, flatShading: true }),
+    []
+  );
 
-  // 使用 useMemo 缓存材质
-  const material = useMemo(() => new MeshPhongMaterial({
-    color: 0xFF0088,
-    emissive: 0x2a4d7f,
-    shininess: 50,
-    transparent: true,
-    opacity: 0.9,
-    // 添加性能优化相关的材质设置
-    flatShading: true, // 使用平面着色
-    precision: 'lowp', // 使用低精度
-    depthWrite: false, // 禁用深度写入
-  }), []);
+  useEffect(() => prepareScene(scene, material), [scene, material]);
 
-  useEffect(() => {
-    if (meshRef.current) {
-      meshRef.current.renderOrder = 999;
-      if (meshRef.current.material instanceof MeshPhongMaterial) {
-        meshRef.current.material.depthTest = false;
-      }
-    }
-
-    if (scene) {
-      // 优化模型
-      scene.traverse((child: Object3D) => {
-        if (child instanceof Mesh) {
-          child.material = material;
-          // 优化几何体
-          if (child.geometry) {
-            child.geometry.computeBoundingSphere();
-            child.geometry.computeBoundingBox();
-          }
-          // 禁用不必要的更新
-          child.matrixAutoUpdate = false;
-          child.updateMatrix();
-        }
-      });
-    }
-  }, [scene, material]);
-
-  // 使用 useFrame 的第二个参数优化动画更新频率
   useFrame((state, delta) => {
-    if (meshRef.current) {
-      const time = state.clock.getElapsedTime();
-      
-      // 使用 delta 时间进行平滑动画
-      meshRef.current.rotation.y = Math.sin(time * animParams.swingSpeed) * animParams.swingAmplitude;
-      meshRef.current.position.y = 2 + Math.sin(time * 0.5) * 0.2;
-
-      const targetScale = hovered ? animParams.hoverScale : animParams.baseScale;
-      meshRef.current.scale.lerp(
-        new Vector3(targetScale, targetScale, targetScale),
-        delta * 10 * animParams.scaleTransitionSpeed
-      );
-
-      // 更新矩阵
-      meshRef.current.updateMatrix();
-    }
+    if (!ref.current) return;
+    const t = state.clock.getElapsedTime();
+    ref.current.rotation.y = Math.sin(t * 0.08) * (Math.PI / 8);
+    ref.current.position.y = 2 + Math.sin(t * 0.5) * 0.2;
+    const s = hovered ? 1.3 : 1;
+    ref.current.scale.lerp(target.set(s, s, s), delta * 2);
   });
 
   return (
     <primitive
-      ref={meshRef}
+      ref={ref}
       object={scene}
-      scale={animParams.baseScale}
       position={[0, 2, -5]}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
@@ -144,80 +89,39 @@ const CenterModel = () => {
   );
 };
 
-/**
- * 单个技能模型组件
- * 功能：
- * 1. 自动摆动动画
- * 2. 鼠标悬停缩放效果
- * 3. 悬浮效果
- */
-const Model = ({ path, position }: { path: string; position: [number, number, number] }) => {
-  const meshRef = useRef<THREE.Mesh>(null);
+const SkillModel: React.FC<{ path: string; position: Vec3 }> = ({ path, position }) => {
+  const ref = useRef<Group>(null);
   const { scene } = useGLTF(path);
   const [hovered, setHovered] = useState(false);
-  
-  // 使用 useMemo 缓存动画参数
-  const animationParams = useMemo(() => ({
-    swingSpeed: 0.1 + Math.random() * 0.2,
-    swingAmplitude: Math.PI / 6 + (Math.random() * Math.PI / 6),
-    phaseOffset: Math.random() * Math.PI * 2,
-    floatSpeed: 1 + Math.random(),
-    rotationDirection: Math.random() > 0.5 ? 1 : -1,
-    baseScale: 0.15,
-    hoverScale: 0.3,
-    scaleTransitionSpeed: 0.1
-  }), []);
+  const target = useMemo(() => new Vector3(), []);
+  const anim = useMemo(
+    () => ({
+      speed: 0.1 + Math.random() * 0.2,
+      amplitude: Math.PI / 6 + (Math.random() * Math.PI) / 6,
+      phase: Math.random() * Math.PI * 2,
+      float: 1 + Math.random(),
+      direction: Math.random() > 0.5 ? 1 : -1,
+    }),
+    []
+  );
 
-  useEffect(() => {
-    if (scene) {
-      // 优化模型
-      scene.traverse((child: Object3D) => {
-        if (child instanceof Mesh) {
-          // 优化几何体
-          if (child.geometry) {
-            child.geometry.computeBoundingSphere();
-            child.geometry.computeBoundingBox();
-          }
-          // 禁用不必要的更新
-          child.matrixAutoUpdate = false;
-          child.updateMatrix();
-        }
-      });
-    }
-  }, [scene]);
+  useEffect(() => prepareScene(scene), [scene]);
 
-  // 使用 useFrame 的第二个参数优化动画更新频率
   useFrame((state, delta) => {
-    if (meshRef.current) {
-      const time = state.clock.getElapsedTime();
-      
-      meshRef.current.rotation.y = 
-        Math.sin(time * animationParams.swingSpeed + animationParams.phaseOffset) 
-        * animationParams.swingAmplitude 
-        * animationParams.rotationDirection;
-
-      const targetScale = hovered ? animationParams.hoverScale : animationParams.baseScale;
-      meshRef.current.scale.lerp(
-        new Vector3(targetScale, targetScale, targetScale),
-        delta * 10 * animationParams.scaleTransitionSpeed
-      );
-
-      // 更新矩阵
-      meshRef.current.updateMatrix();
-    }
+    if (!ref.current) return;
+    const t = state.clock.getElapsedTime();
+    ref.current.rotation.y = Math.sin(t * anim.speed + anim.phase) * anim.amplitude * anim.direction;
+    const s = hovered ? 0.3 : 0.15;
+    ref.current.scale.lerp(target.set(s, s, s), delta * 2);
   });
 
   return (
-    <Float
-      speed={animationParams.floatSpeed}
-      rotationIntensity={0.5}
-      floatIntensity={0.5}
-    >
+    <Float speed={anim.float} rotationIntensity={0.5} floatIntensity={0.5}>
       <primitive
-        ref={meshRef}
+        ref={ref}
         object={scene}
         position={position}
-        scale={animationParams.baseScale}
+        scale={0.15}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
       />
@@ -225,267 +129,125 @@ const Model = ({ path, position }: { path: string; position: [number, number, nu
   );
 };
 
-/**
- * 模型网格组件
- * 功能：
- * 1. 管理所有模型的状态
- * 2. 根据画布大小动态更新模型位置
- * 3. 处理模型的加载状态
- */
-const ModelsGrid = () => {
-  const [models, setModels] = useState<SkillModel[]>([]);
-  const { size } = useThree();
-  const [mounted, setMounted] = useState(false);
-
-  // 初始化和窗口大小变化时重新生成模型
-  useEffect(() => {
-    const generateModels = () => {
-      const newModels = getSkillModels();
-      setModels(newModels);
-      setMounted(true);
-    };
-
-    generateModels();
-  }, [size.width, size.height]);
-
-  if (!mounted || models.length === 0) {
-    return null;
-  }
-
+const ModelsGrid: React.FC = () => {
+  const models = useMemo(() => SKILL_MODELS.map((m) => ({ ...m, position: randomPosition() })), []);
   return (
     <group>
       <CenterModel />
-      {models.map((model) => (
-        <Suspense key={`${model.name}-${size.width}-${size.height}`}>
-          <Model 
-            path={model.path} 
-            position={model.position} 
-          />
+      {models.map((m) => (
+        <Suspense key={m.name} fallback={null}>
+          <SkillModel path={m.path} position={m.position} />
         </Suspense>
       ))}
     </group>
   );
 };
 
-/**
- * 响应式容器组件
- * 功能：
- * 1. 根据屏幕宽度调整模型整体大小
- * 2. 在不同设备上保持合适的显示比例
- */
-const ResponsiveContainer = ({ children }: { children: React.ReactNode }) => {
+const ResponsiveScale: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { size } = useThree();
-  const [scale, setScale] = useState(1);
-
-  useEffect(() => {
-    const calculateScale = () => {
-      if (size.width < 640) return 0.3; // 增大移动设备缩放比例
-      if (size.width < 1024) return 0.4; // 增大平板设备缩放比例
-      return 0.6; // 增大桌面设备缩放比例
-    };
-    setScale(calculateScale());
-  }, [size.width]);
-
-  return (
-    <group scale={scale}>
-      {children}
-    </group>
-  );
+  const scale = size.width < 640 ? 0.3 : size.width < 1024 ? 0.4 : 0.6;
+  return <group scale={scale}>{children}</group>;
 };
 
-// 加载进度组件
-function LoadingIndicator() {
+/** 用 Lightformer 在场景内生成环境光，替代原来 32MB 的 HDR 贴图 */
+const Lighting: React.FC = () => (
+  <>
+    <Environment resolution={128} frames={1}>
+      <Lightformer intensity={2.5} position={[0, 5, -9]} scale={[12, 6, 1]} />
+      <Lightformer intensity={1.5} position={[-6, 1, -1]} rotation-y={Math.PI / 2} scale={[12, 2, 1]} />
+      <Lightformer intensity={1.5} position={[6, 1, -1]} rotation-y={-Math.PI / 2} scale={[12, 2, 1]} />
+      <Lightformer form="ring" color="#ff0088" intensity={3} position={[8, 6, 8]} scale={3} />
+      <Lightformer form="ring" color="#5522ff" intensity={3} position={[-8, -4, 6]} scale={3} />
+    </Environment>
+    <ambientLight intensity={0.8} />
+    <pointLight position={[10, 10, 10]} intensity={1.5} />
+    <pointLight position={[0, 0, 10]} intensity={1} />
+  </>
+);
+
+const LoadingIndicator: React.FC = () => {
   const { progress } = useProgress();
   return (
-    <Html center>
-      <div className="text-white text-xl">
-        加载中... {progress.toFixed(0)}%
-      </div>
+    <Html center zIndexRange={[20, 0]}>
+      <span className="whitespace-nowrap font-mono text-xs tracking-widest text-white/60">
+        LOADING {progress.toFixed(0)}%
+      </span>
     </Html>
-  );
-}
-// 预加载所有模型
-const modelPaths = getSkillModels().map(model => model.path);
-modelPaths.forEach(path => useGLTF.preload(path));
-
-const Scene = () => {
-  return (
-    <>
-      {/* 设置环境背景 */}
-      <Environment 
-        files="/moderimages/Lamp_1.hdr" // 环境背景文件路径
-        background={false} // 是否作为背景
-        blur={0.5} // 模糊度
-        resolution={256} // 分辨率
-        // preset="apartment" // 预设场景
-      />
-      <ambientLight intensity={0.8} />
-      <pointLight position={[10, 10, 10]} intensity={1.5} castShadow={false} />
-      {/* <pointLight position={[-10, -10, -5]} intensity={1} color="#ffffff" castShadow={false} /> */}
-      <pointLight position={[0, 0, 10]} intensity={1} castShadow={false} />
-      
-      <ResponsiveContainer>
-        <ModelsGrid />
-      </ResponsiveContainer>
-    </>
   );
 };
 
-/**
- * 能力展示区域主组件
- * 功能：
- * 1. 创建 3D 场景容器
- * 2. 配置照明和相机
- * 3. 设置交互控制
- * 4. 应用渐变背景和装饰效果
- */
-const AbilitySection = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [key, setKey] = useState(0);
-  const [containerSize, setContainerSize] = useState({
-    width: 0,
-    height: 0
-  });
-
-  // 使用防抖优化尺寸更新
-  const updateContainerSize = useMemo(() => {
-    let timeoutId: NodeJS.Timeout;
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        if (containerRef.current) {
-          const { clientWidth, clientHeight } = containerRef.current;
-          setContainerSize({
-            width: clientWidth,
-            height: clientHeight
-          });
-          setKey(prev => prev + 1);
-        }
-      }, 200);
-    };
-  }, []);
-
-  useEffect(() => {
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.target === containerRef.current) {
-          requestAnimationFrame(updateContainerSize);
-        }
-      }
-    });
-
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current);
-      updateContainerSize();
-    }
-
-    window.addEventListener('resize', updateContainerSize);
-
-    return () => {
-      resizeObserver.disconnect();
-      window.removeEventListener('resize', updateContainerSize);
-    };
-  }, [updateContainerSize]);
+const AbilitySection: React.FC = () => {
+  const { ref, inView, hasEntered } = useInView<HTMLDivElement>();
+  const coarsePointer = useIsCoarsePointer();
 
   return (
-    <section ref={containerRef} className="h-screen w-full relative overflow-hidden">
-      <div className="absolute inset-0">
-        {containerSize.width > 0 && containerSize.height > 0 && (
+    <section className="bg-night pb-[clamp(4.5rem,10vw,8rem)] text-white">
+      <div className="container-page border-t border-white/10 pt-[clamp(4.5rem,10vw,8rem)]">
+        <SectionHeader
+          inverse
+          index="04"
+          label="Skills"
+          title={
+            <>
+              技能与<span className="text-brand-yellow">工具箱</span>
+            </>
+          }
+          description="画面中间那句话，是我最想让你记住的。把鼠标悬停在图标上看看——这只是一部分，更多正在探索中。"
+        />
+      </div>
+
+      <div ref={ref} className="relative mt-6 h-[55vh] min-h-[380px] md:h-[68vh]">
+        {hasEntered && (
           <Canvas
-            key={`canvas-${key}-${containerSize.width}-${containerSize.height}`}
-            camera={{ 
-              position: [0, 0, 25],
-              fov: 40,
-              near: 0.1,
-              far: 100
-            }}
-            style={{ width: '100%', height: '100%' }}
-            resize={{ scroll: false }}
-            dpr={window.devicePixelRatio > 2 ? 2 : window.devicePixelRatio}
-            gl={{
-              preserveDrawingBuffer: true,
-              antialias: false,
-              powerPreference: 'high-performance',
-              alpha: false,
-              toneMapping: THREE.ACESFilmicToneMapping,
-              toneMappingExposure: 1.0
-            }}
-            performance={{ min: 0.5 }}
+            frameloop={inView ? "always" : "never"}
+            dpr={[1, 1.75]}
+            camera={{ position: [0, 0, 25], fov: 40, near: 0.1, far: 100 }}
+            gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
           >
             <Suspense fallback={<LoadingIndicator />}>
-              <Scene />
-              <OrbitControls
-                enableZoom={false}
-                enablePan={false}
-                minPolarAngle={Math.PI / 2.5}
-                maxPolarAngle={Math.PI / 1.8}
-                minAzimuthAngle={-Math.PI / 3}
-                maxAzimuthAngle={Math.PI / 3}
-                maxDistance={35}
-                minDistance={15}
-                enableDamping={true}
-                dampingFactor={0.05}
-              />
+              <Lighting />
+              <ResponsiveScale>
+                <ModelsGrid />
+              </ResponsiveScale>
+              {!coarsePointer && (
+                <OrbitControls
+                  enableZoom={false}
+                  enablePan={false}
+                  minPolarAngle={Math.PI / 2.5}
+                  maxPolarAngle={Math.PI / 1.8}
+                  minAzimuthAngle={-Math.PI / 3}
+                  maxAzimuthAngle={Math.PI / 3}
+                  enableDamping
+                  dampingFactor={0.05}
+                />
+              )}
             </Suspense>
           </Canvas>
         )}
       </div>
-    <div className="absolute bottom-0 left-0 w-full  text-white py-4 px-4 ">
-      <div className="max-w-5xl mx-auto">
-       
-        <div className="space-y-4 md:space-y-6">
-          {/* 开发技能部分 */}
-          <div className="flex flex-col items-center">
-            <h3 className="text-lg md:text-xl font-semibold mb-2 text-blue-base dark:text-blue-dark">开发技能</h3>
-            <div className="flex flex-wrap justify-center gap-2">
-              {[
-                "HTML", "CSS", "JavaScript", "Java", "Python", "Arduino",
-                "Processing", "React", "Next.js", "Three.js",
-                "Data analysis library", "Machine learning algorithm library",
-                "Deep learning algorithm library"
-              ].map((skill) => (
-                <div
-                  key={skill}
-                  className="px-3 py-1 bg-white/10 backdrop-blur-md rounded-full
-                           hover:bg-white/20 transition-all duration-300 transform
-                           hover:scale-105 cursor-default text-sm"
-                >
-                  {skill}
-                </div>
-              ))}
-            </div>
-          </div>
 
-          {/* 其他技能部分 */}
-          <div className="flex flex-col items-center">
-            <h3 className="text-lg md:text-xl font-semibold mb-2 text-blue-base dark:text-blue-dark">其他技能</h3>
-            <div className="flex flex-wrap justify-center gap-2 max-w-3xl">
-              {[
-                "Adobe 全家桶全集",
-                "三维模型软件：Rhino、C4D、Blender、3DS MAX、ProE、Solidworks",
-                "设计软件：Figma、Sketch",
-                "渲染软件：Keyshot、Unreal Engine、Unity、Cycles、V ray、Redshift",
-                "表面处理工艺（IMD、水转印、蚀刻等）",
-                "生产制造技术（CNC、3D打印等）"
-              ].map((skill) => (
-                <div
-                  key={skill}
-                  className="px-3 py-1 bg-white/10 backdrop-blur-md rounded-lg
-                           hover:bg-white/20 transition-all duration-300 transform
-                           hover:scale-105 cursor-default text-xs md:text-sm"
-                >
-                  {skill}
-                </div>
-              ))}
-            </div>
-        <p className="text-base md:text-lg font-medium mt-4 text-zinc-light dark:text-zinc-dark italic">
-          以上仅为部分技能，更多技能正在探索中……
-        </p>
+      <div className="container-page mt-10 grid gap-10 md:grid-cols-2">
+        <div>
+          <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-white/55">开发技能</h3>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {devSkills.map((s) => (
+              <Tag key={s} tone="inverse">
+                {s}
+              </Tag>
+            ))}
           </div>
         </div>
-
+        <div>
+          <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-white/55">设计与制造</h3>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {otherSkills.map((s) => (
+              <Tag key={s} tone="inverse">
+                {s}
+              </Tag>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
     </section>
   );
 };

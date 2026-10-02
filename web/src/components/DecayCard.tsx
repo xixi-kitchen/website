@@ -1,207 +1,83 @@
-import React, { useEffect, useRef, ReactNode } from "react";
-import { gsap } from "gsap"; // 导入gsap动画库
+import React, { ReactNode, useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
 interface DecayCardProps {
-  width?: number; // 宽度
-  height?: number; // 高度
-  image?: string; // 图像地址
-  children?: ReactNode; // 子元素
+  width?: number;
+  height?: number;
+  image?: string;
+  children?: ReactNode;
 }
 
-const DecayCard: React.FC<DecayCardProps> = ({
-  width = 300, // 默认宽度
-  height = 400, // 默认高度
-  image = "https://picsum.photos/300/400?grayscale", // 默认图像地址
-  children,
-}) => {
-  const svgRef = useRef<HTMLDivElement | null>(null); // SVG容器的引用
-  const displacementMapRef = useRef<SVGFEDisplacementMapElement | null>(null); // 位移映射的引用
-  const cursor = useRef<{ x: number; y: number }>({
-    x: window.innerWidth / 2, // 初始光标X坐标
-    y: window.innerHeight / 2, // 初始光标Y坐标
-  });
-  const cachedCursor = useRef<{ x: number; y: number }>({ ...cursor.current }); // 缓存光标位置
-  const winsize = useRef<{ width: number; height: number }>({
-    width: window.innerWidth, // 当前窗口宽度
-    height: window.innerHeight, // 当前窗口高度
-  });
+const lerp = (a: number, b: number, n: number) => (1 - n) * a + n * b;
+const map = (x: number, a: number, b: number, c: number, d: number) => ((x - a) * (d - c)) / (b - a) + c;
+
+const DecayCard: React.FC<DecayCardProps> = ({ width = 300, height = 400, image = "/contact-cover.svg", children }) => {
+  const cardRef = useRef<HTMLDivElement | null>(null);
+  const displacementMapRef = useRef<SVGFEDisplacementMapElement | null>(null);
 
   useEffect(() => {
-    const lerp = (a: number, b: number, n: number): number => // 线性插值函数
-      (1 - n) * a + n * b;
-    const map = (
-      x: number,
-      a: number,
-      b: number,
-      c: number,
-      d: number
-    ): number => // 映射函数
-      ((x - a) * (d - c)) / (b - a) + c;
-    const distance = (x1: number, x2: number, y1: number, y2: number): number => // 计算距离函数
-      Math.hypot(x1 - x2, y1 - y2);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const handleResize = (): void => { // 窗口大小变化处理函数
-      winsize.current = {
-        width: window.innerWidth,
-        height: window.innerHeight,
-      };
+    const cursor = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    let cached = { ...cursor };
+    const state = { x: 0, y: 0, rz: 0, displacement: 0 };
+    let frame = 0;
+
+    const onMove = (ev: MouseEvent) => {
+      cursor.x = ev.clientX;
+      cursor.y = ev.clientY;
     };
 
-    const handleMouseMove = (ev: MouseEvent): void => { // 光标移动处理函数
-      cursor.current = { x: ev.clientX, y: ev.clientY };
+    const render = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      let x = lerp(state.x, map(cursor.x, 0, w, -120, 120), 0.1);
+      let y = lerp(state.y, map(cursor.y, 0, h, -120, 120), 0.1);
+      const bound = 50;
+      if (x > bound) x = bound + (x - bound) * 0.2;
+      if (x < -bound) x = -bound + (x + bound) * 0.2;
+      if (y > bound) y = bound + (y - bound) * 0.2;
+      if (y < -bound) y = -bound + (y + bound) * 0.2;
+      state.x = x;
+      state.y = y;
+      state.rz = lerp(state.rz, map(cursor.x, 0, w, -10, 10), 0.1);
+
+      const travelled = Math.hypot(cached.x - cursor.x, cached.y - cursor.y);
+      state.displacement = lerp(state.displacement, map(travelled, 0, 200, 0, 400), 0.06);
+      cached = { ...cursor };
+
+      if (cardRef.current) gsap.set(cardRef.current, { x: state.x, y: state.y, rotateZ: state.rz });
+      if (displacementMapRef.current) gsap.set(displacementMapRef.current, { attr: { scale: state.displacement } });
+
+      frame = requestAnimationFrame(render);
     };
 
-    window.addEventListener("resize", handleResize); // 监听窗口大小变化
-    window.addEventListener("mousemove", handleMouseMove); // 监听光标移动
-
-    const imgValues = {
-      imgTransforms: { x: 0, y: 0, rz: 0 }, // 图像变换初始值
-      displacementScale: 0, // 位移映射初始值
-    };
-
-    const render = () => { // 渲染函数
-      let targetX = lerp(
-        imgValues.imgTransforms.x,
-        map(cursor.current.x, 0, winsize.current.width, -120, 120),
-        0.1
-      );
-      let targetY = lerp(
-        imgValues.imgTransforms.y,
-        map(cursor.current.y, 0, winsize.current.height, -120, 120),
-        0.1
-      );
-      const targetRz = lerp(
-        imgValues.imgTransforms.rz,
-        map(cursor.current.x, 0, winsize.current.width, -10, 10),
-        0.1
-      );
-
-      const bound = 50; // 边界值
-      if (targetX > bound) targetX = bound + (targetX - bound) * 0.2;
-      if (targetX < -bound) targetX = -bound + (targetX + bound) * 0.2;
-      if (targetY > bound) targetY = bound + (targetY - bound) * 0.2;
-      if (targetY < -bound) targetY = -bound + (targetY + bound) * 0.2;
-
-      imgValues.imgTransforms.x = targetX;
-      imgValues.imgTransforms.y = targetY;
-      imgValues.imgTransforms.rz = targetRz;
-
-      if (svgRef.current) {
-        gsap.set(svgRef.current, {
-          x: imgValues.imgTransforms.x,
-          y: imgValues.imgTransforms.y,
-          rotateZ: imgValues.imgTransforms.rz,
-        });
-      }
-
-      const cursorTravelledDistance = distance(
-        cachedCursor.current.x,
-        cursor.current.x,
-        cachedCursor.current.y,
-        cursor.current.y
-      );
-      imgValues.displacementScale = lerp(
-        imgValues.displacementScale,
-        map(cursorTravelledDistance, 0, 200, 0, 400),
-        0.06
-      );
-
-      if (displacementMapRef.current) {
-        gsap.set(displacementMapRef.current, {
-          attr: { scale: imgValues.displacementScale },
-        });
-      }
-
-      cachedCursor.current = { ...cursor.current };
-
-      requestAnimationFrame(render);
-    };
-
-    render();
+    window.addEventListener("mousemove", onMove);
+    frame = requestAnimationFrame(render);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", handleMouseMove);
+      cancelAnimationFrame(frame);
+      window.removeEventListener("mousemove", onMove);
     };
   }, []);
 
-  // 计算文字容器的样式
-  const getTextContainerStyle = () => {
-    const baseSize = Math.min(width, height);
-    return {
-      fontSize: `${baseSize * 0.15}px`,
-      lineHeight: 1.2,
-      padding: `${baseSize * 0.04}px`,
-      maxWidth: '95%',
-      position: 'absolute' as const,
-      left: '50%',
-      top: '50%',
-      transform: 'translate(-50%, -50%)',
-      width: '100%',
-      display: 'flex' as const,
-      flexDirection: 'column' as const,
-      justifyContent: 'center' as const,
-      alignItems: 'center' as const
-    };
-  };
-
   return (
-    <div
-      ref={svgRef}
-      className="relative"
-      style={{ width: `${width}px`, height: `${height}px` }}
-    >
-      <svg
-        viewBox="-60 -75 720 900"
-        preserveAspectRatio="xMidYMid slice"
-        className="relative w-full h-full block [will-change:transform]"
-      >
-        <filter id="imgFilter">
-          <feTurbulence
-            type="turbulence"
-            baseFrequency="0.015"
-            numOctaves="5"
-            seed="4"
-            stitchTiles="stitch"
-            x="0%"
-            y="0%"
-            width="100%"
-            height="100%"
-            result="turbulence1"
-          />
+    <div ref={cardRef} className="relative" style={{ width, height }}>
+      <svg viewBox="-60 -75 720 900" preserveAspectRatio="xMidYMid slice" className="relative block h-full w-full will-change-transform">
+        <filter id="decayFilter">
+          <feTurbulence type="turbulence" baseFrequency="0.015" numOctaves="5" seed="4" stitchTiles="stitch" result="turbulence" />
           <feDisplacementMap
             ref={displacementMapRef}
             in="SourceGraphic"
-            in2="turbulence1"
+            in2="turbulence"
             scale="0"
             xChannelSelector="R"
             yChannelSelector="B"
-            x="0%"
-            y="0%"
-            width="100%"
-            height="100%"
-            result="displacementMap3"
           />
         </filter>
-        <g>
-          <image
-            href={image}
-            x="0"
-            y="0"
-            width="600"
-            height="750"
-            filter="url(#imgFilter)"
-            preserveAspectRatio="xMidYMid slice"
-            className="dark:brightness-50"
-          />
-        </g>
+        <image href={image} x="0" y="0" width="600" height="750" filter="url(#decayFilter)" preserveAspectRatio="xMidYMid slice" />
       </svg>
-      <div 
-        className="absolute inset-0 flex flex-col justify-center items-center text-center"
-        style={getTextContainerStyle()}
-      >
-        {children}
-      </div>
+      <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">{children}</div>
     </div>
   );
 };

@@ -1,220 +1,132 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/router";
+import { AnimatePresence, motion } from "framer-motion";
+import { ShapeRow } from "./ui/BrandShapes";
 
-/**
- * 导航栏组件
- * 功能：
- * 1. 响应式设计：在移动端和桌面端有不同的显示方式
- * 2. 支持暗色模式
- * 3. 包含 Logo 和导航链接
- * 4. 移动端支持汉堡菜单展开/收起
- */
+interface NavItem {
+  href: string;
+  label: string;
+  beta?: boolean;
+}
+
+export const navItems: NavItem[] = [
+  { href: "/experience", label: "经历" },
+  { href: "/projects", label: "项目" },
+  { href: "/ai", label: "AI", beta: true },
+  { href: "/toys", label: "创意", beta: true },
+  { href: "/about", label: "关于" },
+  { href: "/contact", label: "联系" },
+];
+
 const Navbar: React.FC = () => {
-  // 控制移动端菜单的展开状态
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const [showBanner, setShowBanner] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowBanner(false);
-    }, 3000);
-    return () => clearTimeout(timer);
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // 切换移动端菜单的展开/收起状态
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  useEffect(() => {
+    const close = () => setIsOpen(false);
+    router.events.on("routeChangeStart", close);
+    return () => router.events.off("routeChangeStart", close);
+  }, [router.events]);
 
-  // 点击链接时关闭移动端菜单
-  const handleLinkClick = () => {
-    setIsOpen(false);
-  };
+  const isActive = (href: string) => router.pathname === href || router.pathname.startsWith(`${href}/`);
 
   return (
-    <>
-      <nav className={`bg-gradient-to-r from-blue-base via-yellow-base to-pink-base ${isOpen ? 'shadow-lg' : 'shadow'} dark:bg-gradient-to-r dark:from-blue-dark dark:via-yellow-dark dark:to-pink-dark relative z-50 `}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            {/* Logo 和导航链接容器 */}
-            <div className="flex justify-between w-full">
-              {/* Logo 部分 */}
-              <Link
-                href="/"
-                onClick={handleLinkClick}
-                className="flex-shrink-0 flex items-center text-xl font-bold text-black dark:text-white"
-              >
-                <Image
-                  className="dark:invert"
-                  src="/Generated 3D Image.svg"
-                  alt="首页 logo"
-                  width={40}
-                  height={40}
-                />
-                HUGH·Aix
-              </Link>
+    <header
+      className={`sticky top-0 z-50 border-b transition-colors duration-300 ${
+        scrolled || isOpen ? "border-line bg-canvas/85 backdrop-blur-xl" : "border-transparent bg-canvas"
+      }`}
+    >
+      <nav className="container-page flex h-16 items-center justify-between" aria-label="主导航">
+        <Link href="/" className="group flex items-center gap-3 text-ink" aria-label="返回首页">
+          <ShapeRow size={14} className="transition-transform duration-500 group-hover:-rotate-6" />
+          <span className="text-[15px] font-semibold tracking-tight">HUGH·Aix</span>
+        </Link>
 
-              {/* 桌面端导航链接 */}
-              <div className="hidden md:ml-6 md:flex md:space-x-8 md:items-center">
-                {/* 各个导航链接项 */}
+        <ul className="hidden items-center gap-1 md:flex">
+          {navItems.map((item) => {
+            const active = isActive(item.href);
+            return (
+              <li key={item.href}>
                 <Link
-                  href="/ai"
-                  className="px-3 py-2 rounded-md text-sm font-black hover:scale-120 hover:font-extrabold gap-2.5 flex items-center"
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`relative flex items-center gap-1.5 rounded-full px-4 py-2 text-sm transition-colors ${
+                    active ? "text-ink" : "text-muted hover:text-ink"
+                  }`}
                 >
-                  <span className="bg-[linear-gradient(30deg,#a78bfa,#ec4899,#ef4444)] bg-[length:200%_200%] bg-clip-text text-transparent gradient-animate">
-                    AI
-                  </span>
-                  🚧
-                </Link>
-                <Link
-                  href="/experience"
-                  className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-120 hover:font-extrabold"
-                >
-                  经历
-                </Link>
-                <Link
-                  href="/projects"
-                  className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-120 hover:font-extrabold"
-                >
-                  项目
-                </Link>
-                <Link
-                  href="/toys"
-                  className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-120 hover:font-extrabold"
-                >
-                  创意 🚧
-                </Link>
-                <Link
-                  href="/contact"
-                  className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-120 hover:font-extrabold"
-                >
-                  联系
-                </Link>
-                <Link
-                  href="/about"
-                  className="text-zinc-dark dark:text-white px-3 py-2 rounded-md text-sm font-black hover:scale-120 hover:font-extrabold"
-                >
-                  关于
-                </Link>
-              </div>
-            </div>
-
-            {/* 移动端汉堡菜单按钮 */}
-            <div className="-mr-2 flex items-center md:hidden">
-              <button
-                onClick={toggleMenu}
-                className="inline-flex items-center justify-center p-2 rounded-md text-zinc-dark dark:text-white  focus:outline-none hover:scale-120"
-              >
-                {/* 汉堡菜单图标，根据菜单状态显示不同图标 */}
-                <svg
-                  className="h-6 w-6"
-                  stroke="currentColor"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  {isOpen ? (
-                    // 关闭图标
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  ) : (
-                    // 汉堡菜单图标
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M4 6h16M4 12h16M4 18h16"
+                  {item.label}
+                  {item.beta && (
+                    <span className="rounded-full border border-line px-1.5 font-mono text-[10px] leading-4 text-muted">
+                      Beta
+                    </span>
+                  )}
+                  {active && (
+                    <motion.span
+                      layoutId="nav-active"
+                      className="absolute inset-x-4 -bottom-[1px] h-[2px] bg-gradient-to-r from-brand-pink via-brand-blue to-brand-yellow"
+                      transition={{ type: "spring", stiffness: 400, damping: 34 }}
                     />
                   )}
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
 
-        {/* 移动端展开的菜单 */}
-        {isOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              {/* 移动端导航链接列表 */}
-              <Link
-                href="/ai"
-                onClick={handleLinkClick}
-                className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105 focus:scale-105 focus:font-extrabold"
-              >
-                AI 🚧
-              </Link>
-              <Link
-                href="/experience"
-                onClick={handleLinkClick}
-                className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105 focus:scale-105 focus:font-extrabold"
-              >
-                经历
-              </Link>
-              <Link
-                href="/projects"
-                onClick={handleLinkClick}
-                className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105 focus:scale-105 focus:font-extrabold"
-              >
-                项目
-              </Link>
-              <Link
-                href="/toys"
-                onClick={handleLinkClick}
-                className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105 focus:scale-105 focus:font-extrabold"
-              >
-                创意 🚧
-              </Link>
-              <Link
-                href="/contact"
-                onClick={handleLinkClick}
-                className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105 focus:scale-105 focus:font-extrabold"
-              >
-                联系
-              </Link>
-              <Link
-                href="/about"
-                onClick={handleLinkClick}
-                className="block text-zinc-dark dark:text-white px-3 py-2 rounded-md text-base font-black hover:scale-105 focus:scale-105 focus:font-extrabold"
-              >
-                关于
-              </Link>
-            </div>
-          </div>
-        )}
+        <button
+          type="button"
+          onClick={() => setIsOpen((v) => !v)}
+          className="-mr-2 flex h-10 w-10 items-center justify-center rounded-full text-ink md:hidden"
+          aria-label={isOpen ? "关闭菜单" : "打开菜单"}
+          aria-expanded={isOpen}
+        >
+          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+            {isOpen ? <path d="M6 18 18 6M6 6l12 12" /> : <path d="M4 8h16M4 16h16" />}
+          </svg>
+        </button>
       </nav>
 
       <AnimatePresence>
-        {showBanner && (
+        {isOpen && (
           <motion.div
-            initial={{ y: -100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -100, opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="fixed top-16 left-0 right-0 z-40"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden border-t border-line md:hidden"
           >
-            <div className="w-screen mx-auto ">
-              <div className="bg-gradient-to-r from-blue-base/90 via-yellow-base/90 to-pink-base/90 dark:from-blue-dark/90 dark:via-yellow-dark/90 dark:to-pink-dark/90 backdrop-blur-sm  shadow-lg border-b border-white/10">
-                <div className="py-3 px-4 flex items-center justify-center gap-2">
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                  <p className="text-white text-sm font-medium">
-                    由 <span className="font-bold">HUGH·Aix</span> 独立设计、开发与部署
-                  </p>
-                </div>
-              </div>
-            </div>
+            <ul className="container-page flex flex-col py-4">
+              {navItems.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={`flex items-center justify-between py-3 text-2xl font-semibold ${
+                      isActive(item.href) ? "text-ink" : "text-muted"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      {item.label}
+                      {item.beta && <span className="font-mono text-xs font-normal text-muted">Beta</span>}
+                    </span>
+                    {isActive(item.href) && <span className="h-2 w-2 rounded-full bg-brand-pink" />}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </header>
   );
-}
+};
 
 export default Navbar;

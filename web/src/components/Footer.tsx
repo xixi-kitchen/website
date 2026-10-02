@@ -1,62 +1,91 @@
-import React from 'react';
-import Image from 'next/image';
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { navItems } from "./Navbar";
+import { ShapeRow } from "./ui/BrandShapes";
+import { ArrowIcon } from "./ui/Button";
+
+const emails = [
+  { label: "QQ 邮箱", value: "1850786422@qq.com" },
+  { label: "Gmail", value: "xixikitchen@gmail.com" },
+];
 
 const Footer: React.FC = () => {
-  const isChinaServer = process.env.NEXT_PUBLIC_IS_CHINA_SERVER === 'true';
+  const isChinaServer = process.env.NEXT_PUBLIC_IS_CHINA_SERVER === "true";
   const icpNumber = process.env.NEXT_PUBLIC_ICP_NUMBER;
   const psbNumber = process.env.NEXT_PUBLIC_PSB_NUMBER;
   const psbCode = process.env.NEXT_PUBLIC_PSB_CODE;
 
   return (
-    <footer className="bg-white dark:bg-black shadow">
-      <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        <p className="text-center text-black dark:text-white text-sm">
-          &copy; {new Date().getFullYear()} HUGH·Aix. 版权所有.
-        </p>
-        
-        {/* 备案信息 */}
-        {isChinaServer && (
-          <div className="text-center text-sm mt-2 flex justify-center items-center gap-4">
-            {/* ICP备案信息 */}
-            {icpNumber && (
-              <a
-                href="https://beian.miit.gov.cn/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-              >
-                备案号：{icpNumber}
-              </a>
-            )}
-            
-            {/* 公安备案信息 */}
-            {psbNumber && psbCode && (
-              <a
-                href={`http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=${psbCode}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 inline-flex items-center"
-              >
-                <Image 
-                  src="/beian.png" 
-                  alt="公安备案图标" 
-                  width={16}
-                  height={16}
-                  className="mr-1"
-                />
-                {psbNumber}
-              </a>
-            )}
+    <footer className="bg-night text-white">
+      <div className="container-page pt-20 pb-10 md:pt-28">
+        <div className="grid gap-14 md:grid-cols-[1.4fr_1fr]">
+          <div>
+            <ShapeRow size={22} />
+            <p className="mt-8 text-title font-semibold">
+              一起做点
+              <span className="mx-2 bg-brand-yellow px-2 text-night">不平淡</span>
+              的事。
+            </p>
+            <ul className="mt-10 space-y-3">
+              {emails.map((email) => (
+                <li key={email.value}>
+                  <a
+                    href={`mailto:${email.value}`}
+                    className="group inline-flex items-baseline gap-3 text-lg text-white/80 transition-colors hover:text-white md:text-xl"
+                  >
+                    <span className="w-20 font-mono text-xs uppercase tracking-widest text-white/45">{email.label}</span>
+                    {email.value}
+                    <ArrowIcon className="self-center" />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
-        )}
 
-        {/* 开发环境指示器 */}
-        {process.env.NODE_ENV === 'development' && (
-          <div className="text-xs text-gray-400 mt-2 text-center">
-            当前环境: {isChinaServer ? '中国服务器' : '海外服务器'}<br />
-            ICP备案: {icpNumber || '未设置'}<br />
-            公安备案: {psbNumber || '未设置'}
-          </div>
+          <nav aria-label="页脚导航" className="grid grid-cols-2 content-start gap-x-8 gap-y-3 text-white/70 md:justify-self-end">
+            <p className="col-span-2 mb-2 font-mono text-xs uppercase tracking-[0.2em] text-white/45">Sitemap</p>
+            <Link href="/" className="transition-colors hover:text-white">
+              首页
+            </Link>
+            {navItems.map((item) => (
+              <Link key={item.href} href={item.href} className="transition-colors hover:text-white">
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        <div className="mt-20 flex flex-col gap-4 border-t border-white/10 pt-8 text-sm text-white/50 md:flex-row md:items-center md:justify-between">
+          <p>
+            &copy; {new Date().getFullYear()} HUGH·Aix · 由 HUGH·Aix 独立设计、开发与部署
+          </p>
+          {isChinaServer && (
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+              {icpNumber && (
+                <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" className="hover:text-white">
+                  {icpNumber}
+                </a>
+              )}
+              {psbNumber && psbCode && (
+                <a
+                  href={`http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=${psbCode}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 hover:text-white"
+                >
+                  <Image src="/beian.png" alt="" width={14} height={14} />
+                  {psbNumber}
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+
+        {process.env.NODE_ENV === "development" && (
+          <p className="mt-4 font-mono text-[11px] text-white/30">
+            dev · {isChinaServer ? "中国服务器" : "海外服务器"} · ICP {icpNumber || "未设置"} · 公安 {psbNumber || "未设置"}
+          </p>
         )}
       </div>
     </footer>
