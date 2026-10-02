@@ -15,7 +15,7 @@ export default function Custom404() {
         <div>
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted">Error 404</p>
           <h1 className="mt-5 text-display font-semibold text-ink">这里什么也没有</h1>
-          <p className="mt-6 max-w-md text-lg leading-relaxed text-muted">你要找的页面可能已被移动或删除。拖动右边的模型玩一会儿，或者回到首页。</p>
+          <p className="mt-6 max-w-md text-lg leading-relaxed text-pretty text-muted">你要找的页面可能已被移动或删除。拖动右边的模型玩一会儿，或者回到首页。</p>
           <div className="mt-10 flex flex-wrap gap-3">
             <Button href="/">返回首页</Button>
             <Button href="/projects" variant="secondary" arrow={false}>

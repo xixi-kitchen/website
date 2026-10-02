@@ -13,7 +13,7 @@ export default function Custom500() {
         <div>
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted">Error 500</p>
           <h1 className="mt-5 text-display font-semibold text-ink">服务器开了个小差</h1>
-          <p className="mt-6 max-w-md text-lg leading-relaxed text-muted">请稍后刷新重试。如果问题一直存在，欢迎发邮件告诉我。</p>
+          <p className="mt-6 max-w-md text-lg leading-relaxed text-pretty text-muted">请稍后刷新重试。如果问题一直存在，欢迎发邮件告诉我。</p>
           <div className="mt-10 flex flex-wrap gap-3">
             <Button href="/">返回首页</Button>
             <Button href="mailto:xixikitchen@gmail.com" variant="secondary" arrow={false}>

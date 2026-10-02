@@ -20,7 +20,7 @@ const ProjectsSection: React.FC = () => (
       <div className="mt-14 grid gap-5 md:grid-cols-2">
         {featured.map((project, i) => (
           <Reveal key={project.id} delay={(i % 2) * 0.08} className="h-full">
-            <ProjectCard project={project} href={`/projects?project=${project.id}`} />
+            <ProjectCard project={project} />
           </Reveal>
         ))}
       </div>

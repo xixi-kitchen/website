@@ -1,7 +1,10 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
+  color-scheme: light;
   --canvas: #fafaf7;
   --surface: #ffffff;
   --ink: #121214;
@@ -12,16 +15,15 @@
   --blue-text: #4a14f0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --canvas: #0e0e10;
-    --surface: #17171a;
-    --ink: #f2f2ee;
-    --muted: #a1a1aa;
-    --line: #2a2a2f;
-    --pink-text: #ff5cad;
-    --blue-text: #a08cff;
-  }
+.dark {
+  color-scheme: dark;
+  --canvas: #0e0e10;
+  --surface: #17171a;
+  --ink: #f2f2ee;
+  --muted: #a1a1aa;
+  --line: #2a2a2f;
+  --pink-text: #ff5cad;
+  --blue-text: #a08cff;
 }
 
 @theme {

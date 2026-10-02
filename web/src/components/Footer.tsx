@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
   const psbCode = process.env.NEXT_PUBLIC_PSB_CODE;
 
   return (
-    <footer className="bg-night text-white">
+    <footer className="border-t border-transparent bg-night text-white dark:border-white/10">
       <div className="container-page pt-20 pb-10 md:pt-28">
         <div className="grid gap-14 md:grid-cols-[1.4fr_1fr]">
           <div>

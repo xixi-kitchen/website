@@ -2,6 +2,7 @@
 
 export interface Project {
   id: number;
+  slug: string;
   title: string;
   subtitle?: string;
   description: string;
@@ -45,6 +46,7 @@ export const projects: Project[] = [
   // 最新项目
   {
     id: 1,
+    slug: "app-3-upgrade",
     title: "APP 3.0升级项目",
     type: "latest",
     description: "全面升级APP 3.0版本，覆盖从计划、设计、开发到发布的全过程，确保新版本满足用户需求并提升用户体验。",
@@ -132,6 +134,7 @@ export const projects: Project[] = [
   },
   {
     id: 2,
+    slug: "ui-refresh",
     title: "软件界面更新",
     type: "latest",
     description: "对APP中80%的页面进行设计更新，统一设计元素，提升应用的高级感和专业性，强化品牌形象。",
@@ -175,6 +178,7 @@ export const projects: Project[] = [
   },
   {
     id: 3,
+    slug: "family-account",
     title: "家庭账号功能",
     type: "latest",
     description: "推出家庭账号功能，方便用户管理多个设备和成员的权限，提升安全性和便捷性。",
@@ -234,6 +238,7 @@ export const projects: Project[] = [
   },
   {
     id: 4,
+    slug: "roommap",
     title: "RoomMap功能",
     type: "latest",
     description: "通过直观界面和交互设计，使用户能够更方便地管理家庭中的各个房间和设备。",
@@ -293,6 +298,7 @@ export const projects: Project[] = [
   },
   {
     id: 5,
+    slug: "qq-music",
     title: "QQ音乐接入",
     type: "latest",
     description: "将QQ音乐接入智能家居中控屏，提供更沉浸、更便捷的音乐体验。",
@@ -352,6 +358,7 @@ export const projects: Project[] = [
   },
   {
     id: 6,
+    slug: "data-metrics",
     title: "数据分析体系",
     type: "latest",
     description: "建立全面的数据指标分析体系，为产品优化和决策提供有力支持。",
@@ -411,6 +418,7 @@ export const projects: Project[] = [
   },
   {
     id: 7,
+    slug: "oem-customization",
     title: "软件OEM定制",
     type: "latest",
     description: "管理多个软件OEM定制项目，满足不同客户的定制化需求。",
@@ -470,6 +478,7 @@ export const projects: Project[] = [
   },
   {
     id: 8,
+    slug: "device-integration",
     title: "第三方设备对接",
     type: "latest",
     description: "完成多项第三方设备对接需求，确保智能家居产品与第三方设备的顺畅连接。",
@@ -530,6 +539,7 @@ export const projects: Project[] = [
   // 过往项目
   {
     id: 9,
+    slug: "futong-business-system",
     title: "富通天下云平台业务系统",
     type: "past",
     description: "对富通天下云平台业务系统板块进行交互细节改版及优化，提升整体用户体验和业务效率。",
@@ -589,6 +599,7 @@ export const projects: Project[] = [
   },
   {
     id: 10,
+    slug: "lead-scoring",
     title: "公海客户评分系统",
     type: "past",
     description: "构建动态客户评分体系，定期评估公海客户价值变化，筛选出重新具备潜力的客户并自动推送给销售团队。",
@@ -665,6 +676,7 @@ export const projects: Project[] = [
   },
   {
     id: 11,
+    slug: "global-buyers",
     title: "全球买家板块重构",
     type: "past",
     description: "系统性重构富通天下云平台全球买家板块的交互逻辑与界面设计，提升用户体验和业务效率。",
@@ -741,6 +753,7 @@ export const projects: Project[] = [
   },
   {
     id: 12,
+    slug: "email-module",
     title: "邮件模块优化",
     type: "past",
     description: "对富通天下云平台邮件模块实施系统性优化，解决原有配置界面复杂度导致的效率损失问题。",
@@ -817,6 +830,7 @@ export const projects: Project[] = [
   },
   {
     id: 13,
+    slug: "visual-identity",
     title: "公司视觉系统升级",
     type: "past",
     description: "与专业设计公司DGI对接，完成公司视觉系统的全面升级。",
@@ -877,6 +891,7 @@ export const projects: Project[] = [
   // 个人项目（占位）
   {
     id: 14,
+    slug: "personal-lab",
     title: "个人创意项目",
     type: "personal",
     description: "这里将展示我的个人创意项目，包含独特的想法和创新的解决方案。",

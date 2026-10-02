@@ -6,17 +6,11 @@ import Tag from "./ui/Tag";
 import { ArrowIcon } from "./ui/Button";
 import { cardBase, cardInteractive } from "./ui/Card";
 
-interface ProjectCardProps {
-  project: Project;
-  href?: string;
-  onSelect?: (project: Project) => void;
-}
-
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, href, onSelect }) => {
+const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
   const highlight = project.achievements?.highlights?.[0];
 
-  const body = (
-    <>
+  return (
+    <Link href={`/projects/${project.slug}`} className={`group flex h-full flex-col ${cardBase} ${cardInteractive}`}>
       <ProjectCover id={project.id} label={String(project.id).padStart(2, "0")} className="aspect-[16/9]" />
       <div className="flex flex-1 flex-col p-6 md:p-7">
         <div className="flex flex-wrap gap-2">
@@ -37,23 +31,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, href, onSelect }) =>
           <ArrowIcon />
         </span>
       </div>
-    </>
-  );
-
-  const className = `group flex h-full flex-col text-left ${cardBase} ${cardInteractive}`;
-
-  if (href) {
-    return (
-      <Link href={href} scroll={false} className={className}>
-        {body}
-      </Link>
-    );
-  }
-
-  return (
-    <button type="button" onClick={() => onSelect?.(project)} className={`${className} w-full`}>
-      {body}
-    </button>
+    </Link>
   );
 };
 

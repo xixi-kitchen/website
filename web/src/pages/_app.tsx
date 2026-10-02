@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Geist, Geist_Mono } from "next/font/google";
 import { MotionConfig } from "framer-motion";
+import { ThemeProvider } from "next-themes";
 import Layout from "@/components/Layout";
 
 const geistSans = Geist({
@@ -30,13 +31,15 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta property="og:site_name" content="HUGH·Aix" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <MotionConfig reducedMotion="user">
-        <div className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </div>
-      </MotionConfig>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <MotionConfig reducedMotion="user">
+          <div className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </div>
+        </MotionConfig>
+      </ThemeProvider>
     </>
   );
 }
