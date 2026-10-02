@@ -1,6 +1,6 @@
 import React from "react";
+import Image from "next/image";
 
-/** 项目没有封面图时使用的几何占位封面，按项目 id 稳定地选择构图 */
 const layouts = [
   {
     bg: "bg-brand-yellow",
@@ -41,8 +41,30 @@ const layouts = [
   },
 ];
 
-const ProjectCover: React.FC<{ id: number; label?: string; className?: string }> = ({ id, label, className = "" }) => {
+interface ProjectCoverProps {
+  id: number;
+  label?: string;
+  image?: string;
+  alt?: string;
+  className?: string;
+}
+
+const ProjectCover: React.FC<ProjectCoverProps> = ({ id, label, image, alt = "", className = "" }) => {
   const layout = layouts[id % layouts.length];
+
+  if (image) {
+    return (
+      <div className={`relative overflow-hidden bg-line ${className}`}>
+        <Image src={image} alt={alt} fill className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+        {label && (
+          <span className="absolute left-4 top-4 rounded-full bg-white/90 px-2.5 py-1 font-mono text-[11px] tracking-wider text-[#121214]">
+            {label}
+          </span>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className={`relative overflow-hidden ${layout.bg} ${className}`}>
       <svg viewBox="0 0 420 260" fill="none" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" aria-hidden>

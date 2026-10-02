@@ -1,12 +1,15 @@
 import React from "react";
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { projects, type Project } from "@/data/projects";
+import { CASE_STUDY_SECTIONS } from "@/data/case-study";
 import ProjectCover from "@/components/ui/ProjectCover";
 import Reveal from "@/components/ui/Reveal";
 import Tag from "@/components/ui/Tag";
+
 const publicProjects = projects.filter((p) => p.type !== "personal");
 
 const typeLabel: Record<Project["type"], string> = {
@@ -34,6 +37,7 @@ const BulletList: React.FC<{ items: string[] }> = ({ items }) => (
 
 const Columns: React.FC<{ groups: { title: string; items?: string[] }[] }> = ({ groups }) => {
   const visible = groups.filter((g): g is { title: string; items: string[] } => Boolean(g.items?.length));
+  if (!visible.length) return null;
   return (
     <div className={`grid gap-4 ${visible.length >= 3 ? "lg:grid-cols-3" : visible.length === 2 ? "md:grid-cols-2" : ""}`}>
       {visible.map((g) => (
@@ -50,7 +54,6 @@ const Columns: React.FC<{ groups: { title: string; items?: string[] }[] }> = ({ 
   );
 };
 
-/** 把"系统性能提升20%"拆成数字和说明，用大数字展示 */
 const splitMetric = (metric: string) => {
   const match = metric.match(/(\d+(?:\.\d+)?%?)/);
   if (!match || match.index === undefined) return { value: null, label: metric };
@@ -61,108 +64,142 @@ const splitMetric = (metric: string) => {
 };
 
 const buildSections = (p: Project): Section[] => {
-  const sections: Section[] = [];
+  const byId = new Map<string, React.ReactNode>();
+
+  byId.set(
+    "overview",
+    <div className="space-y-8">
+      {p.subtitle && <p className="text-xl font-medium text-ink">{p.subtitle}</p>}
+      <p className="max-w-3xl text-lg leading-relaxed text-ink/85">{p.description}</p>
+      <dl className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          { label: "类型", value: typeLabel[p.type] },
+          { label: "角色", value: p.role },
+          { label: "周期", value: p.period || p.year },
+          { label: "客户", value: p.client },
+        ]
+          .filter((row) => row.value)
+          .map((row) => (
+            <div key={row.label} className="bg-surface px-5 py-4">
+              <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">{row.label}</dt>
+              <dd className="mt-2 text-sm font-medium text-ink">{row.value}</dd>
+            </div>
+          ))}
+      </dl>
+      {p.tools?.length ? (
+        <div className="flex flex-wrap gap-2">
+          {p.tools.map((tool) => (
+            <Tag key={tool} tone="blue">
+              {tool}
+            </Tag>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+
+  if (p.gallery?.length) {
+    byId.set(
+      "gallery",
+      <div className={`grid gap-4 ${p.gallery.length === 1 ? "" : "md:grid-cols-2"}`}>
+        {p.gallery.map((src, i) => (
+          <div key={src} className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-line bg-line">
+            <Image src={src} alt={`${p.title} 画面 ${i + 1}`} fill className="object-cover" />
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   if (p.projectInfo) {
-    sections.push({
-      id: "background",
-      title: "项目背景",
-      content: (
-        <div className="space-y-8">
-          <p className="max-w-3xl text-lg leading-relaxed text-ink/85">{p.projectInfo.background}</p>
-          <Columns
-            groups={[
-              { title: "目标", items: p.projectInfo.objectives },
-              { title: "挑战", items: p.projectInfo.challenges },
-              { title: "解决方案", items: p.projectInfo.solutions },
-            ]}
-          />
-        </div>
-      ),
-    });
+    byId.set(
+      "background",
+      <div className="space-y-8">
+        <p className="max-w-3xl text-lg leading-relaxed text-ink/85">{p.projectInfo.background}</p>
+        <Columns
+          groups={[
+            { title: "目标", items: p.projectInfo.objectives },
+            { title: "挑战", items: p.projectInfo.challenges },
+            { title: "解决方案", items: p.projectInfo.solutions },
+          ]}
+        />
+      </div>
+    );
   }
 
   if (p.responsibilities?.length) {
-    sections.push({
-      id: "role",
-      title: "我的职责",
-      content: (
-        <ol className="space-y-4">
-          {p.responsibilities.map((item, i) => (
-            <li key={item} className="grid grid-cols-[2.5rem_1fr] leading-relaxed text-ink/85">
-              <span className="font-mono text-sm leading-[1.75] text-muted">{String(i + 1).padStart(2, "0")}</span>
-              {item}
-            </li>
-          ))}
-        </ol>
-      ),
-    });
+    byId.set(
+      "role",
+      <ol className="space-y-4">
+        {p.responsibilities.map((item, i) => (
+          <li key={item} className="grid grid-cols-[2.5rem_1fr] leading-relaxed text-ink/85">
+            <span className="font-mono text-sm leading-[1.75] text-muted">{String(i + 1).padStart(2, "0")}</span>
+            {item}
+          </li>
+        ))}
+      </ol>
+    );
+  }
+
+  if (p.features) {
+    byId.set(
+      "features",
+      <Columns
+        groups={[
+          { title: "核心功能", items: p.features.core },
+          { title: "设计特性", items: p.features.design },
+          { title: "技术特性", items: p.features.technical },
+        ]}
+      />
+    );
   }
 
   if (p.achievements) {
     const metrics = p.achievements.metrics.map(splitMetric);
-    sections.push({
-      id: "results",
-      title: "项目成果",
-      content: (
-        <div className="space-y-8">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {metrics.map((m) => (
-              <div key={m.label + m.value} className="rounded-2xl border border-line bg-surface p-6">
-                {m.value ? (
-                  <>
-                    <p className="text-5xl font-semibold tracking-[-0.03em] text-ink">{m.value}</p>
-                    <p className="mt-3 text-sm leading-relaxed text-muted">{m.label}</p>
-                  </>
-                ) : (
-                  <p className="text-base font-medium leading-relaxed text-ink">{m.label}</p>
-                )}
-              </div>
-            ))}
-          </div>
-          {p.achievements.highlights.length > 0 && <BulletList items={p.achievements.highlights} />}
+    byId.set(
+      "results",
+      <div className="space-y-8">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {metrics.map((m) => (
+            <div key={m.label + m.value} className="rounded-2xl border border-line bg-surface p-6">
+              {m.value ? (
+                <>
+                  <p className="text-5xl font-semibold tracking-[-0.03em] text-ink">{m.value}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-muted">{m.label}</p>
+                </>
+              ) : (
+                <p className="text-base font-medium leading-relaxed text-ink">{m.label}</p>
+              )}
+            </div>
+          ))}
         </div>
-      ),
-    });
-  }
-
-  if (p.features) {
-    sections.push({
-      id: "features",
-      title: "功能特性",
-      content: (
-        <Columns
-          groups={[
-            { title: "核心功能", items: p.features.core },
-            { title: "设计特性", items: p.features.design },
-            { title: "技术特性", items: p.features.technical },
-          ]}
-        />
-      ),
-    });
+        {p.achievements.highlights.length > 0 && <BulletList items={p.achievements.highlights} />}
+      </div>
+    );
   }
 
   if (p.optimizations) {
-    sections.push({
-      id: "optimizations",
-      title: "优化成果",
-      content: (
-        <Columns
-          groups={[
-            { title: "流程优化", items: p.optimizations.process },
-            { title: "核心优化", items: p.optimizations.core },
-            { title: "优化结果", items: p.optimizations.results },
-          ]}
-        />
-      ),
-    });
+    byId.set(
+      "optimizations",
+      <Columns
+        groups={[
+          { title: "流程优化", items: p.optimizations.process },
+          { title: "核心优化", items: p.optimizations.core },
+          { title: "优化结果", items: p.optimizations.results },
+        ]}
+      />
+    );
   }
 
   if (p.futurePlans?.length) {
-    sections.push({ id: "next", title: "未来计划", content: <BulletList items={p.futurePlans} /> });
+    byId.set("next", <BulletList items={p.futurePlans} />);
   }
 
-  return sections;
+  return CASE_STUDY_SECTIONS.filter((s) => byId.has(s.id)).map((s) => ({
+    id: s.id,
+    title: s.title,
+    content: byId.get(s.id),
+  }));
 };
 
 interface Props {
@@ -174,6 +211,7 @@ interface Props {
 const ProjectDetail: NextPage<Props> = ({ project, prev, next }) => {
   const sections = buildSections(project);
   const number = String(project.id).padStart(2, "0");
+  const cover = project.image ?? project.gallery?.[0];
 
   return (
     <>
@@ -216,7 +254,12 @@ const ProjectDetail: NextPage<Props> = ({ project, prev, next }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
           >
-            <ProjectCover id={project.id} className="mt-12 aspect-[16/9] rounded-3xl md:aspect-[21/9]" />
+            <ProjectCover
+              id={project.id}
+              image={cover}
+              alt={project.title}
+              className="mt-12 aspect-[16/9] rounded-3xl md:aspect-[21/9]"
+            />
           </motion.div>
         </header>
 

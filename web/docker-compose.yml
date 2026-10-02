@@ -1,0 +1,26 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_IS_CHINA_SERVER: "true"
+        NEXT_PUBLIC_ICP_NUMBER: ${NEXT_PUBLIC_ICP_NUMBER}
+        NEXT_PUBLIC_PSB_NUMBER: ${NEXT_PUBLIC_PSB_NUMBER}
+        NEXT_PUBLIC_PSB_CODE: ${NEXT_PUBLIC_PSB_CODE}
+    restart: unless-stopped
+    expose:
+      - "3000"
+    environment:
+      NODE_ENV: production
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./deploy/certs:/etc/nginx/certs:ro

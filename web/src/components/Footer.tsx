@@ -53,6 +53,12 @@ const Footer: React.FC = () => {
                 {item.label}
               </Link>
             ))}
+            <a href="/resume/hugh-aix-color.pdf" download className="transition-colors hover:text-white">
+              简历 · 彩色
+            </a>
+            <a href="/resume/hugh-aix-print.pdf" download className="transition-colors hover:text-white">
+              简历 · 打印
+            </a>
           </nav>
         </div>
 

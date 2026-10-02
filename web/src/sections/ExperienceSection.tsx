@@ -1,24 +1,45 @@
-import React from "react";
+import React, { useRef } from "react";
 import Link from "next/link";
 import SectionHeader from "@/components/ui/SectionHeader";
-import Reveal from "@/components/ui/Reveal";
 import Button, { ArrowIcon } from "@/components/ui/Button";
 import { experiences } from "@/data/experience";
+import { gsap, useGSAP, reducedMotion } from "@/lib/gsap-client";
 
-const ExperienceSection: React.FC = () => (
-  <section className="section-y border-t border-line">
-    <div className="container-page">
-      <SectionHeader
-        index="06"
-        label="Experience"
-        title="工作经历"
-        description="从工业设计到交互体验，再到产品管理——每一步都在扩展对“人”的理解。"
-      />
+const ExperienceSection: React.FC = () => {
+  const root = useRef<HTMLElement>(null);
 
-      <ol className="mt-14 border-t border-line">
-        {experiences.map((exp, i) => (
-          <li key={exp.id} className="border-b border-line">
-            <Reveal delay={i * 0.06}>
+  useGSAP(
+    () => {
+      if (reducedMotion()) return;
+      gsap.fromTo(
+        ".exp-row",
+        { y: 28, autoAlpha: 0 },
+        {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.7,
+          stagger: 0.1,
+          ease: "power3.out",
+          scrollTrigger: { trigger: root.current, start: "top 78%" },
+        }
+      );
+    },
+    { scope: root }
+  );
+
+  return (
+    <section ref={root} className="section-y border-t border-line">
+      <div className="container-page">
+        <SectionHeader
+          index="06"
+          label="Experience"
+          title="工作经历"
+          description="从工业设计到交互体验，再到产品管理——每一步都在扩展对“人”的理解。"
+        />
+
+        <ol className="mt-14 border-t border-line">
+          {experiences.map((exp) => (
+            <li key={exp.id} className="exp-row border-b border-line">
               <Link
                 href={`/experience#${exp.id}`}
                 className="group grid gap-4 py-10 transition-colors md:grid-cols-[14rem_1fr_auto] md:gap-10"
@@ -40,18 +61,18 @@ const ExperienceSection: React.FC = () => (
                   <ArrowIcon />
                 </span>
               </Link>
-            </Reveal>
-          </li>
-        ))}
-      </ol>
+            </li>
+          ))}
+        </ol>
 
-      <div className="mt-12 flex justify-center">
-        <Button href="/experience" variant="secondary">
-          查看完整经历
-        </Button>
+        <div className="mt-12 flex justify-center">
+          <Button href="/experience" variant="secondary">
+            查看完整经历
+          </Button>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default ExperienceSection;

@@ -38,9 +38,16 @@ const Button: React.FC<ButtonProps> = ({ href, children, variant = "primary", ar
     </>
   );
 
-  if (/^(https?:|mailto:)/.test(href)) {
+  if (/^(https?:|mailto:)/.test(href) || href.endsWith(".pdf")) {
+    const isPdf = href.endsWith(".pdf");
     return (
-      <a href={href} className={classes} target={href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer">
+      <a
+        href={href}
+        className={classes}
+        download={isPdf || undefined}
+        target={!isPdf && href.startsWith("http") ? "_blank" : undefined}
+        rel={!isPdf && href.startsWith("http") ? "noopener noreferrer" : undefined}
+      >
         {content}
       </a>
     );

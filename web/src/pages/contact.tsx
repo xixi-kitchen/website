@@ -92,6 +92,14 @@ const Contact: NextPage = () => {
                 </li>
               ))}
             </ul>
+            <div className="mt-6 flex flex-wrap gap-4 text-sm text-white/70">
+              <a href="/resume/hugh-aix-color.pdf" download className="underline-offset-4 hover:text-brand-yellow hover:underline">
+                下载简历 · 彩色
+              </a>
+              <a href="/resume/hugh-aix-print.pdf" download className="underline-offset-4 hover:text-brand-yellow hover:underline">
+                打印版
+              </a>
+            </div>
           </DecayCard>
         </motion.div>
 

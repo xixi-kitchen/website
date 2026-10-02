@@ -1,4 +1,7 @@
 // src/data/projects.ts
+// 详情页按固定章节渲染：概览 → 视觉记录 → 背景 → 职责 → 功能 → 成果 → 优化 → 下一步。
+// 空字段会自动跳过。补内容时：把图片放到 public/images/projects/{slug}/ ，并填写 image / gallery。
+// 字段说明见 src/data/case-study.ts 的 PROJECT_FIELD_GUIDE。
 
 export interface Project {
   id: number;
@@ -7,11 +10,15 @@ export interface Project {
   subtitle?: string;
   description: string;
   image?: string;
+  gallery?: string[];
   tags: string[];
   link?: string;
-  type: 'latest' | 'past' | 'personal';
+  type: "latest" | "past" | "personal";
+  client?: string;
+  year?: string;
   role?: string;
   period?: string;
+  tools?: string[];
   background?: string;
   projectInfo?: {
     background: string;

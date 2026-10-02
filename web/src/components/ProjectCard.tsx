@@ -11,7 +11,13 @@ const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
 
   return (
     <Link href={`/projects/${project.slug}`} className={`group flex h-full flex-col ${cardBase} ${cardInteractive}`}>
-      <ProjectCover id={project.id} label={String(project.id).padStart(2, "0")} className="aspect-[16/9]" />
+      <ProjectCover
+        id={project.id}
+        image={project.image ?? project.gallery?.[0]}
+        alt={project.title}
+        label={String(project.id).padStart(2, "0")}
+        className="aspect-[16/9]"
+      />
       <div className="flex flex-1 flex-col p-6 md:p-7">
         <div className="flex flex-wrap gap-2">
           {project.tags.slice(0, 3).map((tag) => (

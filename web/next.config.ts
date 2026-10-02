@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   reactStrictMode: true,
+  ...(process.env.BUILD_STANDALONE === "true" ? { output: "standalone" as const } : {}),
 };
 
 export default nextConfig;

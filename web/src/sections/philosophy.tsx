@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
-import Reveal from "@/components/ui/Reveal";
 import { Ring, Square, Triangle } from "@/components/ui/BrandShapes";
+import { gsap, useGSAP, reducedMotion } from "@/lib/gsap-client";
 
 const principles = [
   { term: "人性", meaning: "最本质的冲动" },
@@ -9,19 +9,45 @@ const principles = [
   { term: "平衡", meaning: "价值的最大化" },
 ];
 
-const Philosophy: React.FC = () => (
-  <section className="section-y">
-    <div className="container-page">
-      <SectionHeader
-        index="01"
-        label="Philosophy"
-        title="我的设计理念"
-        description="设计不止于产品，而是对人性的理解、对系统的优化。"
-      />
+const Philosophy: React.FC = () => {
+  const root = useRef<HTMLElement>(null);
 
-      <div className="mt-14 grid gap-5 lg:grid-cols-2">
-        <Reveal className="h-full">
-          <article className="flex h-full flex-col justify-between gap-14 rounded-3xl bg-brand-pink p-8 text-[#121214] md:p-12">
+  useGSAP(
+    () => {
+      if (reducedMotion()) return;
+
+      gsap.fromTo(
+        ".philo-card",
+        { y: 48, autoAlpha: 0, rotation: (i: number) => (i === 0 ? -2 : 2) },
+        {
+          y: 0,
+          autoAlpha: 1,
+          rotation: 0,
+          duration: 0.9,
+          stagger: 0.12,
+          ease: "power3.out",
+          scrollTrigger: { trigger: root.current, start: "top 80%" },
+        }
+      );
+    },
+    { scope: root }
+  );
+
+  return (
+    <section ref={root} className="section-y relative">
+      <p className="pointer-events-none absolute right-[4%] top-10 hidden select-none font-mono text-[10px] uppercase tracking-[0.4em] text-muted/50 md:block">
+        01 — Philosophy
+      </p>
+      <div className="container-page">
+        <SectionHeader
+          index="01"
+          label="Philosophy"
+          title="我的设计理念"
+          description="设计不止于产品，而是对人性的理解、对系统的优化。"
+        />
+
+        <div className="mt-14 grid gap-5 lg:grid-cols-2">
+          <article className="philo-card flex h-full flex-col justify-between gap-14 rounded-3xl bg-brand-pink p-8 text-[#121214] md:p-12">
             <div>
               <div className="flex items-end gap-3">
                 <Triangle size={44} className="text-[#121214]" />
@@ -35,17 +61,15 @@ const Philosophy: React.FC = () => (
             </div>
             <dl className="divide-y divide-[#121214]/15 border-t border-[#121214]/15">
               {principles.map((p) => (
-                <div key={p.term} className="flex items-baseline justify-between gap-6 py-4">
+                <div key={p.term} className="philo-row flex items-baseline justify-between gap-6 py-4">
                   <dt className="text-2xl font-semibold md:text-3xl">{p.term}</dt>
                   <dd className="text-base font-medium md:text-lg">{p.meaning}</dd>
                 </div>
               ))}
             </dl>
           </article>
-        </Reveal>
 
-        <Reveal delay={0.1} className="h-full">
-          <article className="flex h-full flex-col justify-between gap-14 rounded-3xl bg-brand-blue p-8 text-white md:p-12">
+          <article className="philo-card flex h-full flex-col justify-between gap-14 rounded-3xl bg-brand-blue p-8 text-white md:p-12">
             <div>
               <div className="flex items-end gap-3">
                 <Ring size={42} className="text-brand-pink" />
@@ -64,10 +88,10 @@ const Philosophy: React.FC = () => (
               “一个人就是一个团队，每一个方面都需要懂——最基础的原理和原则。”
             </blockquote>
           </article>
-        </Reveal>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default Philosophy;

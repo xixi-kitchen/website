@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
-import Reveal from "@/components/ui/Reveal";
 import { Ring, Square, Triangle } from "@/components/ui/BrandShapes";
+import { gsap, useGSAP, reducedMotion } from "@/lib/gsap-client";
 
 type Strand = "humanity" | "design" | "tech";
 
@@ -32,29 +32,49 @@ const legend: { strand: Strand; label: string }[] = [
   { strand: "tech", label: "技术" },
 ];
 
-const Knowledgebg: React.FC = () => (
-  <section className="section-y border-t border-line">
-    <div className="container-page">
-      <SectionHeader
-        index="02"
-        label="Knowledge"
-        title="跨领域的知识背景"
-        description={
-          <span className="inline-flex flex-wrap items-center gap-x-5 gap-y-2 md:justify-end">
-            {legend.map((l) => (
-              <span key={l.strand} className="inline-flex items-center gap-2">
-                {strandIcon[l.strand]}
-                {l.label}
-              </span>
-            ))}
-          </span>
-        }
-      />
+const Knowledgebg: React.FC = () => {
+  const root = useRef<HTMLElement>(null);
 
-      <Reveal>
+  useGSAP(
+    () => {
+      if (reducedMotion()) return;
+      gsap.fromTo(
+        ".know-cell",
+        { autoAlpha: 0 },
+        {
+          autoAlpha: 1,
+          duration: 0.55,
+          stagger: { each: 0.05, from: "start" },
+          ease: "power2.out",
+          scrollTrigger: { trigger: root.current, start: "top 80%" },
+        }
+      );
+    },
+    { scope: root }
+  );
+
+  return (
+    <section ref={root} className="section-y border-t border-line">
+      <div className="container-page">
+        <SectionHeader
+          index="02"
+          label="Knowledge"
+          title="跨领域的知识背景"
+          description={
+            <span className="inline-flex flex-wrap items-center gap-x-5 gap-y-2 md:justify-end">
+              {legend.map((l) => (
+                <span key={l.strand} className="inline-flex items-center gap-2">
+                  {strandIcon[l.strand]}
+                  {l.label}
+                </span>
+              ))}
+            </span>
+          }
+        />
+
         <ul className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
           {disciplines.map((d, i) => (
-            <li key={d.title} className="group flex flex-col bg-surface p-7 transition-colors hover:bg-canvas">
+            <li key={d.title} className="know-cell group flex flex-col bg-surface p-7 transition-colors hover:bg-canvas">
               <div className="flex items-center justify-between">
                 <span className="transition-transform duration-500 group-hover:rotate-12">{strandIcon[d.strand]}</span>
                 <span className="font-mono text-xs text-muted">{String(i + 1).padStart(2, "0")}</span>
@@ -64,9 +84,9 @@ const Knowledgebg: React.FC = () => (
             </li>
           ))}
         </ul>
-      </Reveal>
-    </div>
-  </section>
-);
+      </div>
+    </section>
+  );
+};
 
 export default Knowledgebg;

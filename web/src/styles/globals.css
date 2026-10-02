@@ -84,6 +84,55 @@
   padding-block: clamp(4.5rem, 10vw, 8rem);
 }
 
+@utility grain-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  opacity: 0.045;
+  mix-blend-mode: multiply;
+  background-image: url("/grain.svg");
+  background-size: 180px 180px;
+}
+
+.dark .grain-overlay {
+  mix-blend-mode: overlay;
+  opacity: 0.07;
+}
+
+@keyframes marquee-x {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-track {
+  animation: marquee-x 28s linear infinite;
+}
+
+.marquee-reverse {
+  animation-direction: reverse;
+}
+
+@keyframes scroll-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}
+
+.scroll-pulse {
+  animation: scroll-pulse 2.4s ease-in-out infinite;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
