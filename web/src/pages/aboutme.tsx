@@ -31,11 +31,12 @@ const Section = ({ title, content, highlight }: { title: string; content: string
   }, []);
 
   return (
-    <div ref={sectionRef} className="flex flex-col md:flex-row items-center gap-8">
+    <div ref={sectionRef} className="flex flex-col items-center gap-8 md:flex-row">
       <div className="w-full md:w-1/2">
-        <h3 className="text-4xl font-bold text-zinc-900 dark:text-zinc-100">{title}</h3>
-        <p className="text-zinc-600 dark:text-zinc-400 mt-4 leading-relaxed">
-          {content} <span className="text-zinc-800 dark:text-zinc-200">{highlight}</span>.
+        <h3 className="text-4xl font-bold text-ink">{title}</h3>
+        <p className="mt-4 leading-relaxed text-muted">
+          {content}{" "}
+          <span className="bg-brand-yellow px-1 text-[#121214]">{highlight}</span>.
         </p>
       </div>
     </div>
@@ -74,18 +75,18 @@ const AboutPage = () => {
         <meta name="description" content={text.lead} />
       </Head>
 
-      {/* 背景层，支持黑暗模式 */}
-      <div className="relative w-full min-h-screen bg-white dark:bg-zinc-dark text-zinc-900 dark:text-zinc-100 overflow-hidden">
-        {/* 渐变背景光效 */}
-        <div className="absolute inset-0 blur-3xl bg-gradient-to-br from-yellow-base via-blue-base to-pink-base opacity-100 dark:from-blue-dark dark:via-blue-base dark:to-pink-dark dark:opacity-30"></div>
+      <div className="relative min-h-screen overflow-hidden bg-canvas text-ink">
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-16 top-16 h-72 w-72 rounded-full bg-brand-yellow/45 blur-3xl dark:bg-brand-yellow/10" />
+          <div className="absolute right-0 top-48 h-80 w-80 rounded-full bg-brand-blue/20 blur-3xl dark:bg-brand-blue/20" />
+          <div className="absolute bottom-0 left-1/3 h-64 w-72 rounded-full bg-brand-pink/15 blur-3xl dark:bg-brand-pink/15" />
+        </div>
 
-        {/* 页面内容 */}
-        <div className="relative z-10 max-w-screen-lg mx-auto px-8 py-24">
-          {/* 大标题 */}
-          <h1 className="text-7xl md:text-8xl font-extrabold leading-tight tracking-wide text-zinc-900 dark:text-zinc-100">
+        <div className="relative z-10 mx-auto max-w-screen-lg px-8 py-24">
+          <h1 className="text-7xl font-extrabold leading-tight tracking-wide text-ink md:text-8xl">
             {text.title}
           </h1>
-          <h2 className="text-2xl md:text-3xl text-zinc-700 dark:text-zinc-300 mt-4">{text.lead}</h2>
+          <h2 className="mt-4 text-2xl text-muted md:text-3xl">{text.lead}</h2>
 
           <div className="mt-16 space-y-24">
             {text.sections.map((section) => (
@@ -93,7 +94,7 @@ const AboutPage = () => {
             ))}
           </div>
 
-          <h2 className="text-center text-3xl font-bold text-zinc-900 dark:text-zinc-100 mt-24">{text.end}</h2>
+          <h2 className="mt-24 text-center text-3xl font-bold text-ink">{text.end}</h2>
         </div>
       </div>
     </>

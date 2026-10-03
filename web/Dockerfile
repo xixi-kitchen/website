@@ -27,6 +27,8 @@ ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 COPY --from=builder /app/public ./public
+# 源文件可能是 600。站点进程以 nextjs 运行，读不到就会把 PDF 下载回成 400。
+RUN chown -R nextjs:nodejs /app/public && chmod -R a+rX /app/public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 USER nextjs
