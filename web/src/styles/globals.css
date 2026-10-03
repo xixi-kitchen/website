@@ -20,10 +20,10 @@
   --canvas: #0e0e10;
   --surface: #17171a;
   --ink: #f2f2ee;
-  --muted: #a1a1aa;
-  --line: #2a2a2f;
-  --pink-text: #ff5cad;
-  --blue-text: #a08cff;
+  --muted: #b4b4be;
+  --line: #3a3a42;
+  --pink-text: #ff8ac4;
+  --blue-text: #b7a6ff;
 }
 
 @theme {

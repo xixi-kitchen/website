@@ -5,6 +5,7 @@ import PageHeader from "@/components/ui/PageHeader";
 import GeometricBackdrop from "@/components/ui/GeometricBackdrop";
 import Reveal from "@/components/ui/Reveal";
 import Tag, { type TagTone } from "@/components/ui/Tag";
+import { useRouter } from "next/router";
 import { Ring, Square, Triangle } from "@/components/ui/BrandShapes";
 
 interface KnowledgeArea {
@@ -28,10 +29,10 @@ const areas: KnowledgeArea[] = [
     icon: <Square size={22} />,
     tone: "yellow",
     topics: [
-      "深度学习（CNN、RNN、Transformer）",
-      "计算机视觉（目标检测、图像分割）",
-      "自然语言处理（文本分类、命名实体识别）",
-      "强化学习（Q-learning、策略梯度）",
+      "深度学习，包括卷积、循环和变换模型",
+      "计算机视觉，包括目标检测和图像分割",
+      "自然语言处理，包括文本分类和实体识别",
+      "强化学习，包括价值学习和策略梯度",
     ],
     tools: ["scikit-learn", "TensorFlow", "PyTorch", "Keras"],
   },
@@ -39,8 +40,8 @@ const areas: KnowledgeArea[] = [
     title: "深度学习",
     icon: <Ring size={24} />,
     tone: "pink",
-    topics: ["神经网络架构", "卷积神经网络", "循环神经网络", "Transformer", "注意力机制"],
-    tools: ["PyTorch", "Hugging Face", "TensorFlow", "JAX"],
+    topics: ["神经网络架构", "卷积神经网络", "循环神经网络", "变换模型", "注意力机制"],
+    tools: ["动态图框架", "模型社区", "计算图框架", "数值框架"],
   },
 ];
 
@@ -61,7 +62,55 @@ const labs = [
   { title: "AI 穿搭顾问", desc: "基于计算机视觉的智能穿搭推荐系统，综合考虑场合、天气与个人风格。", features: [] },
 ];
 
-const AIPage: NextPage = () => (
+const areasEn: KnowledgeArea[] = [
+  {
+    title: "Data",
+    icon: <Triangle size={24} />,
+    tone: "blue",
+    topics: ["Cleaning", "Processing", "Charts", "Mining", "Analysis"],
+    tools: ["Python", "Pandas", "NumPy", "Matplotlib", "Seaborn"],
+  },
+  {
+    title: "Machine learning",
+    icon: <Square size={22} />,
+    tone: "yellow",
+    topics: ["Deep learning", "Computer vision", "Language", "Reinforcement learning"],
+    tools: ["scikit-learn", "TensorFlow", "PyTorch", "Keras"],
+  },
+  {
+    title: "Deep learning",
+    icon: <Ring size={24} />,
+    tone: "pink",
+    topics: ["Network design", "Convolution", "Recurrence", "Transformers", "Attention"],
+    tools: ["PyTorch", "Hugging Face", "TensorFlow", "JAX"],
+  },
+];
+
+const completedEn = ["Knowledge base for models", "Development setup", "Language-model applications", "Multimodal models"];
+
+const labsEn = [
+  {
+    title: "Travel assistant",
+    desc: "After a destination is entered, it searches places, picks them, and builds a route and a packing list.",
+    features: ["Routes", "Place suggestions", "Weather", "Transport", "Stay matching", "Trip export"],
+  },
+  {
+    title: "Weather assistant",
+    desc: "Turns a forecast into something you can act on.",
+    features: ["Rain alerts", "What to wear", "Trip weather", "Outfit ideas"],
+  },
+  { title: "Storage assistant", desc: "Sorts objects and suggests where they should go.", features: [] },
+  { title: "Outfit advisor", desc: "Suggests clothes from the occasion, the weather, and a personal style.", features: [] },
+];
+
+const AIPage: NextPage = () => {
+  const en = useRouter().locale === "en";
+  const areaList = en ? areasEn : areas;
+  const doneList = en ? completedEn : completed;
+  const labList = en ? labsEn : labs;
+  const lessons = en ? ["Deep learning basics", "Machine learning, further"] : ["深度学习基础", "机器学习进阶"];
+  const lessonTag = en ? "Video · coming" : "视频教程 · 即将上线";
+  return (
   <>
     <Head>
       <title>AI 专刊 | HUGH·Aix</title>
@@ -71,17 +120,17 @@ const AIPage: NextPage = () => (
     <div className="relative isolate">
       <GeometricBackdrop />
       <PageHeader
-        label="AI Lab · Beta"
-        title="AI 专刊"
-        subtitle="我在数据分析、机器学习与大模型应用上的学习路径和实验项目。"
-        note="本页面正在设计构建中，内容与布局会持续更新。"
+        label={en ? "Lab" : "实验"}
+        title={en ? "Intelligence" : "智能专刊"}
+        subtitle={en ? "A working notebook of data, models, and applied intelligence." : "数据分析、机器学习，以及把模型用进产品的实验。"}
+        note={en ? "This page is still being built." : "这一页还在继续写。"}
       />
 
       <div className="container-page space-y-20 pb-28">
         <section>
-          <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">01 / 知识体系</h2>
+          <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">{en ? "01 / Knowledge" : "01 / 知识体系"}</h2>
           <div className="mt-6 grid gap-5 md:grid-cols-3">
-            {areas.map((area, i) => (
+            {areaList.map((area, i) => (
               <Reveal key={area.title} delay={i * 0.06} className="h-full">
                 <article className="flex h-full flex-col rounded-3xl border border-line bg-surface p-7">
                   <div className="flex items-center justify-between">
@@ -109,18 +158,18 @@ const AIPage: NextPage = () => (
         <section className="grid gap-5 lg:grid-cols-[1fr_2fr]">
           <Reveal>
             <article className="h-full rounded-3xl bg-night p-8 text-white">
-              <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-white/55">02 / 研究进度</h2>
-              <p className="mt-8 text-sm text-white/60">当前进行中</p>
+              <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-white/55">{en ? "02 / Progress" : "02 / 研究进度"}</h2>
+              <p className="mt-8 text-sm text-white/60">{en ? "In progress" : "当前进行中"}</p>
               <p className="mt-2 flex items-center gap-3 text-2xl font-semibold">
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-yellow opacity-70" />
                   <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-brand-yellow" />
                 </span>
-                MCP 服务搭建与使用
+                {en ? "Setting up model context services" : "模型上下文服务的搭建和使用"}
               </p>
-              <p className="mt-10 text-sm text-white/60">已完成</p>
+              <p className="mt-10 text-sm text-white/60">{en ? "Done" : "已完成"}</p>
               <ul className="mt-3 space-y-3">
-                {completed.map((item) => (
+                {doneList.map((item) => (
                   <li key={item} className="flex items-center gap-3 text-white/90">
                     <svg className="h-4 w-4 shrink-0 text-brand-yellow" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
                       <path d="m4 10.5 4 4 8-9" strokeLinecap="round" strokeLinejoin="round" />
@@ -133,9 +182,9 @@ const AIPage: NextPage = () => (
           </Reveal>
 
           <div>
-            <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">03 / AI 创意实验室</h2>
+            <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">{en ? "03 / Experiments" : "03 / 创意实验"}</h2>
             <div className="mt-6 grid gap-5 md:grid-cols-2">
-              {labs.map((lab, i) => (
+              {labList.map((lab, i) => (
                 <Reveal key={lab.title} delay={(i % 2) * 0.06} className="h-full">
                   <article className="h-full rounded-3xl border border-line bg-surface p-7">
                     <h3 className="text-lg font-semibold text-ink">{lab.title}</h3>
@@ -155,9 +204,9 @@ const AIPage: NextPage = () => (
         </section>
 
         <section>
-          <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">04 / 原理学习</h2>
+          <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">{en ? "04 / Study" : "04 / 原理学习"}</h2>
           <div className="mt-6 grid gap-5 md:grid-cols-2">
-            {["深度学习基础", "机器学习进阶"].map((title, i) => (
+            {lessons.map((title, i) => (
               <article key={title} className="overflow-hidden rounded-3xl border border-line bg-surface">
                 <div className={`flex aspect-video items-center justify-center ${i === 0 ? "bg-brand-blue/10" : "bg-brand-pink/10"}`}>
                   <span className="flex h-14 w-14 items-center justify-center rounded-full bg-surface text-ink shadow-sm">
@@ -168,7 +217,7 @@ const AIPage: NextPage = () => (
                 </div>
                 <div className="flex items-center justify-between p-6">
                   <h3 className="text-lg font-semibold text-ink">{title}</h3>
-                  <Tag>视频教程 · 即将上线</Tag>
+                  <Tag>{lessonTag}</Tag>
                 </div>
               </article>
             ))}
@@ -177,6 +226,7 @@ const AIPage: NextPage = () => (
       </div>
     </div>
   </>
-);
+  );
+};
 
 export default AIPage;

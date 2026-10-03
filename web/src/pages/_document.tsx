@@ -1,13 +1,25 @@
-import { Html, Head, Main, NextScript } from "next/document";
+import Document, { Html, Head, Main, NextScript, type DocumentContext, type DocumentInitialProps } from "next/document";
 
-export default function Document() {
-  return (
-    <Html lang="zh-CN" suppressHydrationWarning>
-      <Head />
-      <body>
-        <Main />
-        <NextScript />
-      </body>
-    </Html>
-  );
+interface Props extends DocumentInitialProps {
+  locale?: string;
+}
+
+export default class MyDocument extends Document<Props> {
+  static async getInitialProps(ctx: DocumentContext) {
+    const initialProps = await Document.getInitialProps(ctx);
+    return { ...initialProps, locale: ctx.locale };
+  }
+
+  render() {
+    const lang = this.props.locale === "en" ? "en" : "zh-CN";
+    return (
+      <Html lang={lang} suppressHydrationWarning>
+        <Head />
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    );
+  }
 }

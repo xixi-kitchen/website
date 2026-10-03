@@ -5,6 +5,7 @@ import { Group, Mesh, MeshPhongMaterial, Object3D, Vector3 } from "three";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Tag from "@/components/ui/Tag";
 import { useInView, useIsCoarsePointer } from "@/hooks/useInView";
+import { useRouter } from "next/router";
 
 type Vec3 = [number, number, number];
 
@@ -170,7 +171,7 @@ const LoadingIndicator: React.FC = () => {
   return (
     <Html center zIndexRange={[20, 0]}>
       <span className="whitespace-nowrap font-mono text-xs tracking-widest text-white/60">
-        LOADING {progress.toFixed(0)}%
+        {progress.toFixed(0)}%
       </span>
     </Html>
   );
@@ -179,6 +180,13 @@ const LoadingIndicator: React.FC = () => {
 const AbilitySection: React.FC = () => {
   const { ref, inView, hasEntered } = useInView<HTMLDivElement>();
   const coarsePointer = useIsCoarsePointer();
+  const en = useRouter().locale === "en";
+  const devList = en
+    ? ["Page structure", "Style", "Script", "Enterprise language", "Scripting", "Boards", "Visual coding", "Interface", "Site framework", "3D", "Data", "Machine learning", "Deep learning"]
+    : ["网页结构", "样式", "脚本", "企业语言", "脚本语言", "电路板", "视觉编程", "界面", "站点框架", "三维", "数据分析", "机器学习", "深度学习"];
+  const otherList = en
+    ? ["Image and layout tools", "Surface and solid modeling", "Interface design tools", "Rendering and real-time engines", "Surface finishing", "Making: machining and printing"]
+    : ["图像与排版工具", "曲面与实体建模", "界面设计工具", "渲染与实时引擎", "表面处理工艺", "加工与打印"];
 
   return (
     <section className="bg-night pb-[clamp(4.5rem,10vw,8rem)] text-white">
@@ -186,13 +194,19 @@ const AbilitySection: React.FC = () => {
         <SectionHeader
           inverse
           index="04"
-          label="Skills"
+          label={en ? "Skills" : "技能"}
           title={
-            <>
-              技能与<span className="text-brand-yellow">工具箱</span>
-            </>
+            en ? (
+              <>
+                Skills and <span className="text-brand-yellow">tools</span>
+              </>
+            ) : (
+              <>
+                技能与<span className="text-brand-yellow">工具箱</span>
+              </>
+            )
           }
-          description="画面中间那句话，是我最想让你记住的。把鼠标悬停在图标上看看——这只是一部分，更多正在探索中。"
+          description={en ? "The line in the middle is the one to remember. Hover an icon. This is only part of it." : "画面中间那句话，是最想让你记住的。把鼠标悬停在图标上看看。这只是一部分。"}
         />
       </div>
 
@@ -228,9 +242,9 @@ const AbilitySection: React.FC = () => {
 
       <div className="container-page mt-10 grid gap-10 md:grid-cols-2">
         <div>
-          <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-white/55">开发技能</h3>
+          <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-white/55">{en ? "Building" : "开发"}</h3>
           <div className="mt-4 flex flex-wrap gap-2">
-            {devSkills.map((s) => (
+            {devList.map((s) => (
               <Tag key={s} tone="inverse">
                 {s}
               </Tag>
@@ -238,9 +252,9 @@ const AbilitySection: React.FC = () => {
           </div>
         </div>
         <div>
-          <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-white/55">设计与制造</h3>
+          <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-white/55">{en ? "Design and making" : "设计与制造"}</h3>
           <div className="mt-4 flex flex-wrap gap-2">
-            {otherSkills.map((s) => (
+            {otherList.map((s) => (
               <Tag key={s} tone="inverse">
                 {s}
               </Tag>

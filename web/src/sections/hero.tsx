@@ -2,12 +2,12 @@ import React, { useRef } from "react";
 import Button from "@/components/ui/Button";
 import Magnetic from "@/components/effects/Magnetic";
 import GridField from "@/components/effects/GridField";
+import { useI18n } from "@/i18n/useI18n";
 import { gsap, useGSAP, reducedMotion } from "@/lib/gsap-client";
-
-const roles = ["工业设计师", "交互设计师", "体验设计师", "产品经理", "产品 Leader"];
 
 const Hero: React.FC = () => {
   const root = useRef<HTMLElement>(null);
+  const t = useI18n();
 
   useGSAP(
     () => {
@@ -73,62 +73,48 @@ const Hero: React.FC = () => {
       <div className="hero-rules pointer-events-none absolute right-[min(6vw,4rem)] top-0 hidden h-full w-px bg-line md:block" />
 
       <p className="hero-watermark pointer-events-none absolute -left-4 top-24 select-none font-semibold leading-none text-ink/[0.05] dark:text-white/[0.06] sm:left-0 sm:text-[clamp(6rem,22vw,18rem)]">
-        HUGH
+        {t.brand.mark}
       </p>
 
       <div className="hero-stage relative">
         <div className="container-page flex items-start justify-between pt-6 font-mono text-[10px] uppercase tracking-[0.28em] text-muted md:pt-8">
-          <span className="hero-corner">Portfolio / 2026</span>
-          <span className="hero-corner hidden sm:inline">Lanzhou · Shanghai · Remote</span>
-          <span className="hero-corner">Ed. 03</span>
+          <span className="hero-corner">{t.brand.mark} / 2026</span>
+          <span className="hero-corner hidden sm:inline">{t.hero.place}</span>
+          <span className="hero-corner">{t.hero.edition}</span>
         </div>
 
         <div className="container-page grid min-h-[calc(100svh-6.5rem)] items-center gap-10 py-12 md:grid-cols-[1.25fr_1fr] md:gap-8 md:py-16">
           <div className="min-w-0">
-            <p className="hero-fade font-mono text-xs uppercase tracking-[0.2em] text-muted">Xixikitchen · Personal Portfolio</p>
+            <p className="hero-fade font-mono text-xs uppercase tracking-[0.2em] text-muted">{t.hero.eyebrow}</p>
 
             <h1 className="mt-8 text-[clamp(2.4rem,5.2vw,4.75rem)] font-semibold leading-[1.08] tracking-[-0.03em] text-ink">
               <span className="block overflow-hidden">
-                <span className="hero-line block text-[0.45em] font-medium tracking-normal text-muted">你好，我是</span>
+                <span className="hero-line block text-[0.45em] font-medium tracking-normal text-muted">{t.hero.line1}</span>
               </span>
               <span className="mt-2 block overflow-hidden">
-                <span className="hero-line block text-[1.45em] leading-none">HUGH·Aix</span>
+                <span className="hero-line block text-[1.15em] leading-none">{t.hero.line2}</span>
               </span>
               <span className="mt-4 block overflow-hidden">
                 <span className="hero-line block">
-                  一个讨厌
-                  <span className="relative mx-[0.05em] inline-block">
-                    <span className="absolute inset-x-[-0.08em] bottom-[0.04em] top-[0.5em] -z-10 bg-brand-yellow" aria-hidden />
-                    平淡
+                  <span className="relative inline-block text-[#121214]">
+                    <span className="absolute inset-x-[-0.08em] inset-y-[0.06em] -z-10 bg-brand-yellow" aria-hidden />
+                    {t.hero.line3}
                   </span>
-                  的人
                 </span>
               </span>
             </h1>
 
-            <div className="mt-10 max-w-xl">
-              <ul className="flex flex-wrap gap-x-4 gap-y-2 text-base text-muted" aria-label="曾经的身份标签">
-                {roles.map((role) => (
-                  <li key={role} className="hero-role line-through decoration-brand-pink decoration-2">
-                    #{role}
-                  </li>
-                ))}
-              </ul>
-              <p className="hero-fade mt-4 leading-relaxed text-ink">这些不过是一个个单一的标签，真正完整的我，等你来发现。</p>
-            </div>
+            <p className="hero-fade mt-8 max-w-xl text-lg leading-relaxed text-ink">{t.hero.body}</p>
 
             <div className="hero-fade mt-10 flex flex-wrap items-center gap-3">
               <Magnetic>
-                <Button href="/projects">看看我的项目</Button>
+                <Button href="/projects">{t.hero.work}</Button>
               </Magnetic>
               <Magnetic>
-                <Button href="/resume/hugh-aix-color.pdf" variant="secondary" arrow={false}>
-                  下载简历
+                <Button href="/contact" variant="secondary">
+                  {t.hero.contact}
                 </Button>
               </Magnetic>
-              <Button href="/contact" variant="ghost" className="sm:ml-2">
-                联系我
-              </Button>
             </div>
           </div>
 
@@ -145,7 +131,7 @@ const Hero: React.FC = () => {
               </g>
             </svg>
             <p className="hero-fade mt-4 text-center font-mono text-[10px] uppercase tracking-[0.3em] text-muted md:text-left">
-              Circle · Triangle · Square
+              {t.hero.shapes}
             </p>
           </div>
         </div>
@@ -156,9 +142,9 @@ const Hero: React.FC = () => {
               <span className="scroll-pulse absolute inset-0 border border-muted/40" />
               <span className="h-2 w-2 bg-brand-pink" />
             </span>
-            Scroll to explore
+            {t.hero.scroll}
             <span className="hidden h-px flex-1 bg-line sm:block" />
-            <span className="hidden sm:inline">01 — 07</span>
+            <span className="hidden sm:inline">01 — 03</span>
           </div>
         </div>
       </div>

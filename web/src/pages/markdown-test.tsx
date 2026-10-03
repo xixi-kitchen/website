@@ -26,12 +26,9 @@ const MarkdownTest: React.FC<MarkdownTestProps> = ({ content }) => {
   );
 };
 
-export async function getStaticProps() {
-  if (process.env.NODE_ENV === 'production') {
-    return { notFound: true };
-  }
-
-  const filePath = path.join(process.cwd(), 'src', 'data', 'markdown-test.md');
+export async function getStaticProps({ locale }: { locale?: string }) {
+  const name = locale === "en" ? "markdown-test.en.md" : "markdown-test.md";
+  const filePath = path.join(process.cwd(), "src", "data", name);
   const content = fs.readFileSync(filePath, 'utf8');
 
   return {

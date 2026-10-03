@@ -42,6 +42,37 @@ export interface Project {
     results: string[];
   };
   futurePlans?: string[];
+  status?: string;
+  links?: {
+    live?: string;
+    code?: string;
+    social?: { name: string; url: string }[];
+  };
+  steps?: string[];
+  changelog?: {
+    date?: string;
+    version?: string;
+    title: string;
+    notes?: string;
+  }[];
+  i18n?: {
+    en?: Partial<
+      Pick<
+        Project,
+        | "title"
+        | "description"
+        | "tags"
+        | "role"
+        | "status"
+        | "steps"
+        | "projectInfo"
+        | "features"
+        | "achievements"
+        | "changelog"
+        | "tools"
+      >
+    >;
+  };
   keyResults?: {
     business: string[];
     technical: string[];
@@ -50,7 +81,263 @@ export interface Project {
 }
 
 export const projects: Project[] = [
-  // 最新项目
+  {
+    id: 16,
+    slug: "sendheart-ios-app",
+    title: "Sendheart",
+    type: "latest",
+    status: "已上架",
+    year: "2026",
+    role: "工作室产品",
+    description: "两位苹果手机用户互发红心，用小狗动画表达想念，并查看接收回执。",
+    tags: ["苹果应用", "界面", "云同步", "应用商店"],
+    tools: ["苹果界面", "苹果云同步", "系统邀请", "推送通知"],
+    links: {
+      live: "https://apps.apple.com/us/app/sendheart/id6761357538",
+      code: "https://github.com/xixi-kitchen/loveyou",
+    },
+    projectInfo: {
+      background:
+        "项目起因是给两个人一种不用打字就能表达想念的方式。首页围绕红心按钮和小狗展开，次要配置放进设置。首发范围是 iPhone，简体中文、英文以及浅色和深色外观都能使用。",
+      challenges: ["只想告诉对方“我在想你”，却不想为此输入一段聊天文字。"],
+      solutions: [
+        "用 SwiftUI 构建 iPhone 界面，把空间管理、通知状态、消息说明和隐私政策集中到设置。通过 CloudKit 私有／共享数据库及 CKShare 系统邀请建立两人空间，并同步红心事件与接收回执。腾讯云上的独立 HTTPS 推送网关对接 APNs，发送可见通知。",
+      ],
+    },
+    steps: [
+      "两位使用者分别在运行 iOS 26.2 或更新版本的 iPhone 上登录不同的 iCloud 账号，打开 Sendheart。",
+      "发起端点击「创建两人空间」。",
+      "发起端点击「发送系统邀请」，把邀请交给另一位使用者。",
+      "另一端打开并接受系统邀请；发起端刷新加入状态，确认配对完成，并按需允许通知。",
+      "任意一端点击首页红色按钮，发送红心。",
+      "另一端查看小狗动画或通知；发送端查看「对方已收到」回执。",
+    ],
+    features: {
+      core: [
+        "创建两人空间，生成用于邀请另一位成员的 Apple 系统链接。",
+        "接受对方的系统邀请，加入同一个共享空间。",
+        "点击首页红色按钮，向另一端发送红心并触发小狗动画。",
+        "查看「已发出／对方已收到」状态，区分发送受理与另一端 App 已回传的接收回执。",
+        "开启通知权限，在锁屏通知中查看对方发来的红心提醒。",
+        "快速点按按钮 3 次，让自己的按钮被小狗暂时收走，并在约 4 秒后恢复。",
+        "打开设置中的隐私政策，离线查看数据使用、保留和删除说明。",
+        "以受邀成员身份确认退出空间，结束自己对共享空间的访问。",
+        "以创建者身份确认关闭空间，撤销该空间的共享访问。",
+      ],
+      design: ["未配对首页", "等待对方加入", "已配对首页", "设置", "消息状态说明", "隐私政策"],
+    },
+    achievements: {
+      metrics: [],
+      highlights: [
+        "1.0.2 已通过 App Store 审核，中国大陆和美国的公开商店目录均已收录。",
+        "73 项自动化测试通过；83 次执行，0 项失败。",
+        "已有双机收发、锁屏通知、离线恢复，以及中英文浅色／深色界面的用户验证记录。",
+      ],
+    },
+    changelog: [
+      {
+        date: "2026-10-03",
+        version: "1.0.2",
+        title: "系统邀请配对，并修正连续点按",
+        notes:
+          "配对改为 iCloud 系统邀请，新增设置入口、中英文与浅色／深色外观，完善发送状态和接收回执。连续点按后只有发送方的按钮被暂时收走，约 4 秒后恢复。该版本已在 App Store 发布。",
+      },
+      {
+        date: "2026-10-01",
+        version: "1.0.1",
+        title: "首次 App Store 正式分发",
+        notes: "完成首次 App Store 正式分发。",
+      },
+    ],
+    i18n: {
+      en: {
+        title: "Sendheart",
+        description: "Two iPhone users exchange hearts, see a dog animation, and check a receipt.",
+        tags: ["iOS", "SwiftUI", "CloudKit", "App Store"],
+        role: "Studio product",
+        status: "Live",
+        tools: ["SwiftUI", "CloudKit", "System invitation", "Push alerts"],
+        projectInfo: {
+          background:
+            "Sendheart started as a way for two people to say they are thinking of each other without typing. The heart and the dog stay on the home screen. Settings hold the rest. The first release is iPhone, in Simplified Chinese and English, light and dark.",
+          challenges: ["They want to say “thinking of you” without writing a chat message."],
+          solutions: [
+            "The iPhone app is SwiftUI. CloudKit private and shared databases plus CKShare invitations create a space for two and sync hearts and receipts. A separate HTTPS gateway on Tencent Cloud talks to APNs for visible alerts.",
+          ],
+        },
+        steps: [
+          "Each person signs in with a different iCloud account on an iPhone running iOS 26.2 or later and opens Sendheart.",
+          "The creator taps Create a Space.",
+          "The creator sends the system invitation.",
+          "The other person accepts it. The creator refreshes until pairing is done, then allows notifications if they want them.",
+          "Either person taps the red button to send a heart.",
+          "The other phone shows the dog or a notification. The sender sees the receipt.",
+        ],
+        features: {
+          core: [
+            "Create a space for two and generate an Apple invitation.",
+            "Accept an invitation and join the same space.",
+            "Tap the red button to send a heart and play the dog animation.",
+            "Read sent and received states, including a receipt from the other app.",
+            "Allow notifications and see a heart on the lock screen.",
+            "Tap three times and the sender’s button is taken away for about four seconds.",
+            "Read the privacy policy offline in Settings.",
+            "Leave the space as the invited member.",
+            "Close the space as the creator.",
+          ],
+          design: ["Unpaired home", "Waiting", "Paired home", "Settings", "Status guide", "Privacy policy"],
+        },
+        achievements: {
+          metrics: [],
+          highlights: [
+            "Version 1.0.2 is on the App Store in mainland China and the United States.",
+            "73 automated tests passed across 83 runs, with no failures.",
+            "Checked on two phones for sending, lock-screen alerts, offline recovery, and both languages in light and dark.",
+          ],
+        },
+        changelog: [
+          {
+            date: "2026-10-03",
+            version: "1.0.2",
+            title: "System invitations, and a fix for repeated taps",
+            notes:
+              "Pairing uses an iCloud system invitation. Settings, Chinese and English, and light and dark are in. Only the sender’s button is taken away after repeated taps, then returns in about four seconds. Released on the App Store.",
+          },
+          {
+            date: "2026-10-01",
+            version: "1.0.1",
+            title: "First App Store release",
+            notes: "First public App Store release.",
+          },
+        ],
+      },
+    },
+  },
+  {
+    id: 15,
+    slug: "bookmark-atlas",
+    title: "Bookmark Atlas",
+    type: "latest",
+    status: "Beta",
+    year: "2026",
+    role: "工作室产品",
+    description: "Chrome 用户在新标签页整理书签，并搭建可持久保存的视觉工作区。",
+    tags: ["浏览器扩展", "书签", "画布", "新标签页"],
+    tools: ["浏览器扩展", "界面", "类型检查", "画布"],
+    projectInfo: {
+      background:
+        "项目从重新组织大量 Chrome 书签开始。目标是把书签管理、视觉画布和网页嵌入集中到浏览器新标签页，同时保留 Chrome 原生书签结构。",
+      challenges: [
+        "用户需要在 Chrome 书签层级中逐级查找，无法把书签、绘图和网页嵌入放进同一个可持续编辑的工作区。",
+      ],
+      solutions: [
+        "扩展使用 WXT、React 19、TypeScript、Zustand 和 Excalidraw 构建，符合 Chrome Manifest V3。书签操作通过 Chrome Bookmarks API 写回浏览器；画布、附件和素材库保存在 IndexedDB；界面配置保存在 Chrome Storage。",
+      ],
+    },
+    steps: [
+      "打开一个 Chrome 新标签页，进入 Bookmark Atlas。",
+      "选择列视图或 Excalidraw 画布。",
+      "在列视图浏览文件夹，或在画布中导入一个书签、一个分组或全部书签。",
+      "单击书签打开网站，拖动卡片调整 Chrome 书签结构，或在画布添加绘图和网页。",
+      "等待自动保存完成，之后重新打开浏览器继续使用。",
+    ],
+    features: {
+      core: [
+        "打开 Chrome 新标签页，浏览文件夹树和分组卡片并定位书签。",
+        "单击一个书签，在当前标签页打开对应网站。",
+        "拖动书签到另一个文件夹或组内位置，把归属和顺序同步到 Chrome 书签。",
+        "新建、编辑或删除书签与文件夹，把修改直接写回 Chrome。",
+        "选择搜索引擎并输入关键词，在当前页或新标签页提交搜索。",
+        "进入 Excalidraw 画布，绘制图形、添加文字和使用素材库，并自动保存内容。",
+        "逐个、按文件夹或一次性导入 Chrome 书签，在画布生成带图标、标题和路径的卡片。",
+        "嵌入 HTTP 或 HTTPS 网页，在卡片内滚动、刷新或转到新标签页打开。",
+        "导出画布、附件、素材库和插件配置为 JSON，在本机恢复扩展状态。",
+        "切换卡片尺寸和七种界面风格，让列视图采用统一的视觉样式。",
+      ],
+      design: [
+        "新标签页顶部工具栏",
+        "列视图与文件夹导航",
+        "Excalidraw 画布",
+        "Chrome 书签导入、完整备份、搜索引擎管理和书签编辑弹窗",
+        "嵌入网页交互工具栏",
+      ],
+    },
+    achievements: {
+      metrics: [],
+      highlights: [
+        "在包含 1,396 个书签的 Chrome 书签库中进行界面测试。",
+        "v0.3.4 验证通过 23 个测试文件中的 71 项自动化测试。",
+        "v0.3.4 Chrome Manifest V3 ZIP 安装包大小为 2.77 MB。",
+        "v0.3.4 已完成打包，可作为未打包扩展加载使用。",
+      ],
+    },
+    changelog: [
+      {
+        date: "2026-08-09",
+        version: "v0.3.4",
+        title: "嵌入网页工具栏不再遮挡内容",
+        notes: "将嵌入网页工具栏移到 iframe 上方的独立区域，保留刷新、外部打开和退出交互。",
+      },
+    ],
+    i18n: {
+      en: {
+        title: "Bookmark Atlas",
+        description: "Chrome users organize bookmarks and keep a visual workspace in a new tab.",
+        tags: ["Chrome extension", "Bookmarks", "Excalidraw", "New tab"],
+        role: "Studio product",
+        status: "Beta",
+        tools: ["Browser extension", "Interface", "Types", "Canvas"],
+        projectInfo: {
+          background:
+            "It started as a way to reorganize a large Chrome bookmark collection. Bookmark management, a visual canvas, and embedded pages share the new tab, while Chrome’s own bookmark tree stays the source of truth.",
+          challenges: [
+            "Finding a bookmark meant walking Chrome’s folders, and drawings or embedded pages could not live in that same workspace.",
+          ],
+          solutions: [
+            "A Manifest V3 extension built with WXT, React 19, TypeScript, Zustand, and Excalidraw. Bookmark edits write back through the Chrome Bookmarks API. The canvas, attachments, and library sit in IndexedDB. Interface settings sit in Chrome Storage.",
+          ],
+        },
+        steps: [
+          "Open a new Chrome tab.",
+          "Choose the column view or the Excalidraw canvas.",
+          "Browse a folder, or import one bookmark, a group, or all bookmarks onto the canvas.",
+          "Open a site, drag a card to update Chrome, or add a drawing or an embedded page.",
+          "Wait for the automatic save, then come back later.",
+        ],
+        features: {
+          core: [
+            "Browse the folder tree and grouped cards from a new tab.",
+            "Open a bookmark in the current tab.",
+            "Drag a bookmark to another folder or position and sync that change to Chrome.",
+            "Create, edit, or delete bookmarks and folders in Chrome.",
+            "Search with a chosen engine in the current tab or a new one.",
+            "Draw, write, and use the library on an Excalidraw canvas that saves itself.",
+            "Import one bookmark, a folder, or the whole library as cards.",
+            "Embed an HTTP or HTTPS page, then scroll, refresh, or open it in a new tab.",
+            "Export the canvas, attachments, library, and settings as JSON and restore them.",
+            "Switch card size and one of seven visual styles.",
+          ],
+          design: ["New-tab toolbar", "Column view", "Folder navigation", "Excalidraw canvas", "Import, backup, search, and edit dialogs"],
+        },
+        achievements: {
+          metrics: [],
+          highlights: [
+            "Exercised against a Chrome library of 1,396 bookmarks.",
+            "v0.3.4 passed 71 automated tests in 23 files.",
+            "The Manifest V3 zip is 2.77 MB and can be loaded unpacked.",
+          ],
+        },
+        changelog: [
+          {
+            date: "2026-08-09",
+            version: "v0.3.4",
+            title: "The embed toolbar no longer covers the page",
+            notes: "The toolbar sits in its own row above the iframe, with refresh, open-outside, and exit.",
+          },
+        ],
+      },
+    },
+  },
   {
     id: 1,
     slug: "app-3-upgrade",

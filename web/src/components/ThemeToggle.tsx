@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
+import { useI18n } from "@/i18n/useI18n";
 
 const ThemeToggle: React.FC<{ className?: string }> = ({ className = "" }) => {
   const { resolvedTheme, setTheme } = useTheme();
+  const t = useI18n();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
   const isDark = mounted && resolvedTheme === "dark";
-  const label = isDark ? "切换到亮色模式" : "切换到暗色模式";
+  const label = isDark ? t.theme.toLight : t.theme.toDark;
 
   return (
     <button

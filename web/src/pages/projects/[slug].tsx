@@ -6,17 +6,17 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { projects, type Project } from "@/data/projects";
 import { CASE_STUDY_SECTIONS } from "@/data/case-study";
+import { useI18n } from "@/i18n/useI18n";
+import { localizeProject } from "@/i18n/localizeProject";
+import type { Dictionary } from "@/i18n/dictionaries";
+import { useRouter } from "next/router";
 import ProjectCover from "@/components/ui/ProjectCover";
 import Reveal from "@/components/ui/Reveal";
 import Tag from "@/components/ui/Tag";
 
 const publicProjects = projects.filter((p) => p.type !== "personal");
 
-const typeLabel: Record<Project["type"], string> = {
-  latest: "最新项目",
-  past: "过往项目",
-  personal: "个人项目",
-};
+const typeLabel = (type: Project["type"], t: Dictionary) => t.project.types[type];
 
 interface Section {
   id: string;
@@ -54,6 +54,30 @@ const Columns: React.FC<{ groups: { title: string; items?: string[] }[] }> = ({ 
   );
 };
 
+const ProjectLinks: React.FC<{ links?: Project["links"]; openLabel: string; codeLabel: string }> = ({ links, openLabel, codeLabel }) => {
+  const items = [
+        links?.live ? { label: openLabel, href: links.live } : null,
+    links?.code ? { label: codeLabel, href: links.code } : null,
+    ...(links?.social ?? []).filter((item) => item.url).map((item) => ({ label: item.name, href: item.url })),
+  ].filter((item): item is { label: string; href: string } => Boolean(item));
+  if (!items.length) return null;
+  return (
+    <div className="mt-8 flex flex-wrap gap-3">
+      {items.map((item) => (
+        <a
+          key={item.href}
+          href={item.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex h-11 items-center rounded-full border border-line px-5 text-sm font-medium text-ink transition-colors hover:border-ink"
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
+  );
+};
+
 const splitMetric = (metric: string) => {
   const match = metric.match(/(\d+(?:\.\d+)?%?)/);
   if (!match || match.index === undefined) return { value: null, label: metric };
@@ -63,7 +87,7 @@ const splitMetric = (metric: string) => {
   };
 };
 
-const buildSections = (p: Project): Section[] => {
+const buildSections = (p: Project, t: Dictionary): Section[] => {
   const byId = new Map<string, React.ReactNode>();
 
   byId.set(
@@ -73,10 +97,10 @@ const buildSections = (p: Project): Section[] => {
       <p className="max-w-3xl text-lg leading-relaxed text-ink/85">{p.description}</p>
       <dl className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
         {[
-          { label: "类型", value: typeLabel[p.type] },
-          { label: "角色", value: p.role },
-          { label: "周期", value: p.period || p.year },
-          { label: "客户", value: p.client },
+          { label: t.project.type, value: typeLabel(p.type, t) },
+          { label: t.project.role, value: p.role },
+          { label: t.project.period, value: p.period || p.year },
+          { label: t.project.client, value: p.client },
         ]
           .filter((row) => row.value)
           .map((row) => (
@@ -94,6 +118,16 @@ const buildSections = (p: Project): Section[] => {
             </Tag>
           ))}
         </div>
+      ) : null}
+      {p.steps?.length ? (
+        <ol className="max-w-3xl space-y-3">
+          {p.steps.map((step, i) => (
+            <li key={step} className="grid grid-cols-[2.5rem_1fr] leading-relaxed text-ink/85">
+              <span className="font-mono text-sm leading-[1.75] text-muted">{String(i + 1).padStart(2, "0")}</span>
+              {step}
+            </li>
+          ))}
+        </ol>
       ) : null}
     </div>
   );
@@ -118,9 +152,9 @@ const buildSections = (p: Project): Section[] => {
         <p className="max-w-3xl text-lg leading-relaxed text-ink/85">{p.projectInfo.background}</p>
         <Columns
           groups={[
-            { title: "目标", items: p.projectInfo.objectives },
-            { title: "挑战", items: p.projectInfo.challenges },
-            { title: "解决方案", items: p.projectInfo.solutions },
+              { title: t.project.columns.objectives, items: p.projectInfo.objectives },
+              { title: t.project.columns.challenges, items: p.projectInfo.challenges },
+              { title: t.project.columns.solutions, items: p.projectInfo.solutions },
           ]}
         />
       </div>
@@ -146,33 +180,35 @@ const buildSections = (p: Project): Section[] => {
       "features",
       <Columns
         groups={[
-          { title: "核心功能", items: p.features.core },
-          { title: "设计特性", items: p.features.design },
-          { title: "技术特性", items: p.features.technical },
+            { title: t.project.columns.core, items: p.features.core },
+            { title: t.project.columns.design, items: p.features.design },
+            { title: t.project.columns.technical, items: p.features.technical },
         ]}
       />
     );
   }
 
-  if (p.achievements) {
+  if (p.achievements && (p.achievements.metrics.length > 0 || p.achievements.highlights.length > 0)) {
     const metrics = p.achievements.metrics.map(splitMetric);
     byId.set(
       "results",
       <div className="space-y-8">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {metrics.map((m) => (
-            <div key={m.label + m.value} className="rounded-2xl border border-line bg-surface p-6">
-              {m.value ? (
-                <>
-                  <p className="text-5xl font-semibold tracking-[-0.03em] text-ink">{m.value}</p>
-                  <p className="mt-3 text-sm leading-relaxed text-muted">{m.label}</p>
-                </>
-              ) : (
-                <p className="text-base font-medium leading-relaxed text-ink">{m.label}</p>
-              )}
-            </div>
-          ))}
-        </div>
+        {metrics.length > 0 && (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {metrics.map((m) => (
+              <div key={m.label + m.value} className="rounded-2xl border border-line bg-surface p-6">
+                {m.value ? (
+                  <>
+                    <p className="text-5xl font-semibold tracking-[-0.03em] text-ink">{m.value}</p>
+                    <p className="mt-3 text-sm leading-relaxed text-muted">{m.label}</p>
+                  </>
+                ) : (
+                  <p className="text-base font-medium leading-relaxed text-ink">{m.label}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
         {p.achievements.highlights.length > 0 && <BulletList items={p.achievements.highlights} />}
       </div>
     );
@@ -183,11 +219,31 @@ const buildSections = (p: Project): Section[] => {
       "optimizations",
       <Columns
         groups={[
-          { title: "流程优化", items: p.optimizations.process },
-          { title: "核心优化", items: p.optimizations.core },
-          { title: "优化结果", items: p.optimizations.results },
+            { title: t.project.columns.process, items: p.optimizations.process },
+            { title: t.project.columns.coreOpt, items: p.optimizations.core },
+            { title: t.project.columns.results, items: p.optimizations.results },
         ]}
       />
+    );
+  }
+
+  if (p.changelog?.length) {
+    byId.set(
+      "changelog",
+      <ol className="space-y-6">
+        {p.changelog.map((entry) => (
+          <li key={`${entry.version}-${entry.title}`} className="grid gap-2 border-b border-line pb-6 md:grid-cols-[9rem_1fr]">
+            <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
+              {entry.version}
+              {entry.date ? <span className="mt-1 block normal-case tracking-normal">{entry.date}</span> : null}
+            </p>
+            <div>
+              <p className="font-medium text-ink">{entry.title}</p>
+              {entry.notes ? <p className="mt-2 leading-relaxed text-muted">{entry.notes}</p> : null}
+            </div>
+          </li>
+        ))}
+      </ol>
     );
   }
 
@@ -197,7 +253,7 @@ const buildSections = (p: Project): Section[] => {
 
   return CASE_STUDY_SECTIONS.filter((s) => byId.has(s.id)).map((s) => ({
     id: s.id,
-    title: s.title,
+    title: t.project.sections[s.id],
     content: byId.get(s.id),
   }));
 };
@@ -208,15 +264,18 @@ interface Props {
   next: Pick<Project, "slug" | "title"> | null;
 }
 
-const ProjectDetail: NextPage<Props> = ({ project, prev, next }) => {
-  const sections = buildSections(project);
+const ProjectDetail: NextPage<Props> = ({ project: source, prev, next }) => {
+  const t = useI18n();
+  const { locale } = useRouter();
+  const project = localizeProject(source, locale);
+  const sections = buildSections(project, t);
   const number = String(project.id).padStart(2, "0");
   const cover = project.image ?? project.gallery?.[0];
 
   return (
     <>
       <Head>
-        <title>{`${project.title} | 项目 | HUGH·Aix`}</title>
+        <title>{`${project.title} | ${t.meta.title}`}</title>
         <meta name="description" content={project.description} />
       </Head>
 
@@ -226,7 +285,7 @@ const ProjectDetail: NextPage<Props> = ({ project, prev, next }) => {
             <svg className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" viewBox="0 0 20 20" fill="none" aria-hidden>
               <path d="M16 10H5m0 0 4.5-4.5M5 10l4.5 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            全部项目
+            {t.project.back}
           </Link>
 
           <motion.div
@@ -236,7 +295,7 @@ const ProjectDetail: NextPage<Props> = ({ project, prev, next }) => {
             className="mt-10"
           >
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
-              Project {number} · {typeLabel[project.type]}
+              Project {number} · {typeLabel(project.type, t)}
             </p>
             <h1 className="mt-5 max-w-4xl text-display font-semibold text-balance text-ink">{project.title}</h1>
             <p className="mt-6 max-w-3xl text-xl leading-relaxed text-pretty text-muted">{project.description}</p>
@@ -246,7 +305,9 @@ const ProjectDetail: NextPage<Props> = ({ project, prev, next }) => {
               ))}
               {project.role && <Tag tone="blue">{project.role}</Tag>}
               {project.period && <Tag tone="yellow">{project.period}</Tag>}
+              {project.status && <Tag tone="yellow">{project.status}</Tag>}
             </div>
+            <ProjectLinks links={project.links} openLabel={t.project.open} codeLabel={t.project.code} />
           </motion.div>
 
           <motion.div
@@ -295,8 +356,8 @@ const ProjectDetail: NextPage<Props> = ({ project, prev, next }) => {
         <nav aria-label="其他项目" className="border-t border-line">
           <div className="container-page grid md:grid-cols-2">
             {[
-              { item: prev, label: "上一个项目", align: "text-left" },
-              { item: next, label: "下一个项目", align: "md:text-right" },
+              { item: prev, label: t.project.prev, align: "text-left" },
+              { item: next, label: t.project.next, align: "md:text-right" },
             ].map(({ item, label, align }) =>
               item ? (
                 <Link
@@ -320,8 +381,10 @@ const ProjectDetail: NextPage<Props> = ({ project, prev, next }) => {
   );
 };
 
-export const getStaticPaths: GetStaticPaths = async () => ({
-  paths: publicProjects.map((p) => ({ params: { slug: p.slug } })),
+export const getStaticPaths: GetStaticPaths = async ({ locales }) => ({
+  paths: (locales ?? ["zh", "en"]).flatMap((locale) =>
+    publicProjects.map((p) => ({ params: { slug: p.slug }, locale }))
+  ),
   fallback: false,
 });
 

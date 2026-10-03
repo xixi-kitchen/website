@@ -1,17 +1,9 @@
 import React from "react";
+import { useI18n } from "@/i18n/useI18n";
 
-const items = [
-  "Product",
-  "Industrial Design",
-  "Interaction",
-  "Experience",
-  "AI",
-  "Philosophy",
-  "Psychology",
-  "Leadership",
-];
-
-const BauhausMarquee: React.FC<{ reverse?: boolean }> = ({ reverse = false }) => (
+const BauhausMarquee: React.FC<{ reverse?: boolean }> = ({ reverse = false }) => {
+  const items = useI18n().capabilities.items.map((item) => item.title);
+  return (
   <div className="relative overflow-hidden border-y border-ink bg-ink py-3 text-canvas dark:border-line">
     <div className={`marquee-track flex w-max gap-8 ${reverse ? "marquee-reverse" : ""}`} aria-hidden>
       {[0, 1].map((copy) => (
@@ -27,6 +19,7 @@ const BauhausMarquee: React.FC<{ reverse?: boolean }> = ({ reverse = false }) =>
     </div>
     <span className="sr-only">{items.join(" · ")}</span>
   </div>
-);
+  );
+};
 
 export default BauhausMarquee;

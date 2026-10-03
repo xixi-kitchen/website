@@ -2,21 +2,34 @@ import React, { useRef } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Ring, Square, Triangle } from "@/components/ui/BrandShapes";
 import { gsap, useGSAP, ScrollTrigger, reducedMotion } from "@/lib/gsap-client";
+import { useI18n } from "@/i18n/useI18n";
+import { useRouter } from "next/router";
 
-const stats = [
-  { value: 8, unit: "次", label: "各项奖学金", accent: "bg-brand-yellow" },
-  { value: 21, unit: "项", label: "各类奖项", accent: "bg-brand-pink" },
-  { value: 2, unit: "项", label: "专利", accent: "bg-brand-blue" },
-];
-
-const honors = [
-  { icon: <Ring size={22} />, text: "上海市级优秀毕业生" },
-  { icon: <Triangle size={24} />, text: "优秀新人、优秀员工" },
-  { icon: <Square size={20} />, text: "开创生产可用性 RoomMap 功能" },
-];
+const honorCopy = {
+  zh: {
+    stats: [
+      { value: 8, unit: "次", label: "奖学金" },
+      { value: 21, unit: "项", label: "奖项" },
+      { value: 2, unit: "项", label: "专利" },
+    ],
+    lines: ["上海市级优秀毕业生", "优秀新人、优秀员工", "做出可在生产环境使用的房间地图"],
+  },
+  en: {
+    stats: [
+      { value: 8, unit: "", label: "Scholarships" },
+      { value: 21, unit: "", label: "Awards" },
+      { value: 2, unit: "", label: "Patents" },
+    ],
+    lines: ["Outstanding graduate of Shanghai", "Strong start, then a strong year", "Shipped a room map that people use in production"],
+  },
+};
 
 const Honor: React.FC = () => {
   const root = useRef<HTMLElement>(null);
+  const t = useI18n();
+  const text = honorCopy[useRouter().locale === "en" ? "en" : "zh"];
+  const icons = [<Ring size={22} key="r" />, <Triangle size={24} key="t" />, <Square size={20} key="s" />];
+  const accents = ["bg-brand-yellow", "bg-brand-pink", "bg-brand-blue"];
 
   useGSAP(
     () => {
@@ -31,7 +44,7 @@ const Honor: React.FC = () => {
           onEnter: () => {
             el.textContent = "0";
             gsap.to(obj, {
-              val: stats[i].value,
+              val: honorCopy.zh.stats[i].value,
               duration: 1.4,
               ease: "power2.out",
               snap: { val: 1 },
@@ -58,12 +71,12 @@ const Honor: React.FC = () => {
   return (
     <section ref={root} className="section-y">
       <div className="container-page">
-        <SectionHeader index="05" label="Honors" title="荣誉与认可" />
+        <SectionHeader index="05" label={t.about.honorLabel} title={t.about.honorTitle} />
 
         <div className="mt-14 grid gap-5 md:grid-cols-3">
-          {stats.map((s) => (
+          {text.stats.map((s, i) => (
             <div key={s.label} className="relative overflow-hidden rounded-3xl border border-line bg-surface p-8">
-              <span className={`absolute right-6 top-6 h-3 w-3 rounded-full ${s.accent}`} aria-hidden />
+              <span className={`absolute right-6 top-6 h-3 w-3 rounded-full ${accents[i]}`} aria-hidden />
               <p className="flex items-baseline gap-2 text-ink">
                 <span className="honor-num text-[clamp(4rem,8vw,6.5rem)] font-semibold leading-none tracking-[-0.04em]">{s.value}</span>
                 <span className="text-xl text-muted">{s.unit}</span>
@@ -74,10 +87,10 @@ const Honor: React.FC = () => {
         </div>
 
         <ul className="mt-5 grid gap-px overflow-hidden rounded-3xl border border-line bg-line md:grid-cols-3">
-          {honors.map((h) => (
-            <li key={h.text} className="honor-chip flex items-center gap-4 bg-surface px-8 py-6 text-lg font-medium text-ink">
-              <span className="shrink-0">{h.icon}</span>
-              {h.text}
+          {text.lines.map((line, i) => (
+            <li key={line} className="honor-chip flex items-center gap-4 bg-surface px-8 py-6 text-lg font-medium text-ink">
+              <span className="shrink-0">{icons[i]}</span>
+              {line}
             </li>
           ))}
         </ul>

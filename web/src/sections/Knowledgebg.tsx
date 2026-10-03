@@ -2,6 +2,8 @@ import React, { useRef } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Ring, Square, Triangle } from "@/components/ui/BrandShapes";
 import { gsap, useGSAP, reducedMotion } from "@/lib/gsap-client";
+import { useI18n } from "@/i18n/useI18n";
+import { useRouter } from "next/router";
 
 type Strand = "humanity" | "design" | "tech";
 
@@ -11,29 +13,47 @@ const strandIcon: Record<Strand, React.ReactNode> = {
   tech: <Triangle size={22} />,
 };
 
-const disciplines: { strand: Strand; title: string; desc: string }[] = [
-  { strand: "humanity", title: "哲学", desc: "王阳明心学、逻辑学、中国古典哲学与《资本论》" },
-  { strand: "humanity", title: "心理学", desc: "研究生学习心理学，专业课 274 分（总分 300）" },
-  { strand: "design", title: "工业设计", desc: "本专业，专业排名第一，获得多项工业设计奖项" },
-  { strand: "design", title: "交互设计", desc: "完成 Google 交互设计专业认证" },
-  { strand: "design", title: "用户体验系统", desc: "通过 Coursera 用户体验设计专业课程认证" },
-  { strand: "tech", title: "计算机", desc: "自学编程多年，拥有完全独立编写的个人网站" },
-  { strand: "tech", title: "数据分析", desc: "自学 Python 及 NumPy、Pandas、Matplotlib、Scikit-learn 等数据分析库" },
-  {
-    strand: "tech",
-    title: "人工智能",
-    desc: "自学机器学习数学基础、算法与神经网络原理，本地部署大模型并调用各类大模型 API",
+const knowledgeCopy = {
+  zh: {
+    legend: [
+      { strand: "humanity" as const, label: "人文" },
+      { strand: "design" as const, label: "设计" },
+      { strand: "tech" as const, label: "技术" },
+    ],
+    items: [
+      { strand: "humanity" as const, title: "哲学", desc: "心学、逻辑、古典哲学与政治经济学" },
+      { strand: "humanity" as const, title: "心理学", desc: "研究生阶段学习心理学，专业课二百七十四分，满分三百分" },
+      { strand: "design" as const, title: "工业设计", desc: "本专业，专业排名第一，获得多项工业设计奖项" },
+      { strand: "design" as const, title: "交互设计", desc: "完成交互设计专业认证" },
+      { strand: "design" as const, title: "体验系统", desc: "完成用户体验设计专业课程" },
+      { strand: "tech" as const, title: "计算机", desc: "自学编程多年，独立写过这个网站" },
+      { strand: "tech" as const, title: "数据分析", desc: "自学数据处理、统计和可视化" },
+      { strand: "tech" as const, title: "人工智能", desc: "自学机器学习的数学、算法和神经网络，并在本地部署大模型" },
+    ],
   },
-];
-
-const legend: { strand: Strand; label: string }[] = [
-  { strand: "humanity", label: "人文" },
-  { strand: "design", label: "设计" },
-  { strand: "tech", label: "技术" },
-];
+  en: {
+    legend: [
+      { strand: "humanity" as const, label: "Humanities" },
+      { strand: "design" as const, label: "Design" },
+      { strand: "tech" as const, label: "Technology" },
+    ],
+    items: [
+      { strand: "humanity" as const, title: "Philosophy", desc: "Ethics of the mind, logic, classical philosophy, and political economy." },
+      { strand: "humanity" as const, title: "Psychology", desc: "Graduate study in psychology, with a subject score of 274 out of 300." },
+      { strand: "design" as const, title: "Industrial design", desc: "His major. Ranked first in the program, with several design awards." },
+      { strand: "design" as const, title: "Interaction", desc: "Finished a professional certificate in interaction design." },
+      { strand: "design" as const, title: "Experience systems", desc: "Finished a professional course in experience design." },
+      { strand: "tech" as const, title: "Computing", desc: "Taught himself to program, and built this site alone." },
+      { strand: "tech" as const, title: "Data", desc: "Taught himself data handling, statistics, and charts." },
+      { strand: "tech" as const, title: "Intelligence", desc: "Taught himself the math, algorithms, and networks behind machine learning, and runs models locally." },
+    ],
+  },
+};
 
 const Knowledgebg: React.FC = () => {
   const root = useRef<HTMLElement>(null);
+  const t = useI18n();
+  const text = knowledgeCopy[useRouter().locale === "en" ? "en" : "zh"];
 
   useGSAP(
     () => {
@@ -58,11 +78,11 @@ const Knowledgebg: React.FC = () => {
       <div className="container-page">
         <SectionHeader
           index="02"
-          label="Knowledge"
-          title="跨领域的知识背景"
+        label={t.about.knowledgeLabel}
+        title={t.about.knowledgeTitle}
           description={
             <span className="inline-flex flex-wrap items-center gap-x-5 gap-y-2 md:justify-end">
-              {legend.map((l) => (
+              {text.legend.map((l) => (
                 <span key={l.strand} className="inline-flex items-center gap-2">
                   {strandIcon[l.strand]}
                   {l.label}
@@ -73,7 +93,7 @@ const Knowledgebg: React.FC = () => {
         />
 
         <ul className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
-          {disciplines.map((d, i) => (
+          {text.items.map((d, i) => (
             <li key={d.title} className="know-cell group flex flex-col bg-surface p-7 transition-colors hover:bg-canvas">
               <div className="flex items-center justify-between">
                 <span className="transition-transform duration-500 group-hover:rotate-12">{strandIcon[d.strand]}</span>

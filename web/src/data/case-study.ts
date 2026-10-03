@@ -8,6 +8,7 @@ export const CASE_STUDY_SECTIONS = [
   { id: "features", title: "功能特性" },
   { id: "results", title: "项目成果" },
   { id: "optimizations", title: "优化成果" },
+  { id: "changelog", title: "更新日志" },
   { id: "next", title: "下一步" },
 ] as const;
 

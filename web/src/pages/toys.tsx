@@ -7,23 +7,46 @@ import PageHeader from "@/components/ui/PageHeader";
 import GeometricBackdrop from "@/components/ui/GeometricBackdrop";
 import Tag, { type TagTone } from "@/components/ui/Tag";
 import { cardBase, cardInteractive } from "@/components/ui/Card";
+import { useRouter } from "next/router";
 
 type Filter = "all" | Toy["status"];
 
-const statusMeta: Record<Toy["status"], { label: string; tone: TagTone }> = {
-  completed: { label: "已完成", tone: "blue" },
-  "in-progress": { label: "进行中", tone: "yellow" },
-  planned: { label: "计划中", tone: "neutral" },
+const statusTone: Record<Toy["status"], TagTone> = {
+  completed: "blue",
+  "in-progress": "yellow",
+  planned: "neutral",
 };
 
-const filters: { value: Filter; label: string }[] = [
-  { value: "all", label: "全部" },
-  { value: "completed", label: "已完成" },
-  { value: "in-progress", label: "进行中" },
-  { value: "planned", label: "计划中" },
+const filters: { value: Filter }[] = [
+  { value: "all" },
+  { value: "completed" },
+  { value: "in-progress" },
+  { value: "planned" },
 ];
 
-const ToyModal: React.FC<{ toy: Toy; onClose: () => void }> = ({ toy, onClose }) => {
+const toyEn: Record<number, Pick<Toy, "title" | "description" | "tags" | "features" | "inspiration" | "techStack">> = {
+  1: {
+    title: "Desktop pet",
+    description: "A desktop companion for work, with weather and schedule reminders.",
+    tags: ["Desktop", "Intelligence", "Play"],
+    techStack: ["Desktop shell", "Interface", "Types", "Local model"],
+    features: ["Animation", "Conversation", "Weather", "Schedule", "Custom look"],
+    inspiration: "A small companion while working.",
+  },
+  2: {
+    title: "Snippet maker",
+    description: "Turn a plain description into a code snippet, in more than one language.",
+    tags: ["Tool", "Intelligence", "Speed"],
+    techStack: ["Site", "Model interface", "Layout"],
+    features: ["Words to code", "Several languages", "Highlighting", "Copy once"],
+    inspiration: "Make programming more direct.",
+  },
+};
+
+const localizeToy = (toy: Toy, en: boolean): Toy => (en && toyEn[toy.id] ? { ...toy, ...toyEn[toy.id] } : toy);
+
+const ToyModal: React.FC<{ toy: Toy; onClose: () => void; en: boolean }> = ({ toy, onClose, en }) => {
+  const view = localizeToy(toy, en);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
@@ -52,37 +75,37 @@ const ToyModal: React.FC<{ toy: Toy; onClose: () => void }> = ({ toy, onClose })
           type="button"
           onClick={onClose}
           className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink transition hover:border-ink"
-          aria-label="关闭"
+          aria-label={en ? "Close" : "关闭"}
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
             <path d="M6 18 18 6M6 6l12 12" />
           </svg>
         </button>
-        <Tag tone={statusMeta[toy.status].tone}>{statusMeta[toy.status].label}</Tag>
-        <h3 className="mt-4 pr-12 text-3xl font-semibold text-ink">{toy.title}</h3>
-        <p className="mt-4 leading-relaxed text-muted">{toy.description}</p>
+        <Tag tone={statusTone[view.status]}>{en ? (view.status === "completed" ? "Done" : view.status === "in-progress" ? "In progress" : "Planned") : view.status === "completed" ? "已完成" : view.status === "in-progress" ? "进行中" : "计划中"}</Tag>
+        <h3 className="mt-4 pr-12 text-3xl font-semibold text-ink">{view.title}</h3>
+        <p className="mt-4 leading-relaxed text-muted">{view.description}</p>
 
-        {toy.inspiration && (
+        {view.inspiration && (
           <section className="mt-8">
-            <h4 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">灵感来源</h4>
-            <p className="mt-3 text-ink/85">{toy.inspiration}</p>
+            <h4 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">{en ? "Source" : "灵感来源"}</h4>
+            <p className="mt-3 text-ink/85">{view.inspiration}</p>
           </section>
         )}
-        {toy.features && (
+        {view.features && (
           <section className="mt-8">
-            <h4 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">功能特点</h4>
+            <h4 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">{en ? "Features" : "功能特点"}</h4>
             <ul className="mt-3 list-disc space-y-1.5 pl-5 text-ink/85 marker:text-line">
-              {toy.features.map((f) => (
+              {view.features.map((f) => (
                 <li key={f}>{f}</li>
               ))}
             </ul>
           </section>
         )}
         <section className="mt-8">
-          <h4 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">技术栈</h4>
+          <h4 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">{en ? "Stack" : "技术栈"}</h4>
           <div className="mt-3 flex flex-wrap gap-2">
-            {toy.techStack.map((t) => (
-              <Tag key={t}>{t}</Tag>
+            {view.techStack.map((item) => (
+              <Tag key={item}>{item}</Tag>
             ))}
           </div>
         </section>
@@ -109,7 +132,21 @@ const ToyModal: React.FC<{ toy: Toy; onClose: () => void }> = ({ toy, onClose })
 const Toys: NextPage = () => {
   const [selected, setSelected] = useState<Toy | null>(null);
   const [filter, setFilter] = useState<Filter>("all");
-  const visible = toys.filter((t) => filter === "all" || t.status === filter);
+  const en = useRouter().locale === "en";
+  const visible = toys.filter((item) => filter === "all" || item.status === filter).map((item) => localizeToy(item, en));
+  const statusLabel = (status: Toy["status"]) =>
+    en
+      ? status === "completed"
+        ? "Done"
+        : status === "in-progress"
+          ? "In progress"
+          : "Planned"
+      : status === "completed"
+        ? "已完成"
+        : status === "in-progress"
+          ? "进行中"
+          : "计划中";
+  const filterLabel = (value: Filter) => (value === "all" ? (en ? "All" : "全部") : statusLabel(value));
 
   return (
     <>
@@ -121,10 +158,10 @@ const Toys: NextPage = () => {
       <div className="relative isolate">
         <GeometricBackdrop />
         <PageHeader
-          label="Toys · Beta"
-          title="创意实验"
-          subtitle="工作之外的小玩意：有些已经能玩，有些还躺在计划里。"
-          note="本页面正在设计构建中，内容与布局会持续更新。"
+          label={en ? "Lab" : "实验"}
+          title={en ? "Play" : "创意实验"}
+          subtitle={en ? "Small things made beside the studio work." : "正事旁边的小东西。有的已经能玩，有的还在计划里。"}
+          note={en ? "This page is still being built." : "这一页还在继续写。"}
         />
 
         <div className="container-page pb-28">
@@ -140,7 +177,7 @@ const Toys: NextPage = () => {
                   filter === f.value ? "bg-ink text-canvas" : "border border-line text-muted hover:border-ink hover:text-ink"
                 }`}
               >
-                {f.label}
+                {filterLabel(f.value)}
               </button>
             ))}
           </div>
@@ -155,7 +192,7 @@ const Toys: NextPage = () => {
               >
                 <div className="flex items-start justify-between gap-4">
                   <h3 className="text-xl font-semibold text-ink">{toy.title}</h3>
-                  <Tag tone={statusMeta[toy.status].tone}>{statusMeta[toy.status].label}</Tag>
+                  <Tag tone={statusTone[toy.status]}>{statusLabel(toy.status)}</Tag>
                 </div>
                 <p className="mt-3 leading-relaxed text-muted">{toy.description}</p>
                 <div className="mt-6 flex flex-wrap gap-2">
@@ -167,11 +204,11 @@ const Toys: NextPage = () => {
             ))}
           </div>
 
-          {visible.length === 0 && <p className="mt-16 text-center text-muted">这个分类下暂时还没有项目。</p>}
+          {visible.length === 0 && <p className="mt-16 text-center text-muted">{en ? "Nothing in this group yet." : "这个分类下暂时还没有项目。"}</p>}
         </div>
       </div>
 
-      <AnimatePresence>{selected && <ToyModal toy={selected} onClose={() => setSelected(null)} />}</AnimatePresence>
+      <AnimatePresence>{selected && <ToyModal toy={selected} en={en} onClose={() => setSelected(null)} />}</AnimatePresence>
     </>
   );
 };

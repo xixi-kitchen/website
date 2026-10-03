@@ -1,7 +1,9 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { navItems } from "./Navbar";
+import { useNavItems } from "./Navbar";
+import { useI18n } from "@/i18n/useI18n";
+import { useRouter } from "next/router";
 import { ShapeRow } from "./ui/BrandShapes";
 import { ArrowIcon } from "./ui/Button";
 
@@ -11,6 +13,9 @@ const emails = [
 ];
 
 const Footer: React.FC = () => {
+  const t = useI18n();
+  const showRecord = useRouter().locale !== "en";
+  const navItems = useNavItems();
   const isChinaServer = process.env.NEXT_PUBLIC_IS_CHINA_SERVER === "true";
   const icpNumber = process.env.NEXT_PUBLIC_ICP_NUMBER;
   const psbNumber = process.env.NEXT_PUBLIC_PSB_NUMBER;
@@ -23,9 +28,8 @@ const Footer: React.FC = () => {
           <div>
             <ShapeRow size={22} />
             <p className="mt-8 text-title font-semibold">
-              一起做点
-              <span className="mx-2 bg-brand-yellow px-2 text-night">不平淡</span>
-              的事。
+              {t.footer.line1}
+              <span className="mx-2 bg-brand-yellow px-2 text-night">{t.footer.line2}</span>
             </p>
             <ul className="mt-10 space-y-3">
               {emails.map((email) => (
@@ -34,7 +38,7 @@ const Footer: React.FC = () => {
                     href={`mailto:${email.value}`}
                     className="group inline-flex items-baseline gap-3 text-lg text-white/80 transition-colors hover:text-white md:text-xl"
                   >
-                    <span className="w-20 font-mono text-xs uppercase tracking-widest text-white/45">{email.label}</span>
+                    <span className="w-20 font-mono text-xs uppercase tracking-widest text-white/45">{email.label === "QQ 邮箱" ? t.footer.qq : t.footer.gmail}</span>
                     {email.value}
                     <ArrowIcon className="self-center" />
                   </a>
@@ -44,9 +48,9 @@ const Footer: React.FC = () => {
           </div>
 
           <nav aria-label="页脚导航" className="grid grid-cols-2 content-start gap-x-8 gap-y-3 text-white/70 md:justify-self-end">
-            <p className="col-span-2 mb-2 font-mono text-xs uppercase tracking-[0.2em] text-white/45">Sitemap</p>
+            <p className="col-span-2 mb-2 font-mono text-xs uppercase tracking-[0.2em] text-white/45">{t.footer.sitemap}</p>
             <Link href="/" className="transition-colors hover:text-white">
-              首页
+              {t.nav.home}
             </Link>
             {navItems.map((item) => (
               <Link key={item.href} href={item.href} className="transition-colors hover:text-white">
@@ -54,19 +58,28 @@ const Footer: React.FC = () => {
               </Link>
             ))}
             <a href="/resume/hugh-aix-color.pdf" download className="transition-colors hover:text-white">
-              简历 · 彩色
+              {t.about.resumeColor}
             </a>
             <a href="/resume/hugh-aix-print.pdf" download className="transition-colors hover:text-white">
-              简历 · 打印
+              {t.about.resumePrint}
             </a>
+            <Link href="/experience" className="transition-colors hover:text-white">
+              {t.about.experienceTitle}
+            </Link>
+            <Link href="/aboutme" className="transition-colors hover:text-white">
+              {t.about.story}
+            </Link>
+            <Link href="/markdown-test" className="transition-colors hover:text-white">
+              {t.about.specimen}
+            </Link>
           </nav>
         </div>
 
         <div className="mt-20 flex flex-col gap-4 border-t border-white/10 pt-8 text-sm text-white/50 md:flex-row md:items-center md:justify-between">
           <p>
-            &copy; {new Date().getFullYear()} HUGH·Aix · 由 HUGH·Aix 独立设计、开发与部署
+            &copy; {new Date().getFullYear()} {t.footer.copyright}
           </p>
-          {isChinaServer && (
+          {isChinaServer && showRecord && (
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
               {icpNumber && (
                 <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" className="hover:text-white">

@@ -4,24 +4,29 @@ import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
 import { ShapeRow } from "./ui/BrandShapes";
 import ThemeToggle from "./ThemeToggle";
+import LocaleToggle from "./LocaleToggle";
+import { useI18n } from "@/i18n/useI18n";
 
 interface NavItem {
   href: string;
   label: string;
-  beta?: boolean;
 }
 
-export const navItems: NavItem[] = [
-  { href: "/experience", label: "经历" },
-  { href: "/projects", label: "项目" },
-  { href: "/ai", label: "AI", beta: true },
-  { href: "/toys", label: "创意", beta: true },
-  { href: "/about", label: "关于" },
-  { href: "/contact", label: "联系" },
-];
+export const useNavItems = (): NavItem[] => {
+  const t = useI18n();
+  return [
+    { href: "/projects", label: t.nav.work },
+    { href: "/about", label: t.nav.about },
+    { href: "/contact", label: t.nav.contact },
+    { href: "/ai", label: t.nav.ai },
+    { href: "/toys", label: t.nav.toys },
+  ];
+};
 
 const Navbar: React.FC = () => {
   const router = useRouter();
+  const t = useI18n();
+  const navItems = useNavItems();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -46,10 +51,10 @@ const Navbar: React.FC = () => {
         scrolled || isOpen ? "border-line bg-canvas/85 backdrop-blur-xl" : "border-transparent bg-canvas"
       }`}
     >
-      <nav className="container-page flex h-16 items-center justify-between" aria-label="主导航">
-        <Link href="/" className="group flex items-center gap-3 text-ink" aria-label="返回首页">
+      <nav className="container-page flex h-16 items-center justify-between" aria-label="Main">
+        <Link href="/" className="group flex items-center gap-3 text-ink" aria-label={t.nav.home}>
           <ShapeRow size={14} className="transition-transform duration-500 group-hover:-rotate-6" />
-          <span className="text-[15px] font-semibold tracking-tight">HUGH·Aix</span>
+          <span className="text-[15px] font-semibold tracking-tight">{t.brand.name}</span>
         </Link>
 
         <div className="flex items-center gap-1">
@@ -66,11 +71,6 @@ const Navbar: React.FC = () => {
                     }`}
                   >
                     {item.label}
-                    {item.beta && (
-                      <span className="rounded-full border border-line px-1.5 font-mono text-[10px] leading-4 text-muted">
-                        Beta
-                      </span>
-                    )}
                     {active && (
                       <motion.span
                         layoutId="nav-active"
@@ -84,7 +84,8 @@ const Navbar: React.FC = () => {
             })}
           </ul>
 
-          <ThemeToggle className="md:ml-2" />
+          <LocaleToggle className="md:ml-2" />
+          <ThemeToggle />
 
           <button
             type="button"
@@ -125,10 +126,7 @@ const Navbar: React.FC = () => {
                       isActive(item.href) ? "text-ink" : "text-muted"
                     }`}
                   >
-                    <span className="flex items-center gap-2">
-                      {item.label}
-                      {item.beta && <span className="font-mono text-xs font-normal text-muted">Beta</span>}
-                    </span>
+                    <span>{item.label}</span>
                     {isActive(item.href) && <span className="h-2 w-2 rounded-full bg-brand-pink" />}
                   </Link>
                 </li>

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import DecayCard from "@/components/DecayCard";
 import { ArrowIcon } from "@/components/ui/Button";
+import { useI18n } from "@/i18n/useI18n";
 
 const emails = [
   { label: "QQ 邮箱", value: "1850786422@qq.com" },
@@ -34,6 +35,7 @@ const cardSizeFor = (width: number) => {
 
 const Contact: NextPage = () => {
   const [card, setCard] = useState({ width: 760, height: 340 });
+  const t = useI18n();
 
   useEffect(() => {
     const update = () => setCard(cardSizeFor(window.innerWidth));
@@ -76,8 +78,8 @@ const Contact: NextPage = () => {
           className="relative z-10 flex w-full justify-center px-4"
         >
           <DecayCard width={card.width} height={card.height}>
-            <p className="font-mono text-xs uppercase tracking-[0.25em] text-white/60">Get in touch</p>
-            <h1 className="mt-3 text-4xl font-semibold text-white sm:text-5xl">联系我</h1>
+            <p className="font-mono text-xs uppercase tracking-[0.25em] text-white/60">{t.nav.contact}</p>
+            <h1 className="mt-3 text-4xl font-semibold text-white sm:text-5xl">{t.nav.contact}</h1>
             <ul className="mt-6 space-y-2">
               {emails.map((email) => (
                 <li key={email.value}>
@@ -85,7 +87,7 @@ const Contact: NextPage = () => {
                     href={`mailto:${email.value}`}
                     className="group inline-flex items-center gap-2 text-lg font-medium text-white/90 transition-colors hover:text-brand-yellow sm:text-2xl"
                   >
-                    <span className="hidden font-mono text-xs uppercase tracking-widest text-white/50 sm:inline">{email.label}</span>
+                    <span className="hidden font-mono text-xs uppercase tracking-widest text-white/50 sm:inline">{email.label === "QQ 邮箱" ? t.footer.qq : t.footer.gmail}</span>
                     {email.value}
                     <ArrowIcon />
                   </a>
@@ -94,10 +96,10 @@ const Contact: NextPage = () => {
             </ul>
             <div className="mt-6 flex flex-wrap gap-4 text-sm text-white/70">
               <a href="/resume/hugh-aix-color.pdf" download className="underline-offset-4 hover:text-brand-yellow hover:underline">
-                下载简历 · 彩色
+                {t.about.resumeColor}
               </a>
               <a href="/resume/hugh-aix-print.pdf" download className="underline-offset-4 hover:text-brand-yellow hover:underline">
-                打印版
+                {t.about.resumePrint}
               </a>
             </div>
           </DecayCard>

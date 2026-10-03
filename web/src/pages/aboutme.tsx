@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -41,12 +42,36 @@ const Section = ({ title, content, highlight }: { title: string; content: string
   );
 };
 
+const story = {
+  zh: {
+    title: "我的路程",
+    lead: "设计、思想和做出新东西的一段经历。",
+    sections: [
+      { title: "开始", content: "事情从大学开始。我毕业于", highlight: "上海海事大学" },
+      { title: "从学会到想清楚", content: "技能攒了很多，还是觉得缺一块", highlight: "自己的方法" },
+      { title: "从心理学到哲学", content: "辩证唯物主义把很多事重新串了起来。我读的是", highlight: "哲学、逻辑和古典思想" },
+    ],
+    end: "勇敢，并且真诚。",
+  },
+  en: {
+    title: "The journey",
+    lead: "A story of design, thought, and making something new.",
+    sections: [
+      { title: "The start", content: "It began at university. I graduated from", highlight: "Shanghai Maritime University" },
+      { title: "From skill to a point of view", content: "I learned many skills, and still felt the lack of", highlight: "a way of thinking" },
+      { title: "From psychology to philosophy", content: "Dialectical materialism tied the pieces together. I studied", highlight: "philosophy, logic, and classical thought" },
+    ],
+    end: "Be brave, and be sincere.",
+  },
+};
+
 const AboutPage = () => {
+  const text = story[useRouter().locale === "en" ? "en" : "zh"];
   return (
     <>
       <Head>
-        <title>About | HUGH·Aix</title>
-        <meta name="description" content="A journey of design, philosophy, and innovation." />
+        <title>{text.title}</title>
+        <meta name="description" content={text.lead} />
       </Head>
 
       {/* 背景层，支持黑暗模式 */}
@@ -58,46 +83,21 @@ const AboutPage = () => {
         <div className="relative z-10 max-w-screen-lg mx-auto px-8 py-24">
           {/* 大标题 */}
           <h1 className="text-7xl md:text-8xl font-extrabold leading-tight tracking-wide text-zinc-900 dark:text-zinc-100">
-            My <span className="text-zinc-800 dark:text-zinc-200">Journey</span>
+            {text.title}
           </h1>
-          <h2 className="text-2xl md:text-3xl text-zinc-700 dark:text-zinc-300 mt-4">
-            A story of <span className="text-zinc-800 dark:text-zinc-200">design</span>, <span className="text-zinc-800 dark:text-zinc-200">philosophy</span>, and <span className="text-zinc-800 dark:text-zinc-200">innovation</span>.
-          </h2>
+          <h2 className="text-2xl md:text-3xl text-zinc-700 dark:text-zinc-300 mt-4">{text.lead}</h2>
 
-          {/* 章节内容，每个 Section 进入视口时都会触发动画 */}
           <div className="mt-16 space-y-24">
-            <Section
-              title="The Beginning"
-              content="Everything started in college. I graduated from"
-              highlight="Shanghai Maritime University"
-            />
-            <Section
-              title="From Learning to Thinking"
-              content="I mastered many skills, yet I felt something was missing—a"
-              highlight="core philosophy"
-            />
-            <Section
-              title="From Psychology to Philosophy"
-              content="My journey into Marxist dialectical materialism changed everything. I explored"
-              highlight="philosophy, logic, and classical thought"
-            />
+            {text.sections.map((section) => (
+              <Section key={section.title} title={section.title} content={section.content} highlight={section.highlight} />
+            ))}
           </div>
 
-          {/* 结尾 */}
-          <h2 className="text-center text-3xl font-bold text-zinc-900 dark:text-zinc-100 mt-24">
-            &quot;Be Courageous and Be Authentic&quot; 🚀
-          </h2>
+          <h2 className="text-center text-3xl font-bold text-zinc-900 dark:text-zinc-100 mt-24">{text.end}</h2>
         </div>
       </div>
     </>
   );
 };
-
-export async function getStaticProps() {
-  if (process.env.NODE_ENV === "production") {
-    return { notFound: true };
-  }
-  return { props: {} };
-}
 
 export default AboutPage;

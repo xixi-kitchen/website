@@ -20,15 +20,15 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>HUGH·Aix — 徐禧的个人作品集</title>
+        <title>human design studio</title>
         <meta
           name="description"
-          content="徐禧（HUGH·Aix），产品经理与体验设计师。工业设计出身，跨越交互、用户体验、产品管理与 AI，这里是我的作品、经历与思考。"
+          content="human design studio (HDS) makes products people use, from interface and interaction through release."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#0e0e10" media="(prefers-color-scheme: dark)" />
-        <meta property="og:site_name" content="HUGH·Aix" />
+        <meta property="og:site_name" content="human design studio" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
