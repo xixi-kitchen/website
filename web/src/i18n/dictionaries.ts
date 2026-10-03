@@ -2,13 +2,13 @@ export type Locale = "zh" | "en";
 
 const zh = {
   meta: {
-    title: "人本设计工作室",
-    description: "人本设计工作室做给人用的产品：从界面、交互到能发布的应用。",
+    title: "人类设计工作室",
+    description: "人类设计工作室做给人用的产品：从界面、交互到能发布的应用。",
   },
-  brand: { name: "人本设计工作室", mark: "人本" },
+  brand: { name: "人类设计工作室", mark: "人类" },
   nav: { work: "作品", about: "关于", contact: "联系", home: "首页", ai: "智能", toys: "创意" },
   hero: {
-    eyebrow: "人本设计工作室",
+    eyebrow: "人类设计工作室",
     place: "兰州 · 上海 · 远程",
     edition: "第三期",
     shapes: "圆 · 三角 · 方",
@@ -57,7 +57,7 @@ const zh = {
   about: {
     label: "创立者",
     title: "徐禧",
-    subtitle: "他创立了人本设计工作室。工业设计出身，现在做产品、交互和能发布的应用。",
+    subtitle: "他创立了人类设计工作室。工业设计出身，现在做产品、交互和能发布的应用。",
     resumeColor: "简历 · 彩色",
     resumePrint: "简历 · 打印",
     philosophyTitle: "他怎么想",
@@ -112,7 +112,7 @@ const zh = {
     qq: "腾讯邮箱",
     gmail: "谷歌邮箱",
     sitemap: "站点地图",
-    copyright: "人本设计工作室",
+    copyright: "人类设计工作室",
   },
   theme: { toDark: "切换到暗色模式", toLight: "切换到亮色模式" },
   lang: { zh: "中文", en: "英文" },
