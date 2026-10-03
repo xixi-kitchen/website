@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useNavItems } from "./Navbar";
 import { useI18n } from "@/i18n/useI18n";
-import { useRouter } from "next/router";
 import { ShapeRow } from "./ui/BrandShapes";
 import { ArrowIcon } from "./ui/Button";
 
@@ -14,7 +13,6 @@ const emails = [
 
 const Footer: React.FC = () => {
   const t = useI18n();
-  const showRecord = useRouter().locale !== "en";
   const navItems = useNavItems();
   const isChinaServer = process.env.NEXT_PUBLIC_IS_CHINA_SERVER === "true";
   const icpNumber = process.env.NEXT_PUBLIC_ICP_NUMBER;
@@ -79,7 +77,7 @@ const Footer: React.FC = () => {
           <p>
             &copy; {new Date().getFullYear()} {t.footer.copyright}
           </p>
-          {isChinaServer && showRecord && (
+          {isChinaServer && (
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
               {icpNumber && (
                 <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" className="hover:text-white">
