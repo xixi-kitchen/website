@@ -6,7 +6,7 @@ const zh = {
     description: "人类设计工作室做给人用的产品：从界面、交互到能发布的应用。",
   },
   brand: { name: "人类设计工作室", mark: "人类" },
-  nav: { work: "作品", about: "关于", contact: "联系", home: "首页", ai: "智能", toys: "创意" },
+  nav: { work: "作品", about: "关于", contact: "联系", home: "首页", ai: "AI", toys: "创意" },
   hero: {
     eyebrow: "人类设计工作室",
     place: "兰州 · 上海 · 远程",

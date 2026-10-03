@@ -121,7 +121,7 @@ const AIPage: NextPage = () => {
       <GeometricBackdrop />
       <PageHeader
         label={en ? "Lab" : "实验"}
-        title={en ? "Intelligence" : "智能专刊"}
+        title={en ? "Intelligence" : "AI专刊"}
         subtitle={en ? "A working notebook of data, models, and applied intelligence." : "数据分析、机器学习，以及把模型用进产品的实验。"}
         note={en ? "This page is still being built." : "这一页还在继续写。"}
       />

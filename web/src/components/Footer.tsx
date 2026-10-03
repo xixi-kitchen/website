@@ -29,16 +29,18 @@ const Footer: React.FC = () => {
               {t.footer.line1}
               <span className="mx-2 bg-brand-yellow px-2 text-night">{t.footer.line2}</span>
             </p>
-            <ul className="mt-10 space-y-3">
+            <ul className="mt-8 grid max-w-sm gap-y-1">
               {emails.map((email) => (
                 <li key={email.value}>
                   <a
                     href={`mailto:${email.value}`}
-                    className="group inline-flex items-baseline gap-3 text-lg text-white/80 transition-colors hover:text-white md:text-xl"
+                    className="group grid h-8 grid-cols-[4.5rem_minmax(0,1fr)_1rem] items-center gap-x-3 text-sm text-white/75 transition-colors hover:text-white"
                   >
-                    <span className="w-20 font-mono text-xs uppercase tracking-widest text-white/45">{email.label === "QQ 邮箱" ? t.footer.qq : t.footer.gmail}</span>
-                    {email.value}
-                    <ArrowIcon className="self-center" />
+                    <span className="font-mono text-[11px] tracking-[0.14em] text-white/40">
+                      {email.label === "QQ 邮箱" ? t.footer.qq : t.footer.gmail}
+                    </span>
+                    <span className="truncate">{email.value}</span>
+                    <ArrowIcon className="justify-self-end" />
                   </a>
                 </li>
               ))}
